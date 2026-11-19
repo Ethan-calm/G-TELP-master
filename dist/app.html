@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500;700&family=Black+Han+Sans&display=swap">
 <style>
-/* Layout: 시험지 OMR 답안지 — 빨간 인쇄선, 컴퓨터용 사인펜으로 칠하는 동그라미 보기, 아래 고정 탭 */
+/* Layout: OMR 답안지 — 빨간 인쇄선, 칠하는 동그라미 보기. 넓은 화면에선 여러 단으로 펼쳐 한눈에 */
 :root{
   --paper:#fbfaf7; --sheet:#ffffff; --ink:#1d1f24; --muted:#6b6862;
   --omr:#d2394a; --omr-soft:#fbe3e5; --line:#ecc9cd;
@@ -22,100 +22,114 @@
   --ok:#4fd39a; --ok-soft:#173327; --bad:#ff9a6b; --bad-soft:#3a2418; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{background:var(--paper);color:var(--ink)}
-body{font-family:var(--body);font-size:15px;line-height:1.6;
+body{font-family:var(--body);font-size:14.5px;line-height:1.55;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
-  padding-block:0 calc(84px + env(safe-area-inset-bottom,0px))}
-main{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px;padding-top:16px}
+  padding-block:0 calc(76px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+main{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding-top:14px}
 h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
-h2{font-size:19px} h3{font-size:16px}
-p{margin:0}
+h1{font-family:var(--display);font-weight:400;font-size:26px}
+h2{font-size:17px} h3{font-size:15px}
+p{margin:0} ul,ol{margin:0;padding-left:20px}
 button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--omr);outline-offset:2px}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--omr);outline-offset:2px}
 .label{font-size:12px;letter-spacing:.06em;color:var(--muted);font-weight:500}
 .muted{color:var(--muted)}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
-.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:12px;align-items:start}
+.grid.wide{grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr))}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .between{justify-content:space-between}
+.btn{border:1.5px solid var(--ink);background:var(--sheet);border-radius:999px;padding:7px 14px;font-weight:500}
 a.btn{color:var(--ink);text-decoration:none}
-.btn{border:1.5px solid var(--ink);background:var(--sheet);border-radius:999px;padding:9px 16px;font-weight:500}
 .btn.primary{background:var(--omr);border-color:var(--omr);color:#fff}
-.btn.small{padding:5px 12px;font-size:13px}
+.btn.small{padding:4px 11px;font-size:13px}
 .btn:disabled{opacity:.4;cursor:default}
-.chip{border:1px solid var(--line);background:var(--sheet);border-radius:999px;padding:6px 12px;font-size:14px}
+.chip{border:1px solid var(--line);background:var(--sheet);border-radius:999px;padding:5px 11px;font-size:13.5px}
 .chip[aria-pressed="true"]{background:var(--omr);color:#fff;border-color:var(--omr)}
-
-/* 상단 D-day 띠 */
-.dday{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:end;
-  border-bottom:2px solid var(--omr);padding-bottom:12px}
-.dday .big{font-family:var(--display);font-size:56px;line-height:1;color:var(--omr);grid-row:span 2}
-.dday .t{font-weight:700;font-size:17px}
-.bar{height:8px;background:var(--omr-soft);border-radius:4px;overflow:hidden}
+.bar{height:7px;background:var(--omr-soft);border-radius:4px;overflow:hidden}
 .bar>i{display:block;height:100%;background:var(--omr)}
+.pass{color:var(--ok)} .fail{color:var(--bad)}
+.explain{border-left:3px solid var(--omr);padding:5px 10px;background:var(--omr-soft);border-radius:0 6px 6px 0;font-size:13.5px}
 
-/* 미션 */
-.mission{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px dashed var(--line)}
-.mission:first-of-type{border-top:0}
-.dot{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--omr)}
-.dot.on{background:var(--ink);border-color:var(--ink)}
-.mission .go{font-size:13px}
+/* 상단 D-day */
+.dday{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;align-items:center;border-bottom:2px solid var(--omr);padding-bottom:12px}
+.dday .big{font-family:var(--display);font-size:52px;line-height:1;color:var(--omr);grid-row:span 2}
+.dday .t{font-weight:700;font-size:16px}
 
-/* OMR 보기 */
-.q{font-size:17px;line-height:1.65}
-.q .blank{display:inline-block;min-width:64px;border-bottom:2px solid var(--ink);margin:0 2px}
-.opts{display:flex;flex-direction:column;gap:8px}
-.opt{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;text-align:left;
-  background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:48px}
-.bub{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--omr);color:var(--omr);
-  display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:700}
+/* 7일 플랜 */
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:10px}
+.day{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--sheet);display:flex;flex-direction:column;gap:6px}
+.day.now{border:2px solid var(--omr)}
+.day.done{opacity:.6}
+.day .dn{font-family:var(--display);font-size:22px;color:var(--omr);line-height:1}
+.day table td{font-size:13px;padding:3px 2px}
+.day table td:first-child{white-space:nowrap;color:var(--muted);font-family:var(--mono);font-size:12px;width:52px}
+
+/* 문제지 */
+.sticky{position:sticky;top:env(safe-area-inset-top,0px);z-index:4;background:var(--paper);padding-block:8px;border-bottom:1px solid var(--line)}
+.qs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:10px;align-items:start}
+.item{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.item.ok{border-color:var(--ok)} .item.no{border-color:var(--bad)}
+.q{font-size:15px;line-height:1.6}
+.q .n{font-family:var(--mono);font-weight:700;color:var(--omr);margin-right:4px}
+.q .tag{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:4px;white-space:nowrap}
+.blank{display:inline-block;min-width:54px;border-bottom:2px solid var(--ink);margin:0 2px}
+.opts{display:flex;flex-direction:column;gap:5px}
+.opt{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:center;text-align:left;background:var(--sheet);border:1px solid var(--line);border-radius:7px;padding:6px 9px;min-height:40px;font-size:14px}
+.bub{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--omr);color:var(--omr);display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700}
 .opt.picked .bub{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
 .opt.right{border-color:var(--ok);background:var(--ok-soft)}
 .opt.right .bub{background:var(--ok);border-color:var(--ok);color:var(--sheet)}
 .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
 .opt:disabled{cursor:default;color:inherit}
-.explain{border-left:3px solid var(--omr);padding:6px 12px;background:var(--omr-soft);border-radius:0 6px 6px 0}
-.verdict{font-weight:700}
-.verdict.ok{color:var(--ok)} .verdict.no{color:var(--bad)}
 
-/* 공식 카드 */
-.formula{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
-.ftile{text-align:left;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--sheet);display:flex;flex-direction:column;gap:4px}
-.ftile b{font-size:15px}
-.ftile small{color:var(--muted);font-size:12.5px;line-height:1.5}
-table{border-collapse:collapse;width:100%;font-size:14px}
-td,th{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
+/* 독해 */
+.read{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}
+@media (min-width:900px){.read{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}.read .passage{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);max-height:calc(100vh - 110px)}}
+.passage{white-space:pre-wrap;font-size:15px;line-height:1.75;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--sheet);max-height:60vh}
+.passage h3{white-space:normal;margin-bottom:6px}
+
+/* 표 */
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+td,th{border-bottom:1px solid var(--line);padding:5px 4px;text-align:left;vertical-align:top}
 th{font-size:12px;color:var(--muted);font-weight:500}
 .scroll{overflow-x:auto}
-
-.passage{white-space:pre-wrap;font-size:15.5px;line-height:1.75;max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--paper)}
-.card{min-height:180px;display:grid;place-items:center;text-align:center;border:1.5px dashed var(--omr);border-radius:12px;padding:20px;background:var(--sheet);width:100%}
-.card .w{font-family:var(--mono);font-size:30px;font-weight:700}
-.stat{display:grid;grid-template-columns:72px 1fr 52px;gap:8px;align-items:center;font-size:14px}
+.vt td.m{cursor:pointer}
+.vt .hidden-m{color:transparent;background:var(--omr-soft);border-radius:4px;user-select:none}
+.vt tr.known td{color:var(--muted)}
+.check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--omr);background:var(--sheet);padding:0}
+.check[aria-pressed="true"]{background:var(--ink);border-color:var(--ink)}
+.stat{display:grid;grid-template-columns:64px 1fr 44px;gap:8px;align-items:center;font-size:13.5px}
 input[type=range]{width:100%;accent-color:var(--omr)}
-input[type=date],input[type=number]{font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:6px 8px;width:100%;min-width:0}
-.field{display:flex;flex-direction:column;gap:4px;flex:1 1 90px;min-width:0}
-.score-big{font-family:var(--display);font-size:44px;line-height:1}
-.pass{color:var(--ok)} .fail{color:var(--bad)}
+input[type=date],input[type=number],select{font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:5px 8px;min-width:0}
+.field{display:flex;flex-direction:column;gap:3px;flex:1 1 90px;min-width:0}
+.score-big{font-family:var(--display);font-size:40px;line-height:1}
+.note h2{color:var(--omr);font-family:var(--display);font-weight:400;font-size:19px}
+.note b{font-weight:700}
+.kbd{font-family:var(--mono);font-size:13px;background:var(--omr-soft);border-radius:4px;padding:0 4px}
 svg text{fill:var(--muted);font-family:var(--mono);font-size:11px}
 
 /* 하단 탭 */
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--sheet);border-top:2px solid var(--omr);
-  display:grid;grid-template-columns:repeat(5,1fr);
-  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
-nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--muted);font-size:12px;padding:4px 0}
-nav.tabs a .ic{font-family:var(--display);font-size:18px;line-height:1.2}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--sheet);border-top:2px solid var(--omr);display:grid;grid-template-columns:repeat(7,1fr);
+  padding:5px max(4px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(4px,env(safe-area-inset-left,0px))}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--muted);font-size:11.5px;padding:3px 0;gap:1px}
+nav.tabs a .ic{font-family:var(--display);font-size:17px;line-height:1.2}
 nav.tabs a[aria-current="page"]{color:var(--omr)}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:999px;font-size:14px;z-index:6}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:7px 15px;border-radius:999px;font-size:14px;z-index:6}
 @media (prefers-reduced-motion:no-preference){.opt{transition:background .15s,border-color .15s}}
 </style>
 
 <main id="app" aria-live="polite"></main>
 <nav class="tabs" aria-label="메뉴">
-  <a href="#home"><span class="ic">홈</span>오늘</a>
+  <a href="#home"><span class="ic">7</span>7일</a>
+  <a href="#notes"><span class="ic">요</span>요약</a>
   <a href="#grammar"><span class="ic">G</span>문법</a>
-  <a href="#reading"><span class="ic">R</span>독해·어휘</a>
+  <a href="#reading"><span class="ic">R</span>독해</a>
+  <a href="#vocab"><span class="ic">V</span>어휘</a>
   <a href="#listening"><span class="ic">L</span>청취</a>
-  <a href="#record"><span class="ic">%</span>점수</a>
+  <a href="#mock"><span class="ic">%</span>모의</a>
 </nav>
 <div class="toast" id="toast" hidden></div>
 
@@ -229,11 +243,71 @@ const GRAMMAR = [
 ['conj','You can\'t enter the concert hall ___ you have a ticket.','unless','because','although','while','"~하지 않으면" → unless.'],
 ['conj','She didn\'t go to the party. ___, she stayed home and read a book.','Instead','Moreover','For example','Similarly','A 대신 B → Instead.'],
 ['conj','Kim kept practicing ___ she could play the piece perfectly.','until','unless','although','whereas','"~할 때까지" → until.'],
+// ── 기출형 보강 (실제 시험처럼 문맥이 긴 문장) ──
+['tense','Jenna is not available for a call right now. She ___ a client in the conference room, and the meeting won\'t end until noon.','is meeting','meets','has met','will meet','right now → 현재진행. 단서가 앞 문장에 숨어 있는 기출 유형.'],
+['tense','The company\'s founder, Mr. Hale, ___ in the same office for over thirty years by the time he finally retired in 2021.','had been working','has been working','was working','will have been working','by the time + 과거(retired) + for 기간 → had been -ing.'],
+['tense','By the end of this year, Professor Kim ___ the effects of climate change on coral reefs for a full decade.','will have been studying','has been studying','had been studying','is studying','By the end of this year(미래) + for 기간 → will have been -ing.'],
+['tense','Last night, while Mark ___ dinner, the smoke alarm went off and woke the baby.','was cooking','is cooking','has been cooking','cooks','Last night + while → 과거진행.'],
+['tense','Don\'t call Anna at 8 tomorrow morning. She ___ to the airport to pick up her parents at that time.','will be driving','drives','has been driving','was driving','tomorrow morning + at that time → 미래진행.'],
+['tense','Since the start of the semester, Tyler ___ at the campus library three nights a week to pay his tuition.','has been working','had been working','is working','will have been working','Since + 과거 시점 → 현재완료진행.'],
+['tense','The hikers ___ for almost six hours when the rescue helicopter finally spotted them.','had been walking','have been walking','were walking','will have been walking','for 기간 + when + 과거(spotted) → 과거완료진행.'],
+['tense','As of this moment, thousands of fans ___ outside the stadium for the band\'s first concert in ten years.','are waiting','waited','had waited','will have waited','As of this moment(지금 이 순간) → 현재진행.'],
+['tense','When the CEO arrives at the headquarters later today, the staff ___ the final details of the annual report.','will be reviewing','are reviewing','have been reviewing','were reviewing','when + 현재동사(arrives) + later today → 미래진행.'],
+['tense','I couldn\'t answer your call earlier because I ___ in a job interview at that moment.','was sitting','am sitting','have been sitting','will be sitting','earlier + at that moment(과거) → 과거진행.'],
+['cond','If it were not for the internet, many people ___ it difficult to work from home.','would find','would have found','will find','found','If it were not for(~이 없다면) = 가정법 과거 → would + 동사원형.'],
+['cond','If Ben had checked the weather forecast, he ___ his umbrella to the picnic yesterday.','would have brought','would bring','will bring','brought','If had p.p. → would have p.p.'],
+['cond','Were the city to build a new subway line, commuters ___ much less time in traffic.','would spend','would have spent','will spend','spent','Were S to V (가정법 미래 도치) → would + 동사원형.'],
+['cond','If my grandmother were still alive today, she ___ proud of my graduation.','would be','would have been','will be','is','If + were → would + 동사원형.'],
+['cond','The concert could have been canceled if the organizers ___ enough tickets.','had not sold','did not sell','would not sell','have not sold','주절 could have p.p. → if절 had p.p.'],
+['cond','If I won the lottery, I ___ a small house by the sea and quit my job.','would buy','would have bought','will buy','bought','If + 과거(won) → would + 동사원형.'],
+['cond','Had the scientists ignored the strange results, they ___ the new antibiotic.','would never have discovered','would never discover','will never discover','never discovered','Had S p.p. → would have p.p.'],
+['cond','If Paul were more organized, he ___ his deadlines so often.','would not miss','would not have missed','will not miss','does not miss','If + were → would + 동사원형.'],
+['cond','If the hotel had offered free parking, we ___ there instead of the one downtown.','would have stayed','would stay','will stay','stayed','If had p.p. → would have p.p.'],
+['verbal','The doctor advised Kelly ___ caffeine after 3 p.m. so that she could sleep better.','to avoid','avoiding','having avoided','to have avoided','advise + 목적어 + to V. (목적어 없이 바로 오면 advise -ing)'],
+['verbal','Mr. Lim\'s speech encouraged many young people ___ careers in science.','to pursue','pursuing','having pursued','to have pursued','encourage + 목적어 + to V.'],
+['verbal','The new policy allows employees ___ from home twice a week.','to work','working','having worked','to have worked','allow + 목적어 + to V.'],
+['verbal','The teacher made the students ___ the essay because it was full of errors.','rewrite','to rewrite','rewriting','having rewritten','사역동사 make + 목적어 + 동사원형.'],
+['verbal','Since the museum is closed on Mondays, I suggest ___ there on Tuesday instead.','going','to go','having gone','to have gone','suggest + -ing.'],
+['verbal','The scientist is looking forward to ___ her findings at the conference.','presenting','present','having presented','to have presented','look forward to + -ing (to는 전치사).'],
+['verbal','Many tourists spend hours ___ in line to see the famous painting.','waiting','to wait','having waited','to have waited','spend + 시간 + -ing.'],
+['verbal','The startup failed ___ enough funding and closed after only a year.','to raise','raising','having raised','to have raised','fail + to V.'],
+['verbal','The city council is considering ___ cars from the downtown area on weekends.','banning','to ban','having banned','to have banned','consider + -ing.'],
+['verbal','After years of practice, Ryan finally managed ___ the marathon in under three hours.','to finish','finishing','having finished','to have finished','manage + to V.'],
+['verbal','Residents have been told to discontinue ___ tap water until the pipes are repaired.','drinking','to drink','having drunk','to have drunk','discontinue + -ing.'],
+['verbal','The library prohibits ___ food into the reading rooms.','bringing','to bring','having brought','to have brought','prohibit + -ing.'],
+['verbal','Jake practiced ___ his speech in front of a mirror before the contest.','giving','to give','having given','to have given','practice + -ing.'],
+['verbal','The new law requires companies ___ their employees for overtime work.','to pay','paying','having paid','to have paid','require + 목적어 + to V.'],
+['verbal','This old movie is definitely worth ___ again.','watching','to watch','having watched','to have watched','be worth + -ing.'],
+['subj','The landlord demanded that the tenant ___ the rent by the end of the week.','pay','pays','paid','will pay','demand that S + 동사원형.'],
+['subj','It is advisable that travelers ___ their flight status before leaving for the airport.','check','checks','checked','are checking','It is advisable that S + 동사원형.'],
+['subj','The fire chief ordered that all residents ___ the building immediately.','evacuate','evacuated','evacuates','are evacuating','order that S + 동사원형.'],
+['subj','The professor requested that every essay ___ by email before midnight.','be submitted','is submitted','was submitted','will be submitted','request that S + be p.p.'],
+['subj','It is imperative that the factory ___ its safety rules after the accident.','update','updates','updated','will update','It is imperative that S + 동사원형.'],
+['subj','Dr. Moore advised that his patient ___ jogging until the knee injury heals.','avoid','avoids','avoided','is avoiding','advise that S + 동사원형.'],
+['modal','The lights are on in Jake\'s apartment, and his car is parked outside. He ___ be home now.','must','should','could','would','강한 확신(~임에 틀림없다) → must.'],
+['modal','When we were children, my grandfather ___ tell us stories every night before bed.','would','must','should','can','과거의 습관(~하곤 했다) → would.'],
+['modal','Passengers ___ keep their seat belts fastened while the sign is on.','must','might','could','would','규칙·의무 → must.'],
+['modal','With the new software, users ___ edit videos on their phones in just a few minutes.','can','must','should','would','능력·가능 → can.'],
+['modal','Even experienced climbers ___ get lost in heavy fog, so always carry a map.','may','must','should','would','가능성(~할 수도 있다) → may.'],
+['modal','To protect the rare plants, visitors ___ not step off the marked trails.','must','can','would','might','금지 규칙 → must not.'],
+['rel','The Amazon rainforest, ___, produces a large share of the world\'s oxygen.','which covers parts of nine countries','that covers parts of nine countries','where covers parts of nine countries','who covers parts of nine countries','사물 + 콤마 → which.'],
+['rel','The scientist ___ will speak at tomorrow\'s opening ceremony.','who won the award last year','which won the award last year','whose won the award last year','where won the award last year','사람 + 주어 자리 빔 → who.'],
+['rel','Seoul, ___, hosted the Summer Olympics in 1988.','which is the capital of South Korea','that is the capital of South Korea','where is the capital of South Korea','who is the capital of South Korea','도시도 주어 자리가 비면 which. where 뒤엔 주어+동사가 다 있어야 함.'],
+['rel','The hotel ___ was fully booked for the holidays.','where we stayed last summer','which we stayed last summer','who we stayed last summer','whose we stayed last summer','stay는 목적어가 없는 동사라 "we stayed"가 완전한 문장 → where.'],
+['rel','Tom Hanks, ___, is one of the most popular actors in Hollywood.','whose movies have earned billions of dollars','which movies have earned billions of dollars','who movies have earned billions of dollars','that movies have earned billions of dollars','"그의 영화들" 소유 → whose + 명사.'],
+['rel','Many Koreans still remember the summer of 2002, ___.','when the country hosted the World Cup','which the country hosted the World Cup','where the country hosted the World Cup','who the country hosted the World Cup','시간 + 완전한 문장 → when.'],
+['conj','The company lost money for two years in a row. ___, it decided to close two of its stores.','Consequently','Nevertheless','Similarly','Meanwhile','손실 → 결과로 폐점: Consequently.'],
+['conj','Kate was preparing dinner in the kitchen. ___, her husband was setting the table in the dining room.','Meanwhile','Therefore','Otherwise','For example','같은 시간 다른 일 → Meanwhile.'],
+['conj','Many people think bats are blind. ___, most bats can see quite well.','In fact','Therefore','Similarly','For instance','통념을 뒤집는 사실 → In fact.'],
+['conj','Sam failed the driving test three times. ___, he got his license on the fourth try.','Eventually','Otherwise','In contrast','Likewise','여러 번 끝에 → Eventually(결국).'],
+['conj','The new phone is light and fast. ___, its battery lasts longer than older models.','In addition','However','Otherwise','Instead','장점 추가 → In addition.'],
+['conj','Lisa saved money every month ___ she could buy a car by the end of the year.','so that','even though','unless','as if','목적(~하도록) → so that.'],
+['conj','___ you finish the report, please send it to me right away.','As soon as','Although','Unless','Even though','"~하자마자" → As soon as.'],
 ];
 
 /* 동명사·to부정사 동사 암기 */
-const GERUND_VERBS = 'enjoy avoid consider mind keep quit finish postpone delay deny risk practice imagine recommend suggest involve admit dislike discontinue resist anticipate appreciate tolerate include advocate'.split(' ');
-const INF_VERBS = 'want hope decide plan expect agree refuse promise need wish choose afford fail manage tend seem pretend attempt prepare offer learn aim deserve struggle arrange vow hesitate'.split(' ');
+const GERUND_VERBS = 'enjoy avoid consider mind keep quit finish postpone delay deny risk practice imagine recommend suggest involve admit dislike discontinue resist anticipate appreciate tolerate include advocate prohibit'.split(' ');
+const INF_VERBS = 'want hope decide plan expect agree refuse promise need wish choose afford fail manage tend seem pretend attempt prepare offer learn aim deserve struggle arrange vow hesitate intend seek pledge'.split(' ');
 const SUBJ_WORDS = 'suggest recommend insist demand require ask advise propose urge order request command | important essential vital necessary crucial imperative critical mandatory';
 
 /* 어휘: 단어|뜻|동의어(지텔프 어휘 문제는 '문맥상 같은 뜻' 고르기) */
@@ -525,7 +599,9 @@ const LISTENING = [
 ], q:[
 ['Who did Sarah travel with?','her sister','Mike','her coworkers','her parents'],
 ['What did Sarah do in the mornings?','She picked up trash on the beach.','She went swimming in the ocean.','She visited local museums.','She worked at a restaurant.'],
+['How did Sarah spend the afternoons?','by exploring the island','by resting at the hotel','by fishing with her sister','by taking a cooking class'],
 ['How did Sarah\'s sister learn about the program?','from an online advertisement','from a close friend','from a newspaper article','from a local school'],
+['What did the organizers give the volunteers?','free lunch and gloves','free hotel rooms','plane tickets','new fishing nets'],
 ['What surprised Sarah the most?','the amount of plastic','the free lunch','the number of volunteers','the hot weather'],
 ['What will Mike probably do next month?','join a river clean-up with Sarah','travel to Jeju Island alone','buy new fishing nets','organize a beach festival'],
 ]},
@@ -540,6 +616,7 @@ const LISTENING = [
 ], q:[
 ['What is the main purpose of the talk?','to introduce a new library app','to announce a library closing','to explain how to write e-books','to recruit library volunteers'],
 ['What can users do with the app?','renew borrowed books without visiting','buy new books at a discount','meet authors online','print documents at home'],
+['What is true about the e-book section?','It offers over twenty thousand free titles.','It is only for children under ten.','It charges a small monthly fee.','It can be used only inside the library.'],
 ['When does the app send a reminder?','three days before books are due','one day after books are late','every Monday morning','whenever new books arrive'],
 ['Who is the kids\' corner designed for?','children under ten','teenagers preparing for exams','parents who work late','teachers at local schools'],
 ['How can new users get a free bag?','by showing the app\'s welcome screen at the front desk','by reading twenty e-books','by paying a small fee','by inviting a friend to the library'],
@@ -562,6 +639,7 @@ const LISTENING = [
 ['According to Tom, what is an advantage of driving?','He can leave at any time.','Parking is free near the office.','There is little traffic.','It is cheaper than the subway.'],
 ['What is the problem with parking near the office?','It is expensive.','It is far from the office.','It is always full.','It closes early.'],
 ['What is a disadvantage of taking the subway?','The station is not close to his home.','The trains are often late.','He cannot read on the train.','The fare is very high.'],
+['Why does Lisa recommend the subway?','Tom wants to save money for a trip.','Lisa takes the same train every day.','The subway stops at Tom\'s gym.','Driving makes Tom feel sleepy.'],
 ['What has Tom most likely decided to do?','take the subway to work','buy a new car','move closer to the office','work from home'],
 ]},
 { id:'l4', part:'Part 4 · 방법·팁 설명', title:'Five Tips for a Job Interview', lines:[
@@ -577,16 +655,217 @@ const LISTENING = [
 ['Why should listeners research the company?','to explain why they want to work there','to find out the salary','to meet current employees','to choose what to wear'],
 ['According to the speaker, what makes an answer more convincing?','a specific example','a long explanation','a confident voice','a friendly smile'],
 ['Why does the speaker suggest recording yourself?','to notice bad speaking habits','to send the video to employers','to memorize your answers','to save time on the interview day'],
+['What should listeners do the day before the interview?','check the route to the company','buy new clothes','call the interviewer','memorize the company\'s history'],
 ['When should listeners arrive for the interview?','about ten minutes early','exactly on time','thirty minutes early','right after lunch'],
+['According to the speaker, what does asking questions show?','real interest in the job','a lack of preparation','nervousness','strong technical skills'],
 ]},
 ];
 
-/* 14주 로드맵 (2026.11.23 ~ 2027.02.28) */
-const PHASES = [
-  { from:'2026-11-23', to:'2026-12-13', name:'1단계 · 문법 공식 완성', goal:'문법 26문항 중 22개 이상', todo:['시제·가정법·당위성 공식을 외운다','준동사 동사 목록 매일 퀴즈','단어 하루 30개 시작'] },
-  { from:'2026-12-14', to:'2027-01-10', name:'2단계 · 독해·어휘 끌어올리기', goal:'문법 24개 + 독해 15개 이상', todo:['독해는 질문 먼저 읽고 키워드 찾기','어휘 문제는 "문맥상 뜻"으로 고르기','12월 말~1월 초 첫 시험 응시 (실전 감 잡기)'] },
-  { from:'2027-01-11', to:'2027-01-31', name:'3단계 · 청취 + 실전 응시', goal:'평균 65점 (문법 92 · 독해 61 · 청취 42)', todo:['청취는 들리는 문제만 확실히 맞히기','실전 26문항 20분 안에 풀기','1월 시험 매 회차 응시'] },
-  { from:'2027-02-01', to:'2027-02-28', name:'4단계 · 약점 보완 + 마지막 응시', goal:'65점 이상 성적표 확보', todo:['오답노트 반복','약한 문법 유형 집중','남은 시험 회차 응시, 성적 발표일 확인'] },
+
+/* ── 2회분: 독해 4지문 (28문항) ── */
+READING.push(
+{ id:'r5', part:'Part 1 · 인물 일대기', title:'LOUIS BRAILLE', body:
+`Louis Braille was a French educator who invented braille, the system of raised dots that allows blind people to read and write by touch. His invention is still used around the world today, almost two centuries after he created it.
+
+Braille was born on January 4, 1809, in Coupvray, a small town near Paris. His father made leather goods, and young Louis often played in his workshop. At the age of three, he accidentally injured his eye with a sharp tool. The wound became infected, and the infection soon spread to his other eye. By the age of five, he was completely blind.
+
+Despite his disability, Braille was a bright and curious student. At ten, he won a scholarship to the Royal Institute for Blind Youth in Paris. The school's books used large raised letters, which were heavy, expensive, and very slow to read. When Braille was twelve, a former army captain named Charles Barbier visited the school and shared a code of raised dots that soldiers could read in the dark. The code was too complicated for everyday use, but it gave Braille an idea.
+
+Working tirelessly, Braille simplified Barbier's system into a cell of just six dots, which could be felt with a single fingertip. He completed the basic system when he was only fifteen and later adapted it for mathematics and music. He went on to become a respected teacher at the institute.
+
+Braille died of tuberculosis in 1852 at the age of 43. Two years later, the school officially adopted his system, and it gradually spread to other countries. Today, his name has become the word for the writing system itself.`,
+q:[
+['What is Louis Braille best known for?','creating a reading system for blind people','founding a school in Paris','designing tools for leather workers','teaching soldiers to read in the dark','1문단: invented braille … allows blind people to read and write by touch.'],
+['How did Braille lose his sight?','An injury led to an infection in both eyes.','He was born without the ability to see.','He was hurt while serving in the army.','A disease spread through his town.','2문단: injured his eye with a sharp tool → infection spread to his other eye.'],
+['What was the problem with the books at the Royal Institute?','They were hard to use and costly.','They were written only in English.','They were too small to read by touch.','They were kept in a locked room.','3문단: heavy, expensive, and very slow to read → hard to use and costly (패러프레이징).'],
+['Why did Barbier\'s code need to be changed?','It was too complex for daily use.','It was secret military information.','It used too few dots.','It could only be read during the day.','3문단: too complicated for everyday use.'],
+['Based on the article, what is true about Braille\'s six-dot cell?','It could be read with one finger.','It was invented by Barbier.','It was used only for music.','It was rejected by the institute.','4문단: could be felt with a single fingertip.'],
+['In the context of the passage, bright means ___.','intelligent','shiny','cheerful','colorful','bright student = 영리한(intelligent). 빛나는(shiny)은 함정.'],
+['In the context of the passage, adopted means ___.','accepted','raised','borrowed','copied','officially adopted his system = 공식적으로 채택했다(accepted).'],
+]},
+{ id:'r6', part:'Part 2 · 잡지 기사', title:'THE SURPRISING BENEFITS OF BOREDOM', body:
+`Most of us do everything we can to avoid boredom. The moment we have nothing to do, we reach for our phones to check messages, watch videos, or scroll through social media. However, some psychologists now argue that being bored from time to time may actually be good for us.
+
+In one widely discussed experiment, participants were first asked to complete a dull task, such as copying numbers from a phone book. Afterward, they were asked to think of as many uses as possible for a pair of plastic cups. The bored participants came up with more creative ideas than those who had skipped the dull task.
+
+Researchers believe this happens because boredom lets the mind wander. When we are not focused on anything in particular, the brain begins to make new connections between ideas. This daydreaming state can lead to fresh solutions to problems that we could not solve when we were concentrating hard.
+
+Boredom may also push people to change their lives. The uncomfortable feeling acts as a signal that our current activity is not meaningful, motivating us to seek new goals or hobbies.
+
+Unfortunately, constant smartphone use rarely gives our minds the chance to wander. Experts therefore suggest setting aside short periods each day without screens. Taking a walk, looking out of a window, or simply sitting quietly may feel unproductive, but these moments could be when our best ideas emerge.`,
+q:[
+['What is the article mainly about?','how boredom can be useful','why phones make people unhappy','how to finish dull tasks quickly','why creative people are rarely bored','1문단 마지막 문장: being bored may actually be good for us.'],
+['What did the experiment show?','People who were bored first gave more creative answers.','People who skipped the task felt more relaxed.','Copying numbers improved people\'s memory.','Plastic cups were hard to describe.','2문단: bored participants came up with more creative ideas.'],
+['Why does boredom lead to creativity, according to researchers?','It allows the mind to link ideas freely.','It makes people concentrate harder.','It reduces the need for sleep.','It helps people remember facts.','3문단: the brain begins to make new connections between ideas.'],
+['How can boredom help people change their lives?','It signals that they need more meaningful activities.','It makes them spend less money.','It helps them become more patient.','It encourages them to use their phones less.','4문단: signal that our current activity is not meaningful → seek new goals.'],
+['What do experts most likely recommend?','spending some time each day away from screens','avoiding all boring activities','using phones only for work','doing difficult tasks every morning','5문단: setting aside short periods each day without screens.'],
+['In the context of the passage, dull means ___.','boring','dark','blunt','slow','dull task = 지루한(boring). 무딘(blunt)·어두운(dark)은 함정.'],
+['In the context of the passage, emerge means ___.','appear','escape','rise','recover','our best ideas emerge = 떠오르다(appear).'],
+]},
+{ id:'r7', part:'Part 3 · 백과사전', title:'MONARCH BUTTERFLY', body:
+`The monarch butterfly is a large orange-and-black butterfly found mainly in North America. It is famous for its long annual migration, one of the most remarkable journeys in the insect world.
+
+Each autumn, monarchs in eastern North America fly south to the mountain forests of central Mexico, a trip of up to about 4,800 kilometers. There, millions of butterflies gather in fir trees to survive the winter. In spring, they begin flying north again. No single butterfly completes the whole round trip, however. The monarchs that fly south belong to a special generation that can live for up to eight months, while summer generations live for only a few weeks. It takes several generations to return to the northern breeding grounds.
+
+Scientists believe monarchs use the position of the sun to find their direction, and they may also sense the Earth's magnetic field. Remarkably, the butterflies that arrive in Mexico have never made the trip before.
+
+Monarch caterpillars feed only on milkweed plants. The milkweed contains toxins that remain in the butterfly's body, making it poisonous to many birds. Its bright colors serve as a warning to predators to stay away.
+
+In recent decades, monarch populations have fallen sharply. The loss of milkweed due to farming and the use of chemicals, the clearing of forests in Mexico, and extreme weather linked to climate change all pose threats. Many communities now plant milkweed gardens to help the butterflies recover.`,
+q:[
+['What is the monarch butterfly best known for?','its long yearly journey','its unusually long life','its ability to change colors','its habit of living in deserts','1문단: famous for its long annual migration.'],
+['What is true about the monarchs that fly south in autumn?','They live much longer than summer monarchs.','They return north in the same year.','They travel only a few hundred kilometers.','They spend the winter in Canada.','2문단: special generation that can live for up to eight months.'],
+['How do monarchs most likely find their way?','by using the sun and possibly magnetic fields','by following older butterflies','by remembering past trips','by following rivers and roads','3문단: use the position of the sun … may also sense the Earth\'s magnetic field.'],
+['Why do birds usually avoid eating monarchs?','The butterflies contain poison from milkweed.','The butterflies are too large to catch.','The butterflies fly too high.','The butterflies hide in fir trees.','4문단: toxins … making it poisonous to many birds.'],
+['Which is NOT mentioned as a threat to monarchs?','being collected as pets','the loss of milkweed','the clearing of forests','extreme weather','5문단에 애완용 채집은 없음. NOT 문제는 보기를 지문과 하나씩 대조.'],
+['In the context of the passage, gather means ___.','assemble','harvest','understand','increase','millions of butterflies gather = 모이다(assemble).'],
+['In the context of the passage, pose means ___.','present','model','ask','place','pose threats = 위협이 되다(present). "포즈를 취하다(model)"는 함정.'],
+]},
+{ id:'r8', part:'Part 4 · 비즈니스 편지', title:'Letter to Mr. Patel', body:
+`Dear Mr. Patel,
+
+On behalf of Northfield Travel Group, I am delighted to offer you the position of Marketing Coordinator. The hiring committee was very impressed by your experience with social media campaigns and your creative ideas during the final interview.
+
+As we discussed, your starting date will be Monday, April 7. You will report to Ms. Grace Ahn, our Marketing Director, and work closely with our design team. During your first two weeks, you will attend a training program that introduces our booking systems and company policies.
+
+Your annual salary will be $48,000, and you will be eligible for a performance bonus after your first six months. In addition, all full-time employees receive health insurance and fifteen days of paid vacation per year. Because our team works with partners in different time zones, you may occasionally need to join video meetings early in the morning. In such cases, you may begin work later that day.
+
+To accept this offer, please sign the enclosed contract and return it to me by March 21. On your first day, kindly bring a copy of your university diploma and a valid photo ID so that we can complete your employment records.
+
+We are confident that you will make a valuable contribution to our team. Please do not hesitate to contact me if you have any questions.
+
+Sincerely,
+Olivia Brooks
+Human Resources Manager, Northfield Travel Group`,
+q:[
+['Why did Olivia Brooks write to Mr. Patel?','to offer him a job','to invite him to an interview','to ask him to plan a trip','to explain a change in salary','1문단: delighted to offer you the position.'],
+['Why was Mr. Patel chosen for the position?','His experience and ideas impressed the committee.','He had worked for the company before.','He was recommended by Ms. Ahn.','He agreed to the lowest salary.','1문단: impressed by your experience … and your creative ideas.'],
+['What will Mr. Patel do during his first two weeks?','learn about the company\'s systems and rules','travel to meet foreign partners','design a new advertising campaign','interview other candidates','2문단: training program that introduces our booking systems and company policies.'],
+['What will most likely happen if Mr. Patel has an early meeting?','He can start his workday later.','He will receive extra vacation days.','He will be paid a bonus.','He can skip the training program.','3문단: you may begin work later that day.'],
+['What must Mr. Patel bring on his first day?','his diploma and an ID card','the signed contract','his health insurance card','a list of marketing ideas','4문단: bring a copy of your university diploma and a valid photo ID. 계약서는 3/21까지 미리 보냄.'],
+['In the context of the passage, report to means ___.','work under','write about','complain to','announce to','report to Ms. Ahn = 그 사람 밑에서 일하다(work under).'],
+['In the context of the passage, valid means ___.','current','strong','reasonable','famous','valid photo ID = 유효한(current). "타당한(reasonable)"은 함정.'],
+]},
+);
+
+/* ── 2회분: 청취 4세트 (7·6·6·7 = 26문항) ── */
+LISTENING.push(
+{ id:'l5', part:'Part 1 · 개인 경험 대화', title:'Jason\'s Cooking Class', lines:[
+[0,'Hey Jason, I heard you started taking a cooking class. How is it going?'],
+[1,'Hi Amy! It\'s going great. I signed up last month because I was tired of eating instant noodles every night.'],
+[0,'Ha ha, I remember. So what kind of food are you learning to make?'],
+[1,'Mostly Italian dishes. Last week we made fresh pasta from scratch. It took two hours, but it tasted amazing.'],
+[0,'Wow. Where is the class?'],
+[1,'It\'s at the community center near my office, so I can go right after work on Thursdays.'],
+[0,'That\'s convenient. Is it expensive?'],
+[1,'Not really. It\'s eighty dollars for eight weeks, and all the ingredients are included.'],
+[0,'That\'s a good deal. What has been the hardest part?'],
+[1,'Using a knife properly. I cut my finger in the first class, so now I am very careful. The chef taught us to curl our fingers when we chop vegetables.'],
+[0,'Ouch. So, are you going to cook for me sometime?'],
+[1,'Actually, I am planning a small dinner party next Saturday to practice. Why don\'t you come? I will make lasagna.'],
+[0,'I would love to. I will bring dessert.'],
+], q:[
+['Why did Jason sign up for the cooking class?','He was tired of eating instant food.','His doctor told him to eat better.','He wanted to become a chef.','Amy asked him to join.'],
+['What kind of food is Jason mainly learning to cook?','Italian food','Korean food','desserts','vegetarian dishes'],
+['What is true about the pasta the class made?','It took a long time but was delicious.','It was bought at a store.','It was too salty to eat.','It was made in ten minutes.'],
+['Why is the location of the class convenient for Jason?','It is near his workplace.','It is next to his apartment.','It is held online.','It is on his way to the gym.'],
+['What is included in the class fee?','the ingredients','a set of knives','a recipe book','a dinner party'],
+['What has Jason found most difficult?','using a knife correctly','following recipes','cleaning the kitchen','cooking quickly'],
+['What will Amy probably do next Saturday?','go to Jason\'s dinner party','take a cooking class','cook lasagna for Jason','visit the community center'],
+]},
+{ id:'l6', part:'Part 2 · 발표 (상품·행사 소개)', title:'Harbor City Night Run', lines:[
+[0,'Good evening, everyone! I am Chris, the organizer of the first Harbor City Night Run, and I am excited to tell you about this event.'],
+[0,'The run will take place on Saturday, June 14, starting at 8 p.m. at Harbor Park. Runners can choose between a five-kilometer course and a ten-kilometer course along the waterfront.'],
+[0,'Unlike regular races, this is a night run, so the route will be lit with colorful lights, and live bands will play music at every kilometer.'],
+[0,'Each participant will receive a glow-in-the-dark T-shirt and a medal at the finish line. The fee is twenty-five dollars, and part of it will be donated to the city children\'s hospital.'],
+[0,'If you register before May 31, you will get a five-dollar discount. Registration is available on our website.'],
+[0,'Please note that runners under fourteen must be accompanied by an adult. We hope to see you at the starting line!'],
+], q:[
+['What is the speaker mainly talking about?','a running event held at night','a new park opening','a music festival at the harbor','a fundraiser for a school'],
+['What can runners choose?','the length of the course','the color of their T-shirt','the starting time','the band that plays'],
+['What makes this race different from regular races?','The route has lights and live music.','There is no finish line.','Runners must wear costumes.','It is held on a beach.'],
+['What will be done with part of the fee?','It will be given to a children\'s hospital.','It will pay the bands.','It will buy new park lights.','It will be returned to the winners.'],
+['How can participants get a discount?','by registering before the end of May','by bringing a friend','by running the longer course','by volunteering at the event'],
+['What is required of runners under fourteen?','They must run with an adult.','They must run the shorter course.','They must pay a higher fee.','They must start earlier.'],
+]},
+{ id:'l7', part:'Part 3 · 장단점 비교 대화', title:'Laptop or Tablet?', lines:[
+[0,'Hi Kevin. You\'re starting university next month, right? Have you bought a computer yet?'],
+[1,'Not yet, Mina. I am trying to decide between a laptop and a tablet.'],
+[0,'Let\'s think about it together. What is good about a laptop?'],
+[1,'A laptop has a real keyboard, so it is much easier to type long reports. It also runs all the programs I need for my engineering classes.'],
+[0,'Any downsides?'],
+[1,'It\'s heavy to carry around campus all day, and the battery doesn\'t last very long.'],
+[0,'And the tablet?'],
+[1,'A tablet is light, and the battery lasts almost a full day. I could also take handwritten notes with a pen, which helps me remember things.'],
+[0,'Sounds nice. What are the disadvantages?'],
+[1,'Some engineering software doesn\'t work on tablets. And typing on the screen is slow.'],
+[0,'Well, it seems like the programs are the most important thing for your major.'],
+[1,'You\'re right. I can\'t take the risk of not running the software for my classes. I will go with the laptop and buy a lighter bag.'],
+], q:[
+['What are Kevin and Mina mainly discussing?','which device Kevin should buy for school','which university Kevin should attend','how to write long reports','where to buy a new bag'],
+['According to Kevin, what is an advantage of a laptop?','It makes typing long reports easier.','It is light enough to carry all day.','It has a long-lasting battery.','It comes with a pen.'],
+['What is a disadvantage of a laptop?','It is heavy to carry.','It cannot run engineering programs.','It is more expensive than a tablet.','Its screen is too small.'],
+['Why does Kevin like the idea of a tablet\'s pen?','Writing by hand helps him remember.','He likes to draw pictures.','It makes typing faster.','His professors require it.'],
+['What is a disadvantage of a tablet?','Some programs for his major will not run on it.','Its battery dies quickly.','It is hard to carry.','It cannot connect to the internet.'],
+['What has Kevin most likely decided to do?','buy a laptop','buy a tablet','buy both devices','wait until next year'],
+]},
+{ id:'l8', part:'Part 4 · 방법·팁 설명', title:'How to Sleep Better', lines:[
+[0,'Hello and welcome to Healthy Habits. Many of our listeners say they have trouble sleeping, so today I will share six simple steps to improve your sleep.'],
+[0,'First, go to bed and wake up at the same time every day, even on weekends. A regular schedule helps your body clock stay on track.'],
+[0,'Second, avoid caffeine in the afternoon. Coffee, tea, and some soft drinks can keep you awake for up to eight hours.'],
+[0,'Third, put away your phone at least an hour before bed. The blue light from screens tells your brain that it is still daytime.'],
+[0,'Fourth, keep your bedroom cool, dark, and quiet. If street noise is a problem, try using earplugs or a fan.'],
+[0,'Fifth, exercise during the day, but not right before bedtime, because it can make you feel too energetic to fall asleep.'],
+[0,'Finally, if you cannot fall asleep after twenty minutes, get up and do something relaxing, like reading a paper book, until you feel sleepy.'],
+[0,'Try these steps for two weeks, and you will likely notice a difference. Sweet dreams!'],
+], q:[
+['What is the talk mainly about?','ways to sleep better','the dangers of caffeine','how to exercise safely','choosing a new bed'],
+['Why should listeners keep the same sleep schedule on weekends?','to keep their body clock regular','to have more free time','to avoid traffic','to wake up earlier on Monday'],
+['How long can caffeine keep a person awake?','up to eight hours','about one hour','about twenty minutes','up to two days'],
+['Why should people put their phones away before bed?','Screen light makes the brain think it is daytime.','Phones make too much noise.','Phone calls can be stressful.','Phones get too hot at night.'],
+['What does the speaker suggest for a noisy bedroom?','using earplugs or a fan','moving to another room','playing loud music','opening the windows'],
+['Why should people avoid exercising right before bed?','It can make them too energetic to sleep.','It can cause injuries at night.','It makes them hungry.','It uses too much energy for the next day.'],
+['What should listeners do if they cannot sleep after twenty minutes?','get up and do something relaxing','check their phone','drink a cup of tea','keep trying with their eyes closed'],
+]},
+);
+
+/* ── 7일 완성 플랜: 하루 5~6시간 기준. [시간, 할 일] ── */
+const PLAN = [
+ { day:1, area:'문법', title:'시제 + 가정법 (12문항 = 문법의 절반)', score:'문법 12개 확보', blocks:[
+   ['60분','요약노트 ① 시제 단서표 · ② 가정법 표 소리 내어 3번 읽기'],
+   ['90분','시제·가정법 유형별 전체 풀기 → 틀린 건 단서에 동그라미'],
+   ['60분','오답노트 다시 풀기 + 단서만 보고 형태 말하기'],
+   ['60분','단어 1~60 (뜻 가리고 체크)'] ] },
+ { day:2, area:'문법', title:'준동사 + 당위성 + 조동사', score:'문법 22개 확보', blocks:[
+   ['60분','요약노트 ③ -ing / to V 동사 목록 외우기 (목록 퀴즈 2번)'],
+   ['90분','준동사·당위성·조동사 유형별 전체 풀기'],
+   ['60분','관계사·연결어 표 읽고 유형별 풀기'],
+   ['60분','단어 61~120'] ] },
+ { day:3, area:'문법', title:'문법 실전 26문항 × 3회', score:'문법 24개 이상 (92점)', blocks:[
+   ['90분','실전 26문항 3회 (회당 20분 목표, 끝나면 바로 채점)'],
+   ['60분','오답노트 비우기 (두 번 맞혀야 빠짐)'],
+   ['60분','요약노트 전체 1회독'],
+   ['60분','단어 121~181 + 다의어 표'] ] },
+ { day:4, area:'독해', title:'독해 Part 1·2 + 어휘', score:'독해 파트당 4개', blocks:[
+   ['30분','요약노트 ⑥ 독해 전략 읽기'],
+   ['90분','인물(Part 1)·잡지(Part 2) 지문 4개: 질문 먼저 → 키워드 → 문단에서 근거 찾기'],
+   ['60분','틀린 문제 근거 문장과 정답 보기 비교 (말 바꾸기 확인)'],
+   ['60분','단어 전체 1회독 + 동의어 퀴즈'] ] },
+ { day:5, area:'독해', title:'독해 Part 3·4 + 어휘', score:'독해 17개 (61점)', blocks:[
+   ['90분','백과(Part 3)·편지(Part 4) 지문 4개'],
+   ['60분','어휘 문제만 모아 다시 (사전 뜻 말고 문맥 뜻)'],
+   ['60분','문법 실전 26문항 1회 (감 유지)'],
+   ['60분','틀린 단어만 다시'] ] },
+ { day:6, area:'청취', title:'청취 4파트 + 모의고사 1회', score:'청취 11개 (42점)', blocks:[
+   ['30분','요약노트 ⑦ 청취 전략 읽기'],
+   ['60분','청취 1회분 4세트: 질문 들을 때 의문사·키워드 메모'],
+   ['90분','모의고사 1회 (문법 26 · 청취 26 · 독해 28)'],
+   ['60분','모의고사 오답 정리'] ] },
+ { day:7, area:'실전', title:'모의고사 2회 + 약점 마무리', score:'평균 65 이상', blocks:[
+   ['90분','모의고사 2회'],
+   ['60분','가장 약한 문법 유형만 다시 (오늘 탭 하단에 표시)'],
+   ['30분','요약노트 ⑧ 시험 당일 체크 읽기'],
+   ['자기 전','시제 단서표·동사 목록·당위성 단어만 한 번 더'] ] },
 ];
 
 </script>
@@ -596,507 +875,484 @@ const PHASES = [
 const $ = s => document.querySelector(s);
 const app = $('#app');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+function rng(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const shuffle = (a, r) => { r = r || Math.random; a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const LET = ['a','b','c','d'];
+const pad = n => String(n).padStart(2, '0');
 
 /* ── 저장 ── */
 const KEY = 'gtelp65-v1';
-const blank = () => ({ target:'2027-02-28', days:{}, streak:{last:'',n:0}, wrong:{}, stats:{}, vocab:{}, best:{}, mocks:[] });
+const blank = () => ({ target:'', start:'', done:{}, days:{}, wrong:{}, stats:{}, known:{}, best:{}, mocks:[], draft:null, hideM:true });
 let S;
 try { S = Object.assign(blank(), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { S = blank(); }
+if (S.vocab && !Object.keys(S.known).length) { for (const w in S.vocab) if (S.vocab[w].b >= 2) S.known[w] = 1; delete S.vocab; }
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
-
-const pad = n => String(n).padStart(2, '0');
 const dkey = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
 const today = () => dkey(new Date());
 const dayNum = k => { const [y, m, d] = k.split('-').map(Number); return Math.round(Date.UTC(y, m - 1, d) / 864e5); };
-const T = () => (S.days[today()] = S.days[today()] || { g:0, v:0, r:0, l:0, w:0 });
-function bump(field, n){
-  T()[field] += (n || 1);
-  const t = today();
-  if (S.streak.last !== t) {
-    S.streak.n = (S.streak.last && dayNum(t) - dayNum(S.streak.last) === 1) ? S.streak.n + 1 : 1;
-    S.streak.last = t;
-  }
-  save();
-}
-function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 1800); }
-
-/* 점수: 영역 점수 = 맞힌 수 / 문항 수 × 100, 총점 = 세 영역 평균 */
+const fromNum = n => { const d = new Date(n * 864e5); return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()); };
+if (!S.start) { S.start = today(); S.target = ''; }   // 1판(14주)에서 넘어오면 7일 기준으로 다시
+if (!S.target) { S.target = fromNum(dayNum(S.start) + 7); }
+delete S.streak;
+save();
+const T = () => (S.days[today()] = S.days[today()] || { g:0, v:0, r:0, l:0 });
+function bump(f, n){ T()[f] += (n || 1); save(); }
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 1900); }
 const sec = (c, n) => Math.round(c / n * 100);
 const total = (g, l, r) => Math.round((g / 26 + l / 26 + r / 28) * 100 / 3);
 
-/* ── 문법 문제 ── */
+/* ── 문제 만들기 ── */
 const GQ = GRAMMAR.map((g, i) => ({ id:'g' + i, t:g[0], q:g[1], a:g[2], w:[g[3], g[4], g[5]], e:g[6] }));
-function grammarSet(mode){
-  if (mode === 'real') { // 실전 26문항: 시험 유형 비율대로
-    let set = [];
-    for (const t in TYPES) set = set.concat(shuffle(GQ.filter(q => q.t === t)).slice(0, TYPES[t].n));
-    while (set.length < 26) set.push(shuffle(GQ.filter(q => !set.includes(q)))[0]);
-    return shuffle(set);
-  }
-  if (mode === 'wrong') return shuffle(GQ.filter(q => S.wrong[q.id]));
-  if (mode === 'mix') return shuffle(GQ).slice(0, 20);
-  return shuffle(GQ.filter(q => q.t === mode));
+const typeKeys = Object.keys(TYPES);
+function withOrder(items, r){ return items.map(it => Object.assign({}, it, { order: shuffle([it.a].concat(it.w), r) })); }
+function realGrammar(r){ // 시험 비율대로 26문항
+  let set = [];
+  typeKeys.forEach(t => set = set.concat(shuffle(GQ.filter(q => q.t === t), r).slice(0, TYPES[t].n)));
+  return shuffle(set, r);
 }
-function verbSet(){
-  const g = GERUND_VERBS.map(v => ({ id:'vg-' + v, verb:v, a:'-ing (동명사)', w:['to V (to부정사)'] }));
-  const f = INF_VERBS.map(v => ({ id:'vi-' + v, verb:v, a:'to V (to부정사)', w:['-ing (동명사)'] }));
-  return shuffle(g.concat(f)).slice(0, 20).map(x => ({ id:x.id, t:'verbal', q:'<b>' + x.verb + '</b> ___ (뒤에 오는 형태는?)', raw:true, a:x.a, w:x.w,
-    e: x.a[0] === '-' ? x.verb + ' + -ing. 동명사만 오는 동사.' : x.verb + ' + to V. to부정사만 오는 동사.' }));
+function mockGrammar(n){ // 모의고사 회차별로 겹치지 않게
+  const r = rng(2027); let set = [];
+  typeKeys.forEach(t => { const pool = shuffle(GQ.filter(q => q.t === t), r); set = set.concat(pool.slice((n - 1) * TYPES[t].n, n * TYPES[t].n)); });
+  return withOrder(shuffle(set, rng(n * 31)), rng(n * 97));
 }
+const OBJ_TO = 'advise allow encourage require ask urge enable cause force persuade permit expect want'.split(' ');
+function verbItems(){
+  const g = GERUND_VERBS.map(v => ({ id:'vg-' + v, q:'<b>' + v + '</b> ___', raw:true, a:'-ing', w:['to V'], e:v + ' + -ing' }));
+  const f = INF_VERBS.map(v => ({ id:'vi-' + v, q:'<b>' + v + '</b> ___', raw:true, a:'to V', w:['-ing'], e:v + ' + to V' }));
+  const o = OBJ_TO.map(v => ({ id:'vo-' + v, q:'<b>' + v + '</b> him ___', raw:true, a:'to V', w:['-ing','동사원형'], e:v + ' + 목적어 + to V' }));
+  const c = ['make','let','have'].map(v => ({ id:'vc-' + v, q:'<b>' + v + '</b> him ___', raw:true, a:'동사원형', w:['to V','-ing'], e:'사역동사 ' + v + ' + 목적어 + 동사원형' }));
+  return shuffle(g.concat(f, o, c));
+}
+function synItems(n){
+  return shuffle(VOCAB).slice(0, n).map(v => {
+    const ans = v.s.split(', ')[0];
+    const others = shuffle(VOCAB.filter(x => x !== v && !x.s.includes(ans) && !v.s.includes(x.s.split(', ')[0]))).slice(0, 3).map(x => x.s.split(', ')[0]);
+    return { id:'s-' + v.w, q:'<b>' + esc(v.w) + '</b> ≈ ?', raw:true, a:ans, w:others, e:v.w + ' = ' + v.m + ' ≈ ' + v.s };
+  });
+}
+function rItems(p, r){ return withOrder(p.q.map((q, i) => ({ id:p.id + '-' + i, q:q[0], a:q[1], w:q.slice(2, 5), e:q[5] })), r); }
+function lItems(s, r){ return withOrder(s.q.map((q, i) => ({ id:s.id + '-' + i, q:q[0], a:q[1], w:q.slice(2, 5) })), r); }
 
-/* ── 공통 퀴즈 러너 ── */
-let quiz = null;
-function startQuiz(opts){
-  quiz = Object.assign({ i:0, right:0, picked:null, results:[] }, opts);
-  quiz.items = quiz.items.map(it => Object.assign({}, it, { order: shuffle([it.a].concat(it.w)) }));
-  if (quiz.timer) quiz.t0 = Date.now();
-  if (location.hash !== '#quiz') location.hash = 'quiz'; else render();
-}
-function qText(it){
-  if (it.raw) return it.q;
-  return esc(it.q).replace('___', '<span class="blank">&nbsp;</span>');
-}
-function viewQuiz(){
-  if (!quiz) { location.hash = 'grammar'; return ''; }
-  const it = quiz.items[quiz.i];
-  if (!it) return viewQuizDone();
-  const done = quiz.picked !== null;
-  const el = quiz.timer ? Math.floor((Date.now() - quiz.t0) / 1000) : 0;
-  let h = `<div class="row between"><span class="label">${esc(quiz.title)}</span>
-    <span class="num muted">${quiz.i + 1} / ${quiz.items.length}${quiz.timer ? ' · <span id="clock">' + Math.floor(el/60) + ':' + pad(el%60) + '</span>' : ''}</span></div>
-    <div class="bar"><i style="width:${quiz.i / quiz.items.length * 100}%"></i></div>
-    <section class="sheet">`;
-  if (TYPES[it.t] && !quiz.hideType) h += `<span class="label">${TYPES[it.t].name}</span>`;
-  h += `<p class="q">${qText(it)}</p><div class="opts">`;
-  it.order.forEach((o, k) => {
-    let cls = 'opt';
-    if (done) { if (o === it.a) cls += ' right'; else if (k === quiz.picked) cls += ' wrong'; }
-    h += `<button class="${cls}" data-pick="${k}" ${done ? 'disabled' : ''}><span class="bub">${LET[k]}</span><span>${esc(o)}</span></button>`;
+/* ── 문제지(시트): 여러 문제를 한 화면에 ── */
+const sheets = {};
+function makeSheet(key, items, opts){ sheets[key] = Object.assign({ key, items, picks:{}, instant:true, graded:false }, opts || {}); return sheets[key]; }
+function qText(it){ return it.raw ? it.q : esc(it.q).replace('___', '<span class="blank">&nbsp;</span>'); }
+function itemHTML(sh, i, o){
+  o = o || {};
+  const it = sh.items[i], pk = sh.picks[i], show = sh.graded || (sh.instant && pk !== undefined);
+  const ok = pk !== undefined && it.order[pk] === it.a;
+  let h = `<div class="item ${show ? (ok ? 'ok' : 'no') : ''}"><p class="q"><span class="n">${o.num || i + 1}</span>`;
+  h += o.hideQ && !sh.graded ? '<span class="muted">(질문은 소리로)</span>' : qText(it);
+  if (o.tag) h += `<span class="tag">${o.tag}</span>`;
+  h += `</p><div class="opts">`;
+  it.order.forEach((x, k) => {
+    let c = 'opt';
+    if (show) { if (x === it.a) c += ' right'; else if (k === pk) c += ' wrong'; }
+    else if (k === pk) c += ' picked';
+    h += `<button class="${c}" data-sh="${sh.key}" data-i="${i}" data-k="${k}" ${show ? 'disabled' : ''}><span class="bub">${LET[k]}</span><span>${esc(x)}</span></button>`;
   });
   h += `</div>`;
-  if (done) {
-    const ok = it.order[quiz.picked] === it.a;
-    h += `<p class="verdict ${ok ? 'ok' : 'no'}">${ok ? '정답' : '오답 · 정답은 (' + LET[it.order.indexOf(it.a)] + ')'}</p>
-      ${it.e ? `<p class="explain">${esc(it.e)}</p>` : ''}
-      <button class="btn primary" data-act="next">${quiz.i + 1 < quiz.items.length ? '다음 문제' : '결과 보기'}</button>`;
-  }
-  return h + `</section><button class="btn small" data-act="quit" style="align-self:flex-start">그만하기</button>`;
+  if (show && it.e) h += `<p class="explain">${esc(it.e)}</p>`;
+  return h + `</div>`;
 }
-function pick(k){
-  const it = quiz.items[quiz.i];
-  if (quiz.picked !== null) return;
-  quiz.picked = k;
-  const ok = it.order[k] === it.a;
-  if (ok) quiz.right++;
-  quiz.results.push({ it, ok });
-  if (quiz.kind === 'grammar') {
-    const st = S.stats[it.t] = S.stats[it.t] || { c:0, n:0 };
-    st.n++; if (ok) st.c++;
-    if (!it.id.startsWith('v')) {
-      if (!ok) S.wrong[it.id] = 2;               // 두 번 맞혀야 오답노트에서 빠짐
-      else if (S.wrong[it.id]) { S.wrong[it.id]--; if (!S.wrong[it.id]) delete S.wrong[it.id]; bump('w'); }
+function sheetScore(sh){ let c = 0, n = 0; for (const i in sh.picks) { n++; if (sh.items[i].order[sh.picks[i]] === sh.items[i].a) c++; } return { c, n }; }
+function recordGrammar(it, ok){
+  if (!TYPES[it.t] || !it.id.startsWith('g')) return;
+  const st = S.stats[it.t] = S.stats[it.t] || { c:0, n:0 }; st.n++; if (ok) st.c++;
+  if (!ok) S.wrong[it.id] = 2; else if (S.wrong[it.id]) { S.wrong[it.id]--; if (!S.wrong[it.id]) delete S.wrong[it.id]; }
+}
+function onPick(key, i, k){
+  const sh = sheets[key]; if (!sh || sh.graded) return;
+  if (sh.instant && sh.picks[i] !== undefined) return;
+  sh.picks[i] = k;
+  const it = sh.items[i], ok = it.order[k] === it.a;
+  if (sh.instant) {
+    if (sh.kind === 'g') { recordGrammar(it, ok); bump('g'); }
+    else if (sh.kind === 'v') bump('v');
+    if (sh.kind === 'r' || sh.kind === 'l') {
+      const sc = sheetScore(sh);
+      if (sc.n === sh.items.length) { S.best[sh.pid] = Math.max(S.best[sh.pid] || 0, sc.c); bump(sh.kind); }
     }
-    bump('g');
-  } else if (quiz.kind === 'syn') bump('v');
-  else save();
-  render();
+  }
+  if (sh.kind === 'mock') { S.draft = { n: sh.n, picks: sh.picks }; }
+  save(); keepScroll(render);
 }
-function viewQuizDone(){
-  const n = quiz.items.length, c = quiz.right;
-  let h = `<section class="sheet"><span class="label">${esc(quiz.title)} 결과</span>
-    <div class="row" style="align-items:baseline;gap:12px"><span class="score-big num">${c}/${n}</span><span class="muted">정답률 ${sec(c, n)}%</span></div>`;
-  if (quiz.kind === 'grammar' && quiz.mode === 'real') {
-    const m = Math.floor((Date.now() - quiz.t0) / 60000);
-    h += `<p>문법 영역 예상 점수 <b class="num">${sec(c, 26)}점</b> · 걸린 시간 <b class="num">${m}분</b>. 목표는 24개 이상(92점), 20분 안.</p>`;
-  }
-  const miss = quiz.results.filter(r => !r.ok);
-  if (miss.length) {
-    h += `<h3>틀린 문제</h3><div class="scroll"><table><tr><th>문제</th><th>정답</th></tr>`;
-    miss.forEach(r => h += `<tr><td>${r.it.raw ? r.it.q : esc(r.it.q)}</td><td><b>${esc(r.it.a)}</b></td></tr>`);
-    h += `</table></div>`;
-  }
-  return h + `<div class="row"><button class="btn primary" data-act="again">다시 풀기</button><button class="btn" data-act="quit">끝내기</button></div></section>`;
+function keepScroll(fn){ const y = window.scrollY; fn(); window.scrollTo(0, y); }
+
+/* ── 7일 ── */
+function curDay(){ return Math.min(8, Math.max(1, dayNum(today()) - dayNum(S.start) + 1)); }
+function weakest(){ let w = null; for (const k in S.stats) { const s = S.stats[k]; if (s.n >= 4) { const r = s.c / s.n; if (!w || r < w.r) w = { k, r }; } } return w; }
+function viewHome(){
+  const left = dayNum(S.target) - dayNum(today()), cd = curDay(), d = T(), w = weakest();
+  let h = `<header class="dday"><span class="big num">D-${Math.max(0, left)}</span>
+    <span class="t">지텔프 Level 2 · 65점 · 7일 완성</span>
+    <span class="label">시험일 ${S.target.replace(/-/g, '.')} · 오늘 Day ${cd > 7 ? '7+' : cd} · 오늘 문법 ${d.g} · 단어 ${d.v} · 독해 ${d.r} · 청취 ${d.l}세트</span></header>
+  <div class="grid">
+    <section class="sheet"><h2>65점 공식</h2>
+      <p>총점 = 세 영역 점수의 <b>평균</b>. 7일이면 공식대로 나오는 <b>문법으로 점수를 벌고</b>, 독해는 절반 이상, 청취는 40점대면 됩니다.</p>
+      <div class="scroll"><table><tr><th>영역</th><th>문항</th><th>목표</th><th>점수</th><th>공부 날</th></tr>
+        <tr><td>문법</td><td class="num">26</td><td class="num">24</td><td class="num">92</td><td>Day 1~3</td></tr>
+        <tr><td>독해·어휘</td><td class="num">28</td><td class="num">17</td><td class="num">61</td><td>Day 4~5</td></tr>
+        <tr><td>청취</td><td class="num">26</td><td class="num">11</td><td class="num">42</td><td>Day 6</td></tr>
+        <tr><th>평균</th><th></th><th></th><th class="num pass">${total(24, 11, 17)}</th><th>Day 7 모의고사</th></tr></table></div>
+    </section>
+    <section class="sheet"><h2>바로 가기</h2>
+      <div class="row">
+        <a class="btn primary" href="#grammar">문법 ${GQ.length}문제</a><a class="btn" href="#notes">요약노트 한 장</a>
+        <a class="btn" href="#reading">독해 8지문</a><a class="btn" href="#vocab">단어 ${VOCAB.length}개</a>
+        <a class="btn" href="#listening">청취 8세트</a><a class="btn" href="#mock">모의고사 2회</a></div>
+      ${w ? `<p class="explain">가장 약한 문법 유형: <b>${TYPES[w.k].name}</b> (정답률 ${Math.round(w.r * 100)}%) · <button class="btn small" data-gset="${w.k}">이 유형만 풀기</button></p>` : '<p class="muted">문법을 풀면 가장 약한 유형을 여기서 알려 줘요.</p>'}
+      <div class="row"><label class="label" for="start">Day 1 시작일</label><input type="date" id="start" value="${S.start}">
+        <label class="label" for="target">시험일</label><input type="date" id="target" value="${S.target}"></div>
+    </section>
+  </div>
+  <h2>7일 계획 <span class="label">하루 5시간 안팎 · 끝낸 날은 동그라미를 칠하세요</span></h2>
+  <div class="days">`;
+  PLAN.forEach(p => {
+    const date = fromNum(dayNum(S.start) + p.day - 1);
+    h += `<article class="day ${p.day === cd ? 'now' : ''} ${S.done[p.day] ? 'done' : ''}">
+      <div class="row between"><span class="dn">DAY ${p.day}</span><span class="row" style="gap:6px"><span class="label">${date.slice(5).replace('-', '/')} · ${p.area}</span>
+      <button class="check" data-done="${p.day}" aria-pressed="${!!S.done[p.day]}" aria-label="Day ${p.day} 완료"></button></span></div>
+      <h3>${p.title}</h3><p class="label">목표: ${p.score}</p>
+      <table>${p.blocks.map(b => `<tr><td>${b[0]}</td><td>${b[1]}</td></tr>`).join('')}</table></article>`;
+  });
+  return h + `</div>
+  <section class="sheet"><h2>7일 뒤에도 65점이 안 나오면</h2>
+    <p>2월 말 마감 전까지 시험이 여러 번 있어요. 한 번에 걸지 말고 이 7일 코스를 끝낸 직후 시험부터 매 회차 응시하세요. 성적 발표까지 시간이 걸리니 정확한 일정과 발표일은 지텔프 코리아 공식 사이트에서 확인하세요. 재응시 전에는 Day 3·5·7(문법 실전과 모의고사)만 반복하면 됩니다.</p></section>`;
 }
 
-/* ── 홈 ── */
-function curPhase(){ const t = today(); return PHASES.find(p => t >= p.from && t <= p.to) || (t < PHASES[0].from ? PHASES[0] : PHASES[PHASES.length - 1]); }
-function viewHome(){
-  const t = today(), left = dayNum(S.target) - dayNum(t);
-  const span = dayNum(S.target) - dayNum('2026-11-19');
-  const prog = Math.min(100, Math.max(0, (1 - left / span) * 100));
-  const d = T(), ph = curPhase();
-  const wrongN = Object.keys(S.wrong).length;
-  const ms = [
-    ['문법 20문제', d.g, 20, '#grammar'],
-    ['단어 30개', d.v, 30, '#vocab'],
-    ['독해 또는 청취 1세트', d.r + d.l, 1, '#reading'],
-    ['오답 다시 풀기', wrongN ? d.w : 1, wrongN ? Math.min(5, wrongN) : 1, '#grammar'],
-  ];
-  const doneN = ms.filter(m => m[1] >= m[2]).length;
-  let weak = null;
-  for (const k in S.stats) { const s = S.stats[k]; if (s.n >= 5) { const r = s.c / s.n; if (!weak || r < weak.r) weak = { k, r }; } }
-  let h = `<header class="dday">
-      <span class="big num">D-${Math.max(0, left)}</span>
-      <span class="t">지텔프 Level 2 · 65점 마감 ${S.target.replace(/-/g, '.')}</span>
-      <div><div class="bar"><i style="width:${prog}%"></i></div><span class="label">기간 ${Math.round(prog)}% 지남 · 연속 ${S.streak.n}일째 공부</span></div>
-    </header>
-    <section class="sheet">
-      <div class="row between"><h2>오늘의 미션</h2><span class="num muted">${doneN}/4</span></div>
-      ${ms.map(m => `<div class="mission"><span class="dot ${m[1] >= m[2] ? 'on' : ''}" aria-label="${m[1] >= m[2] ? '완료' : '미완료'}"></span>
-        <span>${m[0]} <span class="num muted">${Math.min(m[1], m[2])}/${m[2]}</span></span><a class="btn small go" href="${m[3]}">하기</a></div>`).join('')}
-    </section>
-    <section class="sheet">
-      <span class="label">지금 단계 · ${ph.from.slice(5).replace('-', '/')} ~ ${ph.to.slice(5).replace('-', '/')}</span>
-      <h2>${ph.name}</h2>
-      <p>목표: <b>${ph.goal}</b></p>
-      <ul style="margin:0;padding-left:20px">${ph.todo.map(x => `<li>${x}</li>`).join('')}</ul>
-      ${weak ? `<p class="explain">가장 약한 유형: <b>${TYPES[weak.k].name}</b> (정답률 ${Math.round(weak.r * 100)}%) · <a href="#grammar" data-type="${weak.k}">집중 연습</a></p>` : ''}
-    </section>
-    <section class="sheet">
-      <h2>65점 작전</h2>
-      <p>총점은 세 영역 점수의 <b>평균</b>이에요. 문법은 공식대로 나와서 90점대가 가능하니 문법으로 점수를 벌고, 청취는 40점대여도 됩니다.</p>
-      <div class="scroll"><table>
-        <tr><th>영역</th><th>문항</th><th>목표 정답</th><th>점수</th></tr>
-        <tr><td>문법</td><td class="num">26</td><td class="num">24</td><td class="num">92</td></tr>
-        <tr><td>독해·어휘</td><td class="num">28</td><td class="num">17</td><td class="num">61</td></tr>
-        <tr><td>청취</td><td class="num">26</td><td class="num">11</td><td class="num">42</td></tr>
-        <tr><th>평균</th><th></th><th></th><th class="num pass">${total(24, 11, 17)}</th></tr>
-      </table></div>
-      <p class="muted">2월 마지막 시험 한 번에 걸지 말고, 1월부터 매 회차 응시하세요. 성적 발표까지 시간이 걸리니 2월 초까지 65점을 받아 두는 게 안전합니다.</p>
-    </section>`;
-  return h;
+/* ── 요약노트 (한 장) ── */
+function viewNotes(){
+  const tr = (a, b) => `<tr><td>${a}</td><td><b>${b}</b></td></tr>`;
+  return `<h1>요약노트 <span class="label" style="font-family:var(--body)">시험 전날 이 한 장만</span></h1>
+  <div class="grid note">
+    <section class="sheet"><h2>① 시제 6문항 — 진행형이 정답</h2><div class="scroll"><table><tr><th>단서</th><th>정답</th></tr>
+      ${tr('now, right now, currently, at the moment, as of this moment, these days', 'am/is/are -ing')}
+      ${tr('when/while + 과거동사, last night, at that time, yesterday', 'was/were -ing')}
+      ${tr('tomorrow, next ~, later today, when/if + 현재동사', 'will be -ing')}
+      ${tr('since + 과거, ever since, for + 기간 (지금까지)', 'have/has been -ing')}
+      ${tr('before/when/by the time + 과거동사 + for 기간', 'had been -ing')}
+      ${tr('by the time + 현재동사, by next ~, by the end of + for 기간', 'will have been -ing')}
+    </table></div><p class="muted">단서가 앞 문장에 숨어 있을 때가 많아요. 단순·완료(have p.p.) 보기는 거의 오답.</p></section>
+    <section class="sheet"><h2>② 가정법 6문항</h2><div class="scroll"><table><tr><th>if절</th><th>주절</th></tr>
+      ${tr('If + 과거동사 / were', 'would·could + 동사원형')}
+      ${tr('If + had p.p.', 'would·could have p.p.')}
+      ${tr('Were S ~ (도치) / Were S to V', 'would + 동사원형')}
+      ${tr('Had S p.p. (도치)', 'would have p.p.')}
+      ${tr('If it were not for / Without (현재)', 'would + 동사원형')}
+    </table></div><p class="muted">빈칸이 if절이면 거꾸로: 주절 would have p.p. → if절 had p.p.</p></section>
+    <section class="sheet"><h2>③ 준동사 6문항 — 동사 뒤 모양</h2>
+      <p><b>-ing만</b> <span class="muted">(+ prohibit, spend 시간, be worth, look forward to, keep)</span><br>${GERUND_VERBS.join(', ')}</p>
+      <p><b>to V만</b><br>${INF_VERBS.join(', ')}</p>
+      <p><b>목적어 + to V</b><br>${OBJ_TO.join(', ')}</p>
+      <p><b>목적어 + 동사원형</b> (사역) make, let, have</p>
+      <p><b>~하기 위해</b> → to V &nbsp;·&nbsp; having p.p. / to have p.p. 보기는 거의 오답</p></section>
+    <section class="sheet"><h2>④ 당위성 2 · 조동사 2</h2>
+      <p><b>that + S + 동사원형</b> (수동이면 be p.p.)</p>
+      <p>동사: ${SUBJ_WORDS.split('|')[0]}</p><p>It is ___ that: ${SUBJ_WORDS.split('|')[1]}, advisable, best</p>
+      <div class="scroll"><table><tr><th>뜻</th><th>조동사</th></tr>
+        ${tr('규칙·의무 / 강한 확신', 'must')}${tr('충고 (~하는 게 좋다)', 'should')}${tr('능력·가능', 'can (과거 could)')}
+        ${tr('약한 추측·허가', 'may / might')}${tr('미래·조건 결과', 'will')}${tr('과거 습관', 'would')}</table></div></section>
+    <section class="sheet"><h2>⑤ 관계사 2 · 연결어 2</h2>
+      <div class="scroll"><table><tr><th>앞 말</th><th>관계사</th></tr>
+        ${tr('사람 + 주어 없음', 'who')}${tr('사물 + 콤마', 'which (콤마 뒤 that 불가)')}${tr('사물 + 콤마 없음', 'that / which')}
+        ${tr('장소 + 완전한 문장', 'where')}${tr('시간 + 완전한 문장', 'when')}${tr('그의/그것의 + 명사', 'whose')}</table></div>
+      <div class="scroll"><table><tr><th>관계</th><th>연결어</th></tr>
+        ${tr('반대', 'However, Nevertheless, On the other hand')}${tr('결과', 'Therefore, As a result, Consequently')}
+        ${tr('추가', 'Moreover, In addition, Furthermore')}${tr('예시', 'For example, For instance')}
+        ${tr('그렇지 않으면 / 대신', 'Otherwise / Instead')}${tr('그동안 / 사실은 / 결국', 'Meanwhile / In fact / Eventually')}
+        ${tr('접속사', 'although, unless, until, so that, as soon as')}</table></div></section>
+    <section class="sheet"><h2>⑥ 독해 28문항 (파트당 7 = 내용 5 + 어휘 2)</h2>
+      <ol><li>Part 1 인물 · 2 잡지 기사 · 3 백과사전 · 4 비즈니스 편지</li>
+      <li>질문 먼저 → 키워드 표시 → 문제 순서 = 문단 순서</li>
+      <li>1번은 "best known for / 주제 / 편지 목적" → 1문단 (편지는 "I am writing to")</li>
+      <li>정답은 지문을 <b>다른 말로 바꾼</b> 보기. 지문 단어를 그대로 쓴 보기는 함정</li>
+      <li>NOT 문제는 보기 4개를 지문과 하나씩 지우기</li>
+      <li>"most likely / probably"는 근거 문장에서 한 걸음만 추론</li>
+      <li>어휘는 <b>문장 속 뜻</b>: adopt=take up, address=deal with, bright=intelligent</li></ol></section>
+    <section class="sheet"><h2>⑦ 청취 26문항 (7·6·6·7)</h2>
+      <ol><li>Part 1 경험 대화 · 2 발표(행사·상품) · 3 장단점 비교 대화 · 4 방법·팁</li>
+      <li>시험지엔 <b>보기만</b> 있음. 질문이 먼저 소리로 나오니 의문사·키워드를 보기 옆에 메모</li>
+      <li>질문 → 본문 → 질문 다시. 답은 들은 순서대로</li>
+      <li>Part 3 마지막 = 결정 ("I'll go with ~", "I think I'll ~")</li>
+      <li>Part 4는 First/Second/Finally 순서 표지어를 잡기</li>
+      <li>놓친 문제는 바로 찍고 다음 질문에 집중</li></ol></section>
+    <section class="sheet"><h2>⑧ 시험 당일</h2>
+      <ol><li>신분증·수험표·컴퓨터용 사인펜·수정테이프·아날로그 시계</li>
+      <li>문법 26문항을 <b>20분 안에</b> 먼저 → 남는 시간을 독해에</li>
+      <li>헷갈리는 문법은 단서 먼저 찾고, 그래도 모르면 진행형·동사원형·-ing 쪽으로</li>
+      <li>마킹은 파트마다 바로 (마지막에 몰아서 하지 않기)</li>
+      <li>빈칸 없이 전부 찍기 — 오답 감점 없음</li></ol></section>
+  </div>`;
 }
 
 /* ── 문법 ── */
+let gMode = 'tense';
+function grammarSheet(mode){
+  let items, opts = { kind:'g' };
+  if (mode === 'real') { items = withOrder(realGrammar()); opts.instant = false; opts.t0 = Date.now(); }
+  else if (mode === 'wrong') items = withOrder(shuffle(GQ.filter(q => S.wrong[q.id])));
+  else if (mode === 'all') items = withOrder(shuffle(GQ));
+  else if (mode === 'verbs') { items = withOrder(verbItems()); opts.kind = 'drill'; }
+  else items = withOrder(GQ.filter(q => q.t === mode));
+  gMode = mode; return makeSheet('g', items, opts);
+}
 function viewGrammar(){
-  const wrongN = Object.keys(S.wrong).length;
-  let h = `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">문법 <span class="muted" style="font-size:16px;font-family:var(--body)">26문항 · 점수 버는 영역</span></h1>
-    <section class="sheet"><h2>실전·복습</h2>
-      <div class="row">
-        <button class="btn primary" data-g="real">실전 26문항 (시간 재기)</button>
-        <button class="btn" data-g="mix">랜덤 20문제</button>
-        <button class="btn" data-g="wrong" ${wrongN ? '' : 'disabled'}>오답노트 ${wrongN}개</button>
-        <button class="btn" data-g="verbs">-ing / to V 동사 퀴즈</button>
-      </div>
-      <p class="muted">오답노트 문제는 두 번 맞혀야 빠집니다.</p>
-    </section>
-    <section class="sheet"><h2>유형별 공식</h2><p class="muted">유형을 누르면 그 유형만 풀어요. 시험에 나오는 대략의 문항 수도 적어 두었어요.</p>
-      <div class="formula">`;
-  for (const k in TYPES) {
+  const sh = sheets.g || grammarSheet(gMode);
+  const sc = sheetScore(sh), wrongN = Object.keys(S.wrong).length;
+  const chips = typeKeys.map(k => {
     const st = S.stats[k], cnt = GQ.filter(q => q.t === k).length;
-    h += `<button class="ftile" data-g="${k}"><span class="row between"><b>${TYPES[k].name}</b><span class="num muted" style="font-size:12px">시험 약 ${TYPES[k].n}개</span></span>
-      <small>${esc(TYPES[k].tip)}</small>
-      <span class="num muted" style="font-size:12px">${cnt}문제${st ? ' · 정답률 ' + Math.round(st.c / st.n * 100) + '%' : ''}</span></button>`;
-  }
-  h += `</div></section>
-    <section class="sheet"><h2>시제 단서 표</h2><div class="scroll"><table>
-      <tr><th>단서</th><th>정답 형태</th></tr>
-      <tr><td>now, right now, at the moment, currently, these days</td><td>is/are -ing</td></tr>
-      <tr><td>when/while + 과거동사, last ~, at that time</td><td>was/were -ing</td></tr>
-      <tr><td>tomorrow, next ~, when/if + 현재동사</td><td>will be -ing</td></tr>
-      <tr><td>since + 과거, for + 기간 (지금까지)</td><td>have been -ing</td></tr>
-      <tr><td>before/when + 과거동사 + for 기간</td><td>had been -ing</td></tr>
-      <tr><td>by the time + 현재동사 / by next ~ + for 기간</td><td>will have been -ing</td></tr>
-    </table></div></section>
-    <section class="sheet"><h2>동사 목록</h2>
-      <p><b>-ing만:</b> ${GERUND_VERBS.join(', ')}</p>
-      <p><b>to V만:</b> ${INF_VERBS.join(', ')}</p>
-      <p><b>당위성 → 동사원형:</b> ${SUBJ_WORDS.replace('|', '<br><b>It is ___ that:</b> ')}</p>
-    </section>`;
+    return `<button class="chip" data-gset="${k}" aria-pressed="${gMode === k}">${TYPES[k].name} ${cnt}${st ? ' · ' + Math.round(st.c / st.n * 100) + '%' : ''}</button>`;
+  }).join('');
+  let h = `<div class="sticky" style="display:flex;flex-direction:column;gap:8px">
+    <div class="row between"><h1>문법 <span class="label" style="font-family:var(--body)">시험 26문항 · ${GQ.length}문제 수록</span></h1>
+      <span class="num">${sh.instant ? `${sc.c}/${sc.n} 맞힘 · ${sh.items.length}문제` : `<span id="clock">0:00</span> · ${sc.n}/${sh.items.length} 표시`}</span></div>
+    <div class="row">${chips}
+      <button class="chip" data-gset="all" aria-pressed="${gMode === 'all'}">전체 ${GQ.length}</button>
+      <button class="chip" data-gset="real" aria-pressed="${gMode === 'real'}">실전 26 (시간)</button>
+      <button class="chip" data-gset="wrong" aria-pressed="${gMode === 'wrong'}" ${wrongN ? '' : 'disabled'}>오답노트 ${wrongN}</button>
+      <button class="chip" data-gset="verbs" aria-pressed="${gMode === 'verbs'}">동사 뒤 모양 퀴즈</button></div>
+  </div>`;
+  if (TYPES[gMode]) h += `<p class="explain"><b>${TYPES[gMode].name} 공식</b> · ${esc(TYPES[gMode].tip)} <a href="#notes">요약노트</a></p>`;
+  if (gMode === 'real') h += `<p class="explain">실제 시험 비율(시제 6 · 가정법 6 · 준동사 6 · 당위성 2 · 조동사 2 · 관계사 2 · 연결어 2)로 뽑았어요. 다 풀고 맨 아래 <b>채점</b>을 누르세요. 목표 20분, 24개.</p>`;
+  if (!sh.items.length) return h + `<p class="muted">풀 문제가 없어요.</p>`;
+  h += `<div class="qs">${sh.items.map((it, i) => itemHTML(sh, i, { tag: gMode === 'all' || gMode === 'wrong' ? TYPES[it.t].name : '' })).join('')}</div>`;
+  if (!sh.instant) {
+    if (!sh.graded) h += `<button class="btn primary" data-grade="g" style="align-self:center">채점 (${sc.n}/26 표시)</button>`;
+    else { const m = Math.round((sh.t1 - sh.t0) / 60000); h += `<section class="sheet"><span class="score-big num ${sc.c >= 24 ? 'pass' : 'fail'}">${sc.c}/26 · ${sec(sc.c, 26)}점</span><p>걸린 시간 ${m}분. 틀린 문제는 오답노트에 들어갔어요.</p><button class="btn primary" data-gset="real">새 실전 26</button></section>`; }
+  } else h += `<div class="row" style="justify-content:center"><button class="btn" data-gset="${gMode}">${gMode === 'wrong' ? '오답노트 다시' : '섞어서 다시 풀기'}</button></div>`;
   return h;
-}
-function startGrammar(mode){
-  if (mode === 'verbs') return startQuiz({ kind:'grammar', mode, title:'-ing / to V 동사 퀴즈', items: verbSet(), hideType:true });
-  const items = grammarSet(mode);
-  if (!items.length) return toast('풀 문제가 없어요');
-  const title = mode === 'real' ? '실전 26문항' : mode === 'mix' ? '랜덤 20문제' : mode === 'wrong' ? '오답노트' : TYPES[mode].name + ' 연습';
-  startQuiz({ kind:'grammar', mode, title, items, timer: mode === 'real', hideType: mode === 'real' });
-}
-
-/* ── 어휘 (간격 반복) ── */
-const GAP = [0, 1, 3, 7, 14, 30];
-let vs = null;
-function vocabQueue(){
-  const t = dayNum(today());
-  const due = VOCAB.filter(v => S.vocab[v.w] && S.vocab[v.w].d <= t && S.vocab[v.w].b < 5);
-  const fresh = VOCAB.filter(v => !S.vocab[v.w]);
-  return shuffle(due).concat(fresh.slice(0, Math.max(0, 30 - due.length))).slice(0, 40);
-}
-function viewVocab(){
-  const t = dayNum(today());
-  const known = VOCAB.filter(v => S.vocab[v.w] && S.vocab[v.w].b >= 3).length;
-  const due = VOCAB.filter(v => S.vocab[v.w] && S.vocab[v.w].d <= t && S.vocab[v.w].b < 5).length;
-  if (vs && vs.q[vs.i]) {
-    const v = vs.q[vs.i];
-    return `<div class="row between"><span class="label">단어 카드</span><span class="num muted">${vs.i + 1} / ${vs.q.length}</span></div>
-      <div class="bar"><i style="width:${vs.i / vs.q.length * 100}%"></i></div>
-      <button class="card" data-act="flip">${vs.flip
-        ? `<span><span class="w">${esc(v.w)}</span><br><b style="font-size:18px">${esc(v.m)}</b><br><span class="muted">≈ ${esc(v.s)}</span></span>`
-        : `<span><span class="w">${esc(v.w)}</span><br><span class="muted">눌러서 뜻 보기</span></span>`}</button>
-      <div class="row" style="justify-content:center"><button class="btn" data-know="0" ${vs.flip ? '' : 'disabled'}>몰랐어요</button><button class="btn primary" data-know="1" ${vs.flip ? '' : 'disabled'}>알았어요</button></div>
-      <button class="btn small" data-act="vquit" style="align-self:flex-start">그만하기</button>`;
-  }
-  if (vs) { vs = null; toast('오늘 단어 끝!'); }
-  return `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">어휘</h1>
-    <section class="sheet"><h2>단어 카드</h2>
-      <p>지텔프 독해 파트마다 어휘 2문제(총 8문제)가 나와요. 사전 뜻이 아니라 <b>지문 속 뜻</b>과 같은 동의어를 고르는 문제라 동의어까지 같이 외웁니다.</p>
-      <p class="num">전체 ${VOCAB.length}개 · 외운 단어 ${known}개 · 오늘 복습 ${due}개</p>
-      <div class="bar"><i style="width:${known / VOCAB.length * 100}%"></i></div>
-      <div class="row"><button class="btn primary" data-act="vstart">오늘 카드 시작</button><button class="btn" data-act="syn">동의어 퀴즈 20문제</button></div>
-      <p class="muted">"알았어요"를 누르면 1·3·7·14·30일 뒤에 다시 나와요.</p>
-    </section>
-    <section class="sheet"><h2>다의어 주의</h2><p>지문 속 뜻으로 골라야 하는 단어예요.</p>
-      <div class="scroll"><table><tr><th>단어</th><th>시험에 자주 나오는 뜻</th></tr>
-      ${['address','accommodate','adopt','maintain','observe','settle','issue','figure','outstanding','secure','assume','yield'].map(w => { const v = VOCAB.find(x => x.w === w); return `<tr><td class="num">${w}</td><td>${esc(v.m)} ≈ ${esc(v.s)}</td></tr>`; }).join('')}
-      </table></div></section>`;
-}
-function synSet(){
-  return shuffle(VOCAB).slice(0, 20).map(v => {
-    const ans = v.s.split(', ')[0];
-    const others = shuffle(VOCAB.filter(x => x !== v && !x.s.includes(ans) && !v.s.includes(x.s.split(', ')[0]))).slice(0, 3).map(x => x.s.split(', ')[0]);
-    return { id:'s-' + v.w, q:'<b>' + esc(v.w) + '</b> 와 같은 뜻은?', raw:true, a:ans, w:others, e:v.w + ' = ' + v.m + ' ≈ ' + v.s };
-  });
 }
 
 /* ── 독해 ── */
-let rd = null;
+let rId = 'r1';
 function viewReading(){
-  if (rd) return viewPassage();
-  let h = `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">독해·어휘 <span class="muted" style="font-size:16px;font-family:var(--body)">28문항</span></h1>
-    <section class="sheet"><h2>푸는 순서</h2>
-      <ol style="margin:0;padding-left:20px"><li>질문을 먼저 읽고 키워드에 표시</li><li>문제 순서 = 문단 순서. 1번은 1문단, 마지막은 마지막 문단</li><li>정답은 지문 표현을 <b>다른 말로 바꾼</b> 보기 (그대로 베낀 보기는 함정일 때가 많음)</li><li>어휘 2문제는 사전 뜻 말고 문장 속 뜻</li></ol>
-    </section>`;
-  READING.forEach(p => {
-    const b = S.best[p.id];
-    h += `<button class="sheet" data-read="${p.id}" style="text-align:left"><span class="label">${p.part}</span><h3>${esc(p.title)}</h3>
-      <span class="muted num">7문항${b !== undefined ? ' · 최고 ' + b + '/7' : ''}</span></button>`;
-  });
-  h += `<a class="btn" href="#vocab" style="align-self:flex-start">어휘 카드로 가기</a>`;
-  return h;
-}
-function viewPassage(){
-  const p = READING.find(x => x.id === rd.id);
-  let h = `<div class="row between"><span class="label">${p.part}</span><button class="btn small" data-act="rback">목록</button></div>
-    <h2>${esc(p.title)}</h2><div class="passage">${esc(p.body)}</div>`;
-  p.q.forEach((q, i) => {
-    const pk = rd.ans[i];
-    h += `<section class="sheet"><p class="q"><b class="num">${i + 1}.</b> ${esc(q[0])}</p><div class="opts">`;
-    rd.order[i].forEach((o, k) => {
-      let cls = 'opt';
-      if (pk !== undefined) { if (o === q[1]) cls += ' right'; else if (k === pk) cls += ' wrong'; }
-      h += `<button class="${cls}" data-rq="${i}" data-k="${k}" ${pk !== undefined ? 'disabled' : ''}><span class="bub">${LET[k]}</span><span>${esc(o)}</span></button>`;
-    });
-    h += `</div>${pk !== undefined ? `<p class="explain">${esc(q[5])}</p>` : ''}</section>`;
-  });
-  const n = Object.keys(rd.ans).length;
-  if (n === p.q.length) h += `<section class="sheet"><p><b class="num">${rd.right}/7</b> 맞혔어요.</p><button class="btn primary" data-read="${p.id}">다시 풀기</button></section>`;
+  const p = READING.find(x => x.id === rId);
+  const key = 'r-' + p.id; const sh = sheets[key] || makeSheet(key, rItems(p), { kind:'r', pid:p.id });
+  const sc = sheetScore(sh);
+  let h = `<div class="row between"><h1>독해 <span class="label" style="font-family:var(--body)">시험 28문항 = 4파트 × 7</span></h1><span class="num">${sc.c}/${sc.n} 맞힘</span></div>
+    <div class="row">${READING.map((x, i) => `<button class="chip" data-rid="${x.id}" aria-pressed="${x.id === rId}">${i < 4 ? '1회' : '2회'} · ${x.part.split(' · ')[0]} ${x.part.split(' · ')[1]}${S.best[x.id] !== undefined ? ' · ' + S.best[x.id] + '/7' : ''}</button>`).join('')}</div>
+    <p class="explain">질문을 먼저 훑고 지문에서 근거를 찾으세요. 문제 순서 = 문단 순서. 마지막 2문제는 어휘(문장 속 뜻).</p>
+    <div class="read"><div class="passage"><h3>${esc(p.title)}</h3><span class="label">${p.part}</span>\n\n${esc(p.body)}</div>
+    <div style="display:flex;flex-direction:column;gap:10px">${sh.items.map((_, i) => itemHTML(sh, i, { tag: i >= 5 ? '어휘' : '' })).join('')}
+    ${sc.n === 7 ? `<button class="btn" data-rreset="${p.id}" style="align-self:center">다시 풀기</button>` : ''}</div></div>`;
   return h;
 }
 
-/* ── 청취 (영어 TTS) ── */
-let ls = null;
+/* ── 어휘: 전체 표 한 번에 ── */
+let vFilter = 'all', vRange = 0;
+function viewVocab(){
+  const knownN = VOCAB.filter(v => S.known[v.w]).length;
+  const ranges = [[0, 60], [60, 120], [120, VOCAB.length]];
+  const syn = sheets.syn;
+  let h = `<div class="row between"><h1>어휘 <span class="label" style="font-family:var(--body)">독해 속 어휘 8문항 · ${VOCAB.length}개</span></h1><span class="num">외움 ${knownN}/${VOCAB.length}</span></div>
+    <div class="bar"><i style="width:${knownN / VOCAB.length * 100}%"></i></div>
+    <div class="row">
+      <button class="chip" data-vr="0" aria-pressed="${vRange === 0}">전체</button>
+      ${ranges.map((r, i) => `<button class="chip" data-vr="${i + 1}" aria-pressed="${vRange === i + 1}">${r[0] + 1}~${r[1]} (Day ${i + 1})</button>`).join('')}
+      <button class="chip" data-vf aria-pressed="${vFilter === 'unknown'}">모르는 것만</button>
+      <button class="chip" data-vhide aria-pressed="${S.hideM}">뜻 가리기</button>
+      <button class="btn small primary" data-syn>동의어 퀴즈 30</button></div>
+    <p class="muted">뜻 가리기를 켜고 단어만 보며 떠올린 뒤, 뜻 칸을 누르면 보여요. 외운 단어는 동그라미를 칠하세요.</p>`;
+  if (syn) {
+    const sc = sheetScore(syn);
+    h += `<section class="sheet"><div class="row between"><h2>동의어 퀴즈</h2><span class="num">${sc.c}/${sc.n} · 30문제 <button class="btn small" data-synclose>닫기</button></span></div>
+      <div class="qs">${syn.items.map((_, i) => itemHTML(syn, i)).join('')}</div></section>`;
+  }
+  const r = vRange ? ranges[vRange - 1] : [0, VOCAB.length];
+  const list = VOCAB.map((v, i) => Object.assign({ i }, v)).slice(r[0], r[1]).filter(v => vFilter === 'all' || !S.known[v.w]);
+  const half = Math.ceil(list.length / 2);
+  const table = arr => `<div class="scroll"><table class="vt"><tr><th></th><th>#</th><th>단어</th><th>뜻</th><th>동의어</th></tr>
+    ${arr.map(v => `<tr class="${S.known[v.w] ? 'known' : ''}"><td><button class="check" data-known="${esc(v.w)}" aria-pressed="${!!S.known[v.w]}" aria-label="${esc(v.w)} 외움"></button></td>
+      <td class="num muted">${v.i + 1}</td><td class="num"><b>${esc(v.w)}</b></td>
+      <td class="m" data-reveal><span class="${S.hideM ? 'hidden-m' : ''}">${esc(v.m)}</span></td><td class="muted"><span class="${S.hideM ? 'hidden-m' : ''}">${esc(v.s)}</span></td></tr>`).join('')}</table></div>`;
+  h += `<div class="grid wide"><section class="sheet">${table(list.slice(0, half))}</section>${list.length > half ? `<section class="sheet">${table(list.slice(half))}</section>` : ''}</div>`;
+  return h;
+}
+
+/* ── 청취 ── */
+let lId = 'l1', rate = 0.9, showQ = false;
 const synth = window.speechSynthesis;
 function voices(){
   const all = synth ? synth.getVoices().filter(v => /^en[-_]/i.test(v.lang)) : [];
-  const us = all.filter(v => /US/i.test(v.lang));
-  const pool = us.length ? us : all;
+  const us = all.filter(v => /US/i.test(v.lang)); const pool = us.length ? us : all;
   const f = pool.find(v => /female|samantha|zira|aria|jenny|google us english/i.test(v.name)) || pool[0];
   const m = pool.find(v => v !== f && /male|alex|david|guy|daniel|fred/i.test(v.name)) || pool.find(v => v !== f) || f;
   return [f, m];
 }
-function speakAll(parts){
-  if (!synth) return toast('이 브라우저는 음성 읽기를 지원하지 않아요');
-  synth.cancel();
+function play(id){
+  if (!synth) return toast('이 브라우저는 영어 음성 읽기를 지원하지 않아요');
+  const s = LISTENING.find(x => x.id === id); synth.cancel();
   const [f, m] = voices();
-  parts.forEach(([who, text]) => {
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US'; u.rate = ls.rate;
-    const v = who === 1 ? m : f; if (v) u.voice = v;
-    if (who === 1 && v === f) u.pitch = 0.75;
-    if (who === 2) u.rate = ls.rate * 0.95;
+  const qs = s.q.map((q, i) => [2, 'Number ' + (i + 1) + '. ' + q[0]]);
+  [[2, 'Listen to the questions first.']].concat(qs, [[2, 'Now listen.']], s.lines, [[2, 'Now listen to the questions again.']], qs).forEach(([who, text]) => {
+    const u = new SpeechSynthesisUtterance(text); u.lang = 'en-US'; u.rate = rate;
+    const v = who === 1 ? m : f; if (v) u.voice = v; if (who === 1 && v === f) u.pitch = 0.75;
     synth.speak(u);
   });
 }
-function playSet(){
-  const s = LISTENING.find(x => x.id === ls.id);
-  const qs = s.q.map((q, i) => [2, 'Number ' + (i + 1) + '. ' + q[0]]);
-  // 실제 시험처럼: 질문 → 지문 → 질문 한 번 더
-  speakAll([[2, 'Listen to the questions first.']].concat(qs, [[2, 'Now listen.']], s.lines, [[2, 'Now listen to the questions again.']], qs));
-}
+const playerHTML = id => `<div class="row"><button class="btn primary" data-play="${id}">▶ 듣기</button><button class="btn" data-stop>■ 멈추기</button>
+  <label class="row" style="gap:5px"><span class="label">속도</span><select id="rate">${[0.8, 0.9, 1].map(r => `<option value="${r}" ${r === rate ? 'selected' : ''}>${r}x</option>`).join('')}</select></label></div>`;
+const scriptHTML = s => `<details><summary>대본 보기</summary><div style="display:flex;flex-direction:column;gap:4px;margin-top:6px">${s.lines.map(l => `<p>${s.lines.some(x => x[0] === 1) ? `<b class="label">${l[0] ? 'B' : 'A'}</b> ` : ''}${esc(l[1])}</p>`).join('')}</div></details>`;
 function viewListening(){
-  if (ls) return viewListenSet();
-  let h = `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">청취 <span class="muted" style="font-size:16px;font-family:var(--body)">26문항</span></h1>
-    <section class="sheet"><h2>청취는 40점대면 충분</h2>
-      <ol style="margin:0;padding-left:20px"><li>시험지에는 <b>보기만</b> 있고 질문은 소리로만 나와요. 질문이 나올 때 의문사(who·why·what)와 키워드를 보기 옆에 적으세요.</li>
-      <li>질문 → 본문 → 질문 다시 순서로 나와요. 1번 답은 앞부분, 마지막 답은 끝부분에.</li>
-      <li>Part 3 마지막 문제는 거의 "결정한 것" (I will ~, I think I'll ~).</li>
-      <li>못 들은 문제는 미련 없이 찍고 다음 질문 준비.</li></ol>
-      <p class="muted">기기의 영어 음성으로 읽어 줘요. 소리가 안 나면 기기 설정에서 영어 음성을 받아 두세요.</p>
-    </section>`;
-  LISTENING.forEach(s => {
-    const b = S.best[s.id];
-    h += `<button class="sheet" data-listen="${s.id}" style="text-align:left"><span class="label">${s.part}</span><h3>${esc(s.title)}</h3>
-      <span class="muted num">5문항${b !== undefined ? ' · 최고 ' + b + '/5' : ''}</span></button>`;
-  });
-  return h;
-}
-function viewListenSet(){
-  const s = LISTENING.find(x => x.id === ls.id);
-  const n = Object.keys(ls.ans).length, fin = n === s.q.length;
-  let h = `<div class="row between"><span class="label">${s.part}</span><button class="btn small" data-act="lback">목록</button></div>
-    <h2>${esc(s.title)}</h2>
-    <section class="sheet"><div class="row">
-      <button class="btn primary" data-act="play">▶ 듣기</button><button class="btn" data-act="stop">■ 멈추기</button>
-      <label class="row" style="gap:6px"><span class="label">속도</span>
-        <select id="rate" style="font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:4px">
-          ${[0.8, 0.9, 1].map(r => `<option value="${r}" ${r === ls.rate ? 'selected' : ''}>${r}x</option>`).join('')}</select></label>
-      <button class="chip" data-act="qtoggle" aria-pressed="${ls.showQ}">질문 글로 보기</button>
-    </div><p class="muted">실전처럼 질문을 귀로만 듣고 풀어 보세요. 어려우면 "질문 글로 보기"를 켜세요.</p></section>`;
-  s.q.forEach((q, i) => {
-    const pk = ls.ans[i];
-    h += `<section class="sheet"><p class="q"><b class="num">${i + 1}.</b> ${ls.showQ || fin ? esc(q[0]) : '<span class="muted">(질문은 소리로)</span>'}</p><div class="opts">`;
-    ls.order[i].forEach((o, k) => {
-      let cls = 'opt';
-      if (pk !== undefined) { if (o === q[1]) cls += ' right'; else if (k === pk) cls += ' wrong'; }
-      h += `<button class="${cls}" data-lq="${i}" data-k="${k}" ${pk !== undefined ? 'disabled' : ''}><span class="bub">${LET[k]}</span><span>${esc(o)}</span></button>`;
-    });
-    h += `</div></section>`;
-  });
-  if (fin) {
-    h += `<section class="sheet"><p><b class="num">${ls.right}/5</b> 맞혔어요. 대본을 보며 한 번 더 들어 보세요.</p>
-      <div style="display:flex;flex-direction:column;gap:6px">${s.lines.map(l => `<p>${s.lines.some(x => x[0] === 1) ? `<b class="label">${l[0] ? 'B' : 'A'}</b> ` : ''}${esc(l[1])}</p>`).join('')}</div>
-      <button class="btn primary" data-listen="${s.id}">다시 풀기</button></section>`;
-  }
-  return h;
+  const s = LISTENING.find(x => x.id === lId);
+  const key = 'l-' + s.id; const sh = sheets[key] || makeSheet(key, lItems(s), { kind:'l', pid:s.id });
+  const sc = sheetScore(sh), fin = sc.n === sh.items.length;
+  return `<div class="row between"><h1>청취 <span class="label" style="font-family:var(--body)">시험 26문항 = 7·6·6·7</span></h1><span class="num">${sc.c}/${sc.n} 맞힘</span></div>
+    <div class="row">${LISTENING.map((x, i) => `<button class="chip" data-lid="${x.id}" aria-pressed="${x.id === lId}">${i < 4 ? '1회' : '2회'} · ${x.part.split(' · ')[0]} ${x.part.split(' · ')[1]}${S.best[x.id] !== undefined ? ' · ' + S.best[x.id] + '/' + x.q.length : ''}</button>`).join('')}</div>
+    <section class="sheet"><div class="row between"><h2>${esc(s.title)} <span class="label">${s.part}</span></h2>
+      <button class="chip" data-showq aria-pressed="${showQ}">질문 글로 보기</button></div>
+      ${playerHTML(s.id)}
+      <p class="muted">질문 → 본문 → 질문 다시 순서로 기기의 영어 음성이 읽어요. 실전처럼 질문은 귀로 듣고 키워드를 메모하세요. 소리가 안 나면 기기 설정에서 영어 음성을 받아 두세요.</p>
+      ${fin ? scriptHTML(s) : ''}</section>
+    <div class="qs">${sh.items.map((_, i) => itemHTML(sh, i, { hideQ: !showQ && !fin })).join('')}</div>
+    ${fin ? `<button class="btn" data-lreset="${s.id}" style="align-self:center">다시 풀기</button>` : ''}`;
 }
 
-/* ── 점수·기록 ── */
-let sim = { g:24, l:11, r:17 };
-function viewRecord(){
+/* ── 모의고사 + 점수 ── */
+let mockN = 0, sim = { g:24, l:11, r:17 };
+function mockSheet(n){
+  const items = [], meta = [];
+  mockGrammar(n).forEach(it => { items.push(it); meta.push({ s:'g' }); });
+  LISTENING.slice((n - 1) * 4, n * 4).forEach((s, si) => lItems(s, rng(n * 7 + si)).forEach(it => { items.push(it); meta.push({ s:'l', set:s.id }); }));
+  READING.slice((n - 1) * 4, n * 4).forEach((p, pi) => rItems(p, rng(n * 11 + pi)).forEach(it => { items.push(it); meta.push({ s:'r', set:p.id }); }));
+  const sh = makeSheet('mock', items, { kind:'mock', n, meta, instant:false });
+  if (S.draft && S.draft.n === n) sh.picks = Object.assign({}, S.draft.picks);
+  return sh;
+}
+function viewMock(){
+  let h = `<h1>모의고사 <span class="label" style="font-family:var(--body)">문법 26 · 청취 26 · 독해 28 = 80문항</span></h1>
+    <div class="row"><button class="chip" data-mock="1" aria-pressed="${mockN === 1}">모의고사 1회</button><button class="chip" data-mock="2" aria-pressed="${mockN === 2}">모의고사 2회</button>
+    ${S.draft ? `<span class="label">${S.draft.n}회 푸는 중 (${Object.keys(S.draft.picks).length}/80) · 고른 답은 저장돼요</span>` : ''}</div>`;
+  if (mockN) {
+    const sh = sheets.mock && sheets.mock.n === mockN ? sheets.mock : mockSheet(mockN);
+    const secN = { g:0, l:0, r:0 }; let num = 0;
+    h += `<p class="explain">실제 순서대로 문법 → 청취 → 독해. 문법은 20분 안에, 청취는 세트마다 ▶ 듣기를 누르고, 독해는 남은 시간에. 끝나면 맨 아래 <b>채점</b>.</p>`;
+    h += `<h2>문법 1~26</h2><div class="qs">`;
+    let i = 0;
+    for (; i < sh.items.length && sh.meta[i].s === 'g'; i++) h += itemHTML(sh, i, { num: ++secN.g });
+    h += `</div><h2>청취 1~26</h2>`;
+    while (i < sh.items.length && sh.meta[i].s === 'l') {
+      const set = sh.meta[i].set, s = LISTENING.find(x => x.id === set);
+      h += `<section class="sheet"><h3>${s.part}</h3>${playerHTML(s.id)}${sh.graded ? scriptHTML(s) : ''}<div class="qs">`;
+      for (; i < sh.items.length && sh.meta[i].set === set; i++) h += itemHTML(sh, i, { num: ++secN.l, hideQ:true });
+      h += `</div></section>`;
+    }
+    h += `<h2>독해 1~28</h2>`;
+    while (i < sh.items.length && sh.meta[i].s === 'r') {
+      const set = sh.meta[i].set, p = READING.find(x => x.id === set);
+      h += `<div class="read"><div class="passage"><h3>${esc(p.title)}</h3><span class="label">${p.part}</span>\n\n${esc(p.body)}</div><div style="display:flex;flex-direction:column;gap:10px">`;
+      for (; i < sh.items.length && sh.meta[i].set === set; i++) h += itemHTML(sh, i, { num: ++secN.r });
+      h += `</div></div>`;
+    }
+    if (!sh.graded) h += `<button class="btn primary" data-grade="mock" style="align-self:center">채점 (${Object.keys(sh.picks).length}/80 표시)</button>`;
+    else {
+      const c = { g:0, l:0, r:0 };
+      sh.items.forEach((it, k) => { if (sh.picks[k] !== undefined && it.order[sh.picks[k]] === it.a) c[sh.meta[k].s]++; });
+      const t = total(c.g, c.l, c.r);
+      h += `<section class="sheet"><h2>모의고사 ${mockN}회 결과</h2><div class="row" style="gap:20px;align-items:baseline">
+        <span class="score-big num ${t >= 65 ? 'pass' : 'fail'}">${t}</span>
+        <span class="num">문법 ${c.g}/26 (${sec(c.g, 26)}) · 청취 ${c.l}/26 (${sec(c.l, 26)}) · 독해 ${c.r}/28 (${sec(c.r, 28)})</span></div>
+        <p>${t >= 65 ? '65점 통과 점수예요. 기록에 저장했어요.' : '65점까지 ' + (65 - t) + '점. 기록에 저장했어요. 가장 낮은 영역을 Day 계획에서 다시 보세요.'}</p></section>`;
+    }
+  }
   const tt = total(sim.g, sim.l, sim.r);
-  let h = `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">점수</h1>
-    <section class="sheet"><h2>점수 계산기</h2><p class="muted">영역별로 맞힐 개수를 움직여 보세요.</p>
-      ${[['g','문법',26],['r','독해·어휘',28],['l','청취',26]].map(([k, n, max]) => `
-        <label class="stat" for="sim-${k}"><span>${n}</span><input type="range" id="sim-${k}" data-sim="${k}" min="0" max="${max}" value="${sim[k]}"><span class="num">${sim[k]}/${max}</span></label>
-        <span class="num muted" style="margin:-8px 0 0 80px;font-size:12px">${sec(sim[k], max)}점</span>`).join('')}
-      <div class="row" style="align-items:baseline;gap:12px"><span class="score-big num ${tt >= 65 ? 'pass' : 'fail'}">${tt}</span><span>${tt >= 65 ? '65점 통과' : '65점까지 ' + (65 - tt) + '점 부족'}</span></div>
-    </section>
-    <section class="sheet"><h2>모의고사·실제 시험 기록</h2>
+  h += `<div class="grid"><section class="sheet"><h2>점수 계산기</h2>
+      ${[['g','문법',26],['r','독해',28],['l','청취',26]].map(([k, n, max]) => `<label class="stat" for="sim-${k}"><span>${n} <span class="num muted">${sec(sim[k], max)}</span></span><input type="range" id="sim-${k}" data-sim="${k}" min="0" max="${max}" value="${sim[k]}"><span class="num">${sim[k]}/${max}</span></label>`).join('')}
+      <div class="row" style="align-items:baseline;gap:12px"><span class="score-big num ${tt >= 65 ? 'pass' : 'fail'}">${tt}</span><span>${tt >= 65 ? '65점 통과' : '65점까지 ' + (65 - tt) + '점'}</span></div></section>
+    <section class="sheet"><h2>점수 기록</h2>
       <form id="mockform" class="row" style="align-items:flex-end">
         <div class="field"><label class="label" for="m-d">날짜</label><input type="date" id="m-d" value="${today()}" required></div>
-        <div class="field"><label class="label" for="m-g">문법 점수</label><input type="number" id="m-g" min="0" max="100" required></div>
-        <div class="field"><label class="label" for="m-r">독해 점수</label><input type="number" id="m-r" min="0" max="100" required></div>
-        <div class="field"><label class="label" for="m-l">청취 점수</label><input type="number" id="m-l" min="0" max="100" required></div>
-        <button class="btn primary">기록</button>
-      </form>
-      ${chart()}
-    </section>
-    <section class="sheet"><h2>문법 유형별 정답률</h2>`;
-  let any = false;
-  for (const k in TYPES) {
-    const s = S.stats[k]; if (!s) continue; any = true;
-    const r = Math.round(s.c / s.n * 100);
-    h += `<div class="stat"><span>${TYPES[k].name}</span><div class="bar"><i style="width:${r}%;background:${r >= 85 ? 'var(--ok)' : 'var(--omr)'}"></i></div><span class="num">${r}%</span></div>`;
-  }
-  if (!any) h += `<p class="muted">문법 문제를 풀면 유형별 정답률이 여기에 쌓여요.</p>`;
-  h += `</section>
-    <section class="sheet"><h2>설정</h2>
-      <div class="field"><label class="label" for="target">65점 마감일</label><input type="date" id="target" value="${S.target}"></div>
-      <p class="muted">기록은 이 기기의 브라우저에만 저장돼요.</p>
-      <div class="row"><button class="btn small" data-act="reset">${resetArm ? '정말 지울까요? 한 번 더 누르면 삭제' : '기록 모두 지우기'}</button></div>
-    </section>`;
+        <div class="field"><label class="label" for="m-g">문법</label><input type="number" id="m-g" min="0" max="100" required></div>
+        <div class="field"><label class="label" for="m-r">독해</label><input type="number" id="m-r" min="0" max="100" required></div>
+        <div class="field"><label class="label" for="m-l">청취</label><input type="number" id="m-l" min="0" max="100" required></div>
+        <button class="btn primary">기록</button></form>${chart()}</section>
+    <section class="sheet"><h2>문법 유형별 정답률</h2>${statBars()}
+      <button class="btn small" data-reset style="align-self:flex-start">${resetArm ? '한 번 더 누르면 모두 삭제' : '기록 모두 지우기'}</button>
+      <p class="muted">기록은 이 기기의 브라우저에만 저장돼요.</p></section></div>`;
   return h;
 }
 let resetArm = false;
+function statBars(){
+  let h = '', any = false;
+  typeKeys.forEach(k => { const s = S.stats[k]; if (!s) return; any = true; const r = Math.round(s.c / s.n * 100);
+    h += `<div class="stat"><span>${TYPES[k].name}</span><div class="bar"><i style="width:${r}%;background:${r >= 85 ? 'var(--ok)' : 'var(--omr)'}"></i></div><span class="num">${r}%</span></div>`; });
+  return any ? h : '<p class="muted">문법을 풀면 유형별 정답률이 쌓여요.</p>';
+}
 function chart(){
   const ms = S.mocks.slice().sort((a, b) => a.d < b.d ? -1 : 1);
-  if (!ms.length) return `<p class="muted">시험을 보면 점수를 적어 두세요. 평균 점수 그래프가 그려지고 65점 선과 비교해 줘요.</p>`;
-  const W = 320, H = 150, L = 30, R = 10, Tp = 10, B = 24;
+  if (!ms.length) return `<p class="muted">모의고사를 채점하거나 실제 시험 점수를 적으면 65점 선과 함께 그래프가 그려져요.</p>`;
+  const W = 320, H = 150, L = 30, R = 12, Tp = 10, B = 24;
   const x = i => ms.length === 1 ? (L + W - R) / 2 : L + i * (W - L - R) / (ms.length - 1);
   const y = v => Tp + (100 - v) * (H - Tp - B) / 100;
   const pts = ms.map((m, i) => [x(i), y(m.t)]);
-  let s = `<div class="scroll"><svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:520px" role="img" aria-label="시험 평균 점수 추이">`;
+  let s = `<div class="scroll"><svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:520px" role="img" aria-label="평균 점수 추이">`;
   [0, 50, 65, 100].forEach(v => s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 65 ? 'var(--ok)' : 'var(--line)'}" stroke-dasharray="${v === 65 ? '4 3' : ''}" fill="none"/><text x="${L - 4}" y="${y(v) + 4}" text-anchor="end">${v}</text>`);
   s += `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="var(--omr)" stroke-width="2"/>`;
   ms.forEach((m, i) => s += `<circle cx="${pts[i][0]}" cy="${pts[i][1]}" r="${i === ms.length - 1 ? 5 : 3.5}" fill="${m.t >= 65 ? 'var(--ok)' : 'var(--omr)'}"/><text x="${pts[i][0]}" y="${H - 6}" text-anchor="middle">${m.d.slice(5).replace('-', '/')}</text>`);
-  s += `</svg></div><div class="scroll"><table><tr><th>날짜</th><th>문법</th><th>독해</th><th>청취</th><th>평균</th><th></th></tr>`;
-  ms.slice().reverse().forEach(m => s += `<tr><td class="num">${m.d}</td><td class="num">${m.g}</td><td class="num">${m.r}</td><td class="num">${m.l}</td><td class="num ${m.t >= 65 ? 'pass' : 'fail'}"><b>${m.t}</b></td><td><button class="btn small" data-del="${m.d}|${m.t}">삭제</button></td></tr>`);
+  s += `</svg></div><div class="scroll"><table><tr><th>날짜</th><th>구분</th><th>문법</th><th>독해</th><th>청취</th><th>평균</th><th></th></tr>`;
+  ms.slice().reverse().forEach(m => s += `<tr><td class="num">${m.d}</td><td>${m.k || '시험'}</td><td class="num">${m.g}</td><td class="num">${m.r}</td><td class="num">${m.l}</td><td class="num ${m.t >= 65 ? 'pass' : 'fail'}"><b>${m.t}</b></td><td><button class="btn small" data-del="${m.d}|${m.t}|${m.g}">삭제</button></td></tr>`);
   return s + `</table></div>`;
 }
 
-/* ── 라우팅·렌더 ── */
-const VIEWS = { home:viewHome, grammar:viewGrammar, quiz:viewQuiz, vocab:viewVocab, reading:viewReading, listening:viewListening, record:viewRecord };
-function route(){ const r = (location.hash || '#home').slice(1); return VIEWS[r] ? r : 'home'; }
+/* ── 라우팅 ── */
+const VIEWS = { home:viewHome, notes:viewNotes, grammar:viewGrammar, reading:viewReading, vocab:viewVocab, listening:viewListening, mock:viewMock };
+const route = () => { const r = (location.hash || '#home').slice(1); return VIEWS[r] ? r : 'home'; };
 function render(){
-  const r = route();
-  app.innerHTML = VIEWS[r]();
-  const tab = r === 'quiz' ? (quiz && quiz.kind === 'syn' ? 'reading' : 'grammar') : r === 'vocab' ? 'reading' : r;
-  document.querySelectorAll('nav.tabs a').forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + tab ? 'page' : 'false'));
+  const r = route(); app.innerHTML = VIEWS[r]();
+  document.querySelectorAll('nav.tabs a').forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + r ? 'page' : 'false'));
 }
 window.addEventListener('hashchange', () => { if (synth) synth.cancel(); render(); window.scrollTo(0, 0); });
-setInterval(() => { const c = document.getElementById('clock'); if (c && quiz && quiz.timer) { const e = Math.floor((Date.now() - quiz.t0) / 1000); c.textContent = Math.floor(e / 60) + ':' + pad(e % 60); } }, 1000);
+setInterval(() => { const c = document.getElementById('clock'), sh = sheets.g; if (c && sh && sh.t0) { const e = Math.floor(((sh.t1 || Date.now()) - sh.t0) / 1000); c.textContent = Math.floor(e / 60) + ':' + pad(e % 60); } }, 1000);
 
 app.addEventListener('click', e => {
-  const b = e.target.closest('button, a[data-type]'); if (!b) return;
+  const b = e.target.closest('button, td[data-reveal]'); if (!b) return;
   const d = b.dataset;
-  if (d.type) { e.preventDefault(); return startGrammar(d.type); }
-  if (d.pick !== undefined) return pick(+d.pick);
-  if (d.g) return startGrammar(d.g);
-  if (d.act === 'next') { quiz.i++; quiz.picked = null; render(); window.scrollTo(0, 0); return; }
-  if (d.act === 'again') { const k = quiz.kind, m = quiz.mode; if (k === 'syn') return startQuiz({ kind:'syn', title:'동의어 퀴즈', items:synSet(), hideType:true }); return startGrammar(m); }
-  if (d.act === 'quit') { const back = quiz && quiz.kind === 'syn' ? 'vocab' : 'grammar'; quiz = null; location.hash = back; return; }
-  if (d.act === 'vstart') { const q = vocabQueue(); if (!q.length) return toast('오늘 볼 카드가 없어요. 내일 다시!'); vs = { q, i:0, flip:false }; return render(); }
-  if (d.act === 'flip') { vs.flip = !vs.flip; return render(); }
-  if (d.know !== undefined) {
-    const v = vs.q[vs.i], cur = S.vocab[v.w] || { b:0, d:0 };
-    cur.b = d.know === '1' ? Math.min(5, cur.b + 1) : 0;
-    cur.d = dayNum(today()) + (d.know === '1' ? GAP[cur.b] : 0);
-    if (d.know === '0') vs.q.push(v);           // 모르면 오늘 한 번 더
-    S.vocab[v.w] = cur; bump('v'); vs.i++; vs.flip = false; return render();
+  if (d.sh) return onPick(d.sh, +d.i, +d.k);
+  if (d.gset) { grammarSheet(d.gset); if (route() !== 'grammar') location.hash = 'grammar'; else { render(); window.scrollTo(0, 0); } return; }
+  if (d.grade === 'g') { const sh = sheets.g; sh.graded = true; sh.t1 = Date.now(); sh.items.forEach((it, i) => { if (sh.picks[i] !== undefined) recordGrammar(it, it.order[sh.picks[i]] === it.a); else recordGrammar(it, false); }); bump('g', 26); return render(); }
+  if (d.grade === 'mock') {
+    const sh = sheets.mock; sh.graded = true; const c = { g:0, l:0, r:0 };
+    sh.items.forEach((it, k) => { const ok = sh.picks[k] !== undefined && it.order[sh.picks[k]] === it.a; if (ok) c[sh.meta[k].s]++; if (sh.meta[k].s === 'g') recordGrammar(it, ok); });
+    S.mocks.push({ d:today(), k:'모의 ' + sh.n + '회', g:sec(c.g, 26), r:sec(c.r, 28), l:sec(c.l, 26), t:total(c.g, c.l, c.r) });
+    S.draft = null; save(); return keepScroll(render);
   }
-  if (d.act === 'vquit') { vs = null; return render(); }
-  if (d.act === 'syn') return startQuiz({ kind:'syn', title:'동의어 퀴즈', items:synSet(), hideType:true });
-  if (d.read) { const p = READING.find(x => x.id === d.read); rd = { id:p.id, ans:{}, right:0, order:p.q.map(q => shuffle(q.slice(1, 5))) }; render(); window.scrollTo(0, 0); return; }
-  if (d.rq !== undefined) {
-    const p = READING.find(x => x.id === rd.id), i = +d.rq, k = +d.k;
-    rd.ans[i] = k; if (rd.order[i][k] === p.q[i][1]) rd.right++;
-    if (Object.keys(rd.ans).length === p.q.length) { S.best[p.id] = Math.max(S.best[p.id] || 0, rd.right); bump('r'); }
-    const y = window.scrollY; render(); window.scrollTo(0, y); return;
-  }
-  if (d.act === 'rback') { rd = null; return render(); }
-  if (d.listen) { const s = LISTENING.find(x => x.id === d.listen); ls = { id:s.id, ans:{}, right:0, rate: ls ? ls.rate : 0.9, showQ:false, order:s.q.map(q => shuffle(q.slice(1, 5))) }; if (synth) synth.cancel(); render(); window.scrollTo(0, 0); return; }
-  if (d.act === 'play') return playSet();
-  if (d.act === 'stop') { if (synth) synth.cancel(); return; }
-  if (d.act === 'qtoggle') { ls.showQ = !ls.showQ; return render(); }
-  if (d.lq !== undefined) {
-    const s = LISTENING.find(x => x.id === ls.id), i = +d.lq, k = +d.k;
-    ls.ans[i] = k; if (ls.order[i][k] === s.q[i][1]) ls.right++;
-    if (Object.keys(ls.ans).length === s.q.length) { S.best[s.id] = Math.max(S.best[s.id] || 0, ls.right); bump('l'); if (synth) synth.cancel(); }
-    const y = window.scrollY; render(); window.scrollTo(0, y); return;
-  }
-  if (d.act === 'lback') { if (synth) synth.cancel(); ls = null; return render(); }
-  if (d.del) { const [dd, tt] = d.del.split('|'); const i = S.mocks.findIndex(m => m.d === dd && String(m.t) === tt); if (i > -1) S.mocks.splice(i, 1); save(); return render(); }
-  if (d.act === 'reset') { if (!resetArm) { resetArm = true; return render(); } resetArm = false; S = blank(); save(); toast('기록을 지웠어요'); return render(); }
+  if (d.done) { S.done[d.done] = !S.done[d.done]; save(); return keepScroll(render); }
+  if (d.rid) { rId = d.rid; render(); return; }
+  if (d.rreset) { delete sheets['r-' + d.rreset]; return render(); }
+  if (d.lid) { lId = d.lid; if (synth) synth.cancel(); return render(); }
+  if (d.lreset) { delete sheets['l-' + d.lreset]; return render(); }
+  if (d.showq !== undefined) { showQ = !showQ; return keepScroll(render); }
+  if (d.play) return play(d.play);
+  if (d.stop !== undefined) { if (synth) synth.cancel(); return; }
+  if (d.vr) { vRange = +d.vr; return render(); }
+  if (d.vf !== undefined) { vFilter = vFilter === 'all' ? 'unknown' : 'all'; return render(); }
+  if (d.vhide !== undefined) { S.hideM = !S.hideM; save(); return keepScroll(render); }
+  if (d.reveal !== undefined) { b.parentNode.querySelectorAll('.hidden-m').forEach(x => x.classList.remove('hidden-m')); return; }
+  if (d.known) { if (S.known[d.known]) delete S.known[d.known]; else { S.known[d.known] = 1; bump('v'); } save(); return keepScroll(render); }
+  if (d.syn !== undefined) { makeSheet('syn', withOrder(synItems(30)), { kind:'v' }); return render(); }
+  if (d.synclose !== undefined) { delete sheets.syn; return render(); }
+  if (d.mock) { mockN = +d.mock; if (!sheets.mock || sheets.mock.n !== mockN || sheets.mock.graded) mockSheet(mockN); return render(); }
+  if (d.del) { const [dd, tt, gg] = d.del.split('|'); const i = S.mocks.findIndex(m => m.d === dd && String(m.t) === tt && String(m.g) === gg); if (i > -1) S.mocks.splice(i, 1); save(); return keepScroll(render); }
+  if (d.reset !== undefined) { if (!resetArm) { resetArm = true; return keepScroll(render); } resetArm = false; S = blank(); S.start = today(); S.target = fromNum(dayNum(S.start) + 7); save(); toast('기록을 지웠어요'); return render(); }
 });
 app.addEventListener('input', e => {
   const t = e.target;
-  if (t.dataset.sim) { sim[t.dataset.sim] = +t.value; const y = window.scrollY; render(); window.scrollTo(0, y); const n = document.getElementById(t.id); if (n) n.focus(); }
+  if (t.dataset.sim) { sim[t.dataset.sim] = +t.value; keepScroll(render); const n = document.getElementById(t.id); if (n) n.focus(); }
 });
 app.addEventListener('change', e => {
   const t = e.target;
-  if (t.id === 'target' && t.value) { S.target = t.value; save(); toast('마감일을 바꿨어요'); }
-  if (t.id === 'rate') ls.rate = +t.value;
+  if (t.id === 'target' && t.value) { S.target = t.value; save(); render(); toast('시험일을 바꿨어요'); }
+  if (t.id === 'start' && t.value) { S.start = t.value; save(); render(); toast('Day 1 시작일을 바꿨어요'); }
+  if (t.id === 'rate') rate = +t.value;
 });
 app.addEventListener('submit', e => {
   e.preventDefault();
   const v = id => Math.max(0, Math.min(100, +document.getElementById(id).value));
-  const m = { d: document.getElementById('m-d').value, g: v('m-g'), r: v('m-r'), l: v('m-l') };
+  const m = { d: document.getElementById('m-d').value, k:'시험', g: v('m-g'), r: v('m-r'), l: v('m-l') };
   m.t = Math.round((m.g + m.r + m.l) / 3);
-  S.mocks.push(m); save(); toast(m.t >= 65 ? m.t + '점! 목표 달성' : '평균 ' + m.t + '점 기록'); render();
+  S.mocks.push(m); save(); toast(m.t >= 65 ? m.t + '점! 목표 달성' : '평균 ' + m.t + '점 기록'); keepScroll(render);
 });
-if (synth && synth.onvoiceschanged !== undefined) synth.onvoiceschanged = () => {};
 render();
 })();
 </script>

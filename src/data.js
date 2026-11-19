@@ -107,11 +107,71 @@ const GRAMMAR = [
 ['conj','You can\'t enter the concert hall ___ you have a ticket.','unless','because','although','while','"~하지 않으면" → unless.'],
 ['conj','She didn\'t go to the party. ___, she stayed home and read a book.','Instead','Moreover','For example','Similarly','A 대신 B → Instead.'],
 ['conj','Kim kept practicing ___ she could play the piece perfectly.','until','unless','although','whereas','"~할 때까지" → until.'],
+// ── 기출형 보강 (실제 시험처럼 문맥이 긴 문장) ──
+['tense','Jenna is not available for a call right now. She ___ a client in the conference room, and the meeting won\'t end until noon.','is meeting','meets','has met','will meet','right now → 현재진행. 단서가 앞 문장에 숨어 있는 기출 유형.'],
+['tense','The company\'s founder, Mr. Hale, ___ in the same office for over thirty years by the time he finally retired in 2021.','had been working','has been working','was working','will have been working','by the time + 과거(retired) + for 기간 → had been -ing.'],
+['tense','By the end of this year, Professor Kim ___ the effects of climate change on coral reefs for a full decade.','will have been studying','has been studying','had been studying','is studying','By the end of this year(미래) + for 기간 → will have been -ing.'],
+['tense','Last night, while Mark ___ dinner, the smoke alarm went off and woke the baby.','was cooking','is cooking','has been cooking','cooks','Last night + while → 과거진행.'],
+['tense','Don\'t call Anna at 8 tomorrow morning. She ___ to the airport to pick up her parents at that time.','will be driving','drives','has been driving','was driving','tomorrow morning + at that time → 미래진행.'],
+['tense','Since the start of the semester, Tyler ___ at the campus library three nights a week to pay his tuition.','has been working','had been working','is working','will have been working','Since + 과거 시점 → 현재완료진행.'],
+['tense','The hikers ___ for almost six hours when the rescue helicopter finally spotted them.','had been walking','have been walking','were walking','will have been walking','for 기간 + when + 과거(spotted) → 과거완료진행.'],
+['tense','As of this moment, thousands of fans ___ outside the stadium for the band\'s first concert in ten years.','are waiting','waited','had waited','will have waited','As of this moment(지금 이 순간) → 현재진행.'],
+['tense','When the CEO arrives at the headquarters later today, the staff ___ the final details of the annual report.','will be reviewing','are reviewing','have been reviewing','were reviewing','when + 현재동사(arrives) + later today → 미래진행.'],
+['tense','I couldn\'t answer your call earlier because I ___ in a job interview at that moment.','was sitting','am sitting','have been sitting','will be sitting','earlier + at that moment(과거) → 과거진행.'],
+['cond','If it were not for the internet, many people ___ it difficult to work from home.','would find','would have found','will find','found','If it were not for(~이 없다면) = 가정법 과거 → would + 동사원형.'],
+['cond','If Ben had checked the weather forecast, he ___ his umbrella to the picnic yesterday.','would have brought','would bring','will bring','brought','If had p.p. → would have p.p.'],
+['cond','Were the city to build a new subway line, commuters ___ much less time in traffic.','would spend','would have spent','will spend','spent','Were S to V (가정법 미래 도치) → would + 동사원형.'],
+['cond','If my grandmother were still alive today, she ___ proud of my graduation.','would be','would have been','will be','is','If + were → would + 동사원형.'],
+['cond','The concert could have been canceled if the organizers ___ enough tickets.','had not sold','did not sell','would not sell','have not sold','주절 could have p.p. → if절 had p.p.'],
+['cond','If I won the lottery, I ___ a small house by the sea and quit my job.','would buy','would have bought','will buy','bought','If + 과거(won) → would + 동사원형.'],
+['cond','Had the scientists ignored the strange results, they ___ the new antibiotic.','would never have discovered','would never discover','will never discover','never discovered','Had S p.p. → would have p.p.'],
+['cond','If Paul were more organized, he ___ his deadlines so often.','would not miss','would not have missed','will not miss','does not miss','If + were → would + 동사원형.'],
+['cond','If the hotel had offered free parking, we ___ there instead of the one downtown.','would have stayed','would stay','will stay','stayed','If had p.p. → would have p.p.'],
+['verbal','The doctor advised Kelly ___ caffeine after 3 p.m. so that she could sleep better.','to avoid','avoiding','having avoided','to have avoided','advise + 목적어 + to V. (목적어 없이 바로 오면 advise -ing)'],
+['verbal','Mr. Lim\'s speech encouraged many young people ___ careers in science.','to pursue','pursuing','having pursued','to have pursued','encourage + 목적어 + to V.'],
+['verbal','The new policy allows employees ___ from home twice a week.','to work','working','having worked','to have worked','allow + 목적어 + to V.'],
+['verbal','The teacher made the students ___ the essay because it was full of errors.','rewrite','to rewrite','rewriting','having rewritten','사역동사 make + 목적어 + 동사원형.'],
+['verbal','Since the museum is closed on Mondays, I suggest ___ there on Tuesday instead.','going','to go','having gone','to have gone','suggest + -ing.'],
+['verbal','The scientist is looking forward to ___ her findings at the conference.','presenting','present','having presented','to have presented','look forward to + -ing (to는 전치사).'],
+['verbal','Many tourists spend hours ___ in line to see the famous painting.','waiting','to wait','having waited','to have waited','spend + 시간 + -ing.'],
+['verbal','The startup failed ___ enough funding and closed after only a year.','to raise','raising','having raised','to have raised','fail + to V.'],
+['verbal','The city council is considering ___ cars from the downtown area on weekends.','banning','to ban','having banned','to have banned','consider + -ing.'],
+['verbal','After years of practice, Ryan finally managed ___ the marathon in under three hours.','to finish','finishing','having finished','to have finished','manage + to V.'],
+['verbal','Residents have been told to discontinue ___ tap water until the pipes are repaired.','drinking','to drink','having drunk','to have drunk','discontinue + -ing.'],
+['verbal','The library prohibits ___ food into the reading rooms.','bringing','to bring','having brought','to have brought','prohibit + -ing.'],
+['verbal','Jake practiced ___ his speech in front of a mirror before the contest.','giving','to give','having given','to have given','practice + -ing.'],
+['verbal','The new law requires companies ___ their employees for overtime work.','to pay','paying','having paid','to have paid','require + 목적어 + to V.'],
+['verbal','This old movie is definitely worth ___ again.','watching','to watch','having watched','to have watched','be worth + -ing.'],
+['subj','The landlord demanded that the tenant ___ the rent by the end of the week.','pay','pays','paid','will pay','demand that S + 동사원형.'],
+['subj','It is advisable that travelers ___ their flight status before leaving for the airport.','check','checks','checked','are checking','It is advisable that S + 동사원형.'],
+['subj','The fire chief ordered that all residents ___ the building immediately.','evacuate','evacuated','evacuates','are evacuating','order that S + 동사원형.'],
+['subj','The professor requested that every essay ___ by email before midnight.','be submitted','is submitted','was submitted','will be submitted','request that S + be p.p.'],
+['subj','It is imperative that the factory ___ its safety rules after the accident.','update','updates','updated','will update','It is imperative that S + 동사원형.'],
+['subj','Dr. Moore advised that his patient ___ jogging until the knee injury heals.','avoid','avoids','avoided','is avoiding','advise that S + 동사원형.'],
+['modal','The lights are on in Jake\'s apartment, and his car is parked outside. He ___ be home now.','must','should','could','would','강한 확신(~임에 틀림없다) → must.'],
+['modal','When we were children, my grandfather ___ tell us stories every night before bed.','would','must','should','can','과거의 습관(~하곤 했다) → would.'],
+['modal','Passengers ___ keep their seat belts fastened while the sign is on.','must','might','could','would','규칙·의무 → must.'],
+['modal','With the new software, users ___ edit videos on their phones in just a few minutes.','can','must','should','would','능력·가능 → can.'],
+['modal','Even experienced climbers ___ get lost in heavy fog, so always carry a map.','may','must','should','would','가능성(~할 수도 있다) → may.'],
+['modal','To protect the rare plants, visitors ___ not step off the marked trails.','must','can','would','might','금지 규칙 → must not.'],
+['rel','The Amazon rainforest, ___, produces a large share of the world\'s oxygen.','which covers parts of nine countries','that covers parts of nine countries','where covers parts of nine countries','who covers parts of nine countries','사물 + 콤마 → which.'],
+['rel','The scientist ___ will speak at tomorrow\'s opening ceremony.','who won the award last year','which won the award last year','whose won the award last year','where won the award last year','사람 + 주어 자리 빔 → who.'],
+['rel','Seoul, ___, hosted the Summer Olympics in 1988.','which is the capital of South Korea','that is the capital of South Korea','where is the capital of South Korea','who is the capital of South Korea','도시도 주어 자리가 비면 which. where 뒤엔 주어+동사가 다 있어야 함.'],
+['rel','The hotel ___ was fully booked for the holidays.','where we stayed last summer','which we stayed last summer','who we stayed last summer','whose we stayed last summer','stay는 목적어가 없는 동사라 "we stayed"가 완전한 문장 → where.'],
+['rel','Tom Hanks, ___, is one of the most popular actors in Hollywood.','whose movies have earned billions of dollars','which movies have earned billions of dollars','who movies have earned billions of dollars','that movies have earned billions of dollars','"그의 영화들" 소유 → whose + 명사.'],
+['rel','Many Koreans still remember the summer of 2002, ___.','when the country hosted the World Cup','which the country hosted the World Cup','where the country hosted the World Cup','who the country hosted the World Cup','시간 + 완전한 문장 → when.'],
+['conj','The company lost money for two years in a row. ___, it decided to close two of its stores.','Consequently','Nevertheless','Similarly','Meanwhile','손실 → 결과로 폐점: Consequently.'],
+['conj','Kate was preparing dinner in the kitchen. ___, her husband was setting the table in the dining room.','Meanwhile','Therefore','Otherwise','For example','같은 시간 다른 일 → Meanwhile.'],
+['conj','Many people think bats are blind. ___, most bats can see quite well.','In fact','Therefore','Similarly','For instance','통념을 뒤집는 사실 → In fact.'],
+['conj','Sam failed the driving test three times. ___, he got his license on the fourth try.','Eventually','Otherwise','In contrast','Likewise','여러 번 끝에 → Eventually(결국).'],
+['conj','The new phone is light and fast. ___, its battery lasts longer than older models.','In addition','However','Otherwise','Instead','장점 추가 → In addition.'],
+['conj','Lisa saved money every month ___ she could buy a car by the end of the year.','so that','even though','unless','as if','목적(~하도록) → so that.'],
+['conj','___ you finish the report, please send it to me right away.','As soon as','Although','Unless','Even though','"~하자마자" → As soon as.'],
 ];
 
 /* 동명사·to부정사 동사 암기 */
-const GERUND_VERBS = 'enjoy avoid consider mind keep quit finish postpone delay deny risk practice imagine recommend suggest involve admit dislike discontinue resist anticipate appreciate tolerate include advocate'.split(' ');
-const INF_VERBS = 'want hope decide plan expect agree refuse promise need wish choose afford fail manage tend seem pretend attempt prepare offer learn aim deserve struggle arrange vow hesitate'.split(' ');
+const GERUND_VERBS = 'enjoy avoid consider mind keep quit finish postpone delay deny risk practice imagine recommend suggest involve admit dislike discontinue resist anticipate appreciate tolerate include advocate prohibit'.split(' ');
+const INF_VERBS = 'want hope decide plan expect agree refuse promise need wish choose afford fail manage tend seem pretend attempt prepare offer learn aim deserve struggle arrange vow hesitate intend seek pledge'.split(' ');
 const SUBJ_WORDS = 'suggest recommend insist demand require ask advise propose urge order request command | important essential vital necessary crucial imperative critical mandatory';
 
 /* 어휘: 단어|뜻|동의어(지텔프 어휘 문제는 '문맥상 같은 뜻' 고르기) */
@@ -403,7 +463,9 @@ const LISTENING = [
 ], q:[
 ['Who did Sarah travel with?','her sister','Mike','her coworkers','her parents'],
 ['What did Sarah do in the mornings?','She picked up trash on the beach.','She went swimming in the ocean.','She visited local museums.','She worked at a restaurant.'],
+['How did Sarah spend the afternoons?','by exploring the island','by resting at the hotel','by fishing with her sister','by taking a cooking class'],
 ['How did Sarah\'s sister learn about the program?','from an online advertisement','from a close friend','from a newspaper article','from a local school'],
+['What did the organizers give the volunteers?','free lunch and gloves','free hotel rooms','plane tickets','new fishing nets'],
 ['What surprised Sarah the most?','the amount of plastic','the free lunch','the number of volunteers','the hot weather'],
 ['What will Mike probably do next month?','join a river clean-up with Sarah','travel to Jeju Island alone','buy new fishing nets','organize a beach festival'],
 ]},
@@ -418,6 +480,7 @@ const LISTENING = [
 ], q:[
 ['What is the main purpose of the talk?','to introduce a new library app','to announce a library closing','to explain how to write e-books','to recruit library volunteers'],
 ['What can users do with the app?','renew borrowed books without visiting','buy new books at a discount','meet authors online','print documents at home'],
+['What is true about the e-book section?','It offers over twenty thousand free titles.','It is only for children under ten.','It charges a small monthly fee.','It can be used only inside the library.'],
 ['When does the app send a reminder?','three days before books are due','one day after books are late','every Monday morning','whenever new books arrive'],
 ['Who is the kids\' corner designed for?','children under ten','teenagers preparing for exams','parents who work late','teachers at local schools'],
 ['How can new users get a free bag?','by showing the app\'s welcome screen at the front desk','by reading twenty e-books','by paying a small fee','by inviting a friend to the library'],
@@ -440,6 +503,7 @@ const LISTENING = [
 ['According to Tom, what is an advantage of driving?','He can leave at any time.','Parking is free near the office.','There is little traffic.','It is cheaper than the subway.'],
 ['What is the problem with parking near the office?','It is expensive.','It is far from the office.','It is always full.','It closes early.'],
 ['What is a disadvantage of taking the subway?','The station is not close to his home.','The trains are often late.','He cannot read on the train.','The fare is very high.'],
+['Why does Lisa recommend the subway?','Tom wants to save money for a trip.','Lisa takes the same train every day.','The subway stops at Tom\'s gym.','Driving makes Tom feel sleepy.'],
 ['What has Tom most likely decided to do?','take the subway to work','buy a new car','move closer to the office','work from home'],
 ]},
 { id:'l4', part:'Part 4 · 방법·팁 설명', title:'Five Tips for a Job Interview', lines:[
@@ -455,14 +519,215 @@ const LISTENING = [
 ['Why should listeners research the company?','to explain why they want to work there','to find out the salary','to meet current employees','to choose what to wear'],
 ['According to the speaker, what makes an answer more convincing?','a specific example','a long explanation','a confident voice','a friendly smile'],
 ['Why does the speaker suggest recording yourself?','to notice bad speaking habits','to send the video to employers','to memorize your answers','to save time on the interview day'],
+['What should listeners do the day before the interview?','check the route to the company','buy new clothes','call the interviewer','memorize the company\'s history'],
 ['When should listeners arrive for the interview?','about ten minutes early','exactly on time','thirty minutes early','right after lunch'],
+['According to the speaker, what does asking questions show?','real interest in the job','a lack of preparation','nervousness','strong technical skills'],
 ]},
 ];
 
-/* 14주 로드맵 (2026.11.23 ~ 2027.02.28) */
-const PHASES = [
-  { from:'2026-11-23', to:'2026-12-13', name:'1단계 · 문법 공식 완성', goal:'문법 26문항 중 22개 이상', todo:['시제·가정법·당위성 공식을 외운다','준동사 동사 목록 매일 퀴즈','단어 하루 30개 시작'] },
-  { from:'2026-12-14', to:'2027-01-10', name:'2단계 · 독해·어휘 끌어올리기', goal:'문법 24개 + 독해 15개 이상', todo:['독해는 질문 먼저 읽고 키워드 찾기','어휘 문제는 "문맥상 뜻"으로 고르기','12월 말~1월 초 첫 시험 응시 (실전 감 잡기)'] },
-  { from:'2027-01-11', to:'2027-01-31', name:'3단계 · 청취 + 실전 응시', goal:'평균 65점 (문법 92 · 독해 61 · 청취 42)', todo:['청취는 들리는 문제만 확실히 맞히기','실전 26문항 20분 안에 풀기','1월 시험 매 회차 응시'] },
-  { from:'2027-02-01', to:'2027-02-28', name:'4단계 · 약점 보완 + 마지막 응시', goal:'65점 이상 성적표 확보', todo:['오답노트 반복','약한 문법 유형 집중','남은 시험 회차 응시, 성적 발표일 확인'] },
+
+/* ── 2회분: 독해 4지문 (28문항) ── */
+READING.push(
+{ id:'r5', part:'Part 1 · 인물 일대기', title:'LOUIS BRAILLE', body:
+`Louis Braille was a French educator who invented braille, the system of raised dots that allows blind people to read and write by touch. His invention is still used around the world today, almost two centuries after he created it.
+
+Braille was born on January 4, 1809, in Coupvray, a small town near Paris. His father made leather goods, and young Louis often played in his workshop. At the age of three, he accidentally injured his eye with a sharp tool. The wound became infected, and the infection soon spread to his other eye. By the age of five, he was completely blind.
+
+Despite his disability, Braille was a bright and curious student. At ten, he won a scholarship to the Royal Institute for Blind Youth in Paris. The school's books used large raised letters, which were heavy, expensive, and very slow to read. When Braille was twelve, a former army captain named Charles Barbier visited the school and shared a code of raised dots that soldiers could read in the dark. The code was too complicated for everyday use, but it gave Braille an idea.
+
+Working tirelessly, Braille simplified Barbier's system into a cell of just six dots, which could be felt with a single fingertip. He completed the basic system when he was only fifteen and later adapted it for mathematics and music. He went on to become a respected teacher at the institute.
+
+Braille died of tuberculosis in 1852 at the age of 43. Two years later, the school officially adopted his system, and it gradually spread to other countries. Today, his name has become the word for the writing system itself.`,
+q:[
+['What is Louis Braille best known for?','creating a reading system for blind people','founding a school in Paris','designing tools for leather workers','teaching soldiers to read in the dark','1문단: invented braille … allows blind people to read and write by touch.'],
+['How did Braille lose his sight?','An injury led to an infection in both eyes.','He was born without the ability to see.','He was hurt while serving in the army.','A disease spread through his town.','2문단: injured his eye with a sharp tool → infection spread to his other eye.'],
+['What was the problem with the books at the Royal Institute?','They were hard to use and costly.','They were written only in English.','They were too small to read by touch.','They were kept in a locked room.','3문단: heavy, expensive, and very slow to read → hard to use and costly (패러프레이징).'],
+['Why did Barbier\'s code need to be changed?','It was too complex for daily use.','It was secret military information.','It used too few dots.','It could only be read during the day.','3문단: too complicated for everyday use.'],
+['Based on the article, what is true about Braille\'s six-dot cell?','It could be read with one finger.','It was invented by Barbier.','It was used only for music.','It was rejected by the institute.','4문단: could be felt with a single fingertip.'],
+['In the context of the passage, bright means ___.','intelligent','shiny','cheerful','colorful','bright student = 영리한(intelligent). 빛나는(shiny)은 함정.'],
+['In the context of the passage, adopted means ___.','accepted','raised','borrowed','copied','officially adopted his system = 공식적으로 채택했다(accepted).'],
+]},
+{ id:'r6', part:'Part 2 · 잡지 기사', title:'THE SURPRISING BENEFITS OF BOREDOM', body:
+`Most of us do everything we can to avoid boredom. The moment we have nothing to do, we reach for our phones to check messages, watch videos, or scroll through social media. However, some psychologists now argue that being bored from time to time may actually be good for us.
+
+In one widely discussed experiment, participants were first asked to complete a dull task, such as copying numbers from a phone book. Afterward, they were asked to think of as many uses as possible for a pair of plastic cups. The bored participants came up with more creative ideas than those who had skipped the dull task.
+
+Researchers believe this happens because boredom lets the mind wander. When we are not focused on anything in particular, the brain begins to make new connections between ideas. This daydreaming state can lead to fresh solutions to problems that we could not solve when we were concentrating hard.
+
+Boredom may also push people to change their lives. The uncomfortable feeling acts as a signal that our current activity is not meaningful, motivating us to seek new goals or hobbies.
+
+Unfortunately, constant smartphone use rarely gives our minds the chance to wander. Experts therefore suggest setting aside short periods each day without screens. Taking a walk, looking out of a window, or simply sitting quietly may feel unproductive, but these moments could be when our best ideas emerge.`,
+q:[
+['What is the article mainly about?','how boredom can be useful','why phones make people unhappy','how to finish dull tasks quickly','why creative people are rarely bored','1문단 마지막 문장: being bored may actually be good for us.'],
+['What did the experiment show?','People who were bored first gave more creative answers.','People who skipped the task felt more relaxed.','Copying numbers improved people\'s memory.','Plastic cups were hard to describe.','2문단: bored participants came up with more creative ideas.'],
+['Why does boredom lead to creativity, according to researchers?','It allows the mind to link ideas freely.','It makes people concentrate harder.','It reduces the need for sleep.','It helps people remember facts.','3문단: the brain begins to make new connections between ideas.'],
+['How can boredom help people change their lives?','It signals that they need more meaningful activities.','It makes them spend less money.','It helps them become more patient.','It encourages them to use their phones less.','4문단: signal that our current activity is not meaningful → seek new goals.'],
+['What do experts most likely recommend?','spending some time each day away from screens','avoiding all boring activities','using phones only for work','doing difficult tasks every morning','5문단: setting aside short periods each day without screens.'],
+['In the context of the passage, dull means ___.','boring','dark','blunt','slow','dull task = 지루한(boring). 무딘(blunt)·어두운(dark)은 함정.'],
+['In the context of the passage, emerge means ___.','appear','escape','rise','recover','our best ideas emerge = 떠오르다(appear).'],
+]},
+{ id:'r7', part:'Part 3 · 백과사전', title:'MONARCH BUTTERFLY', body:
+`The monarch butterfly is a large orange-and-black butterfly found mainly in North America. It is famous for its long annual migration, one of the most remarkable journeys in the insect world.
+
+Each autumn, monarchs in eastern North America fly south to the mountain forests of central Mexico, a trip of up to about 4,800 kilometers. There, millions of butterflies gather in fir trees to survive the winter. In spring, they begin flying north again. No single butterfly completes the whole round trip, however. The monarchs that fly south belong to a special generation that can live for up to eight months, while summer generations live for only a few weeks. It takes several generations to return to the northern breeding grounds.
+
+Scientists believe monarchs use the position of the sun to find their direction, and they may also sense the Earth's magnetic field. Remarkably, the butterflies that arrive in Mexico have never made the trip before.
+
+Monarch caterpillars feed only on milkweed plants. The milkweed contains toxins that remain in the butterfly's body, making it poisonous to many birds. Its bright colors serve as a warning to predators to stay away.
+
+In recent decades, monarch populations have fallen sharply. The loss of milkweed due to farming and the use of chemicals, the clearing of forests in Mexico, and extreme weather linked to climate change all pose threats. Many communities now plant milkweed gardens to help the butterflies recover.`,
+q:[
+['What is the monarch butterfly best known for?','its long yearly journey','its unusually long life','its ability to change colors','its habit of living in deserts','1문단: famous for its long annual migration.'],
+['What is true about the monarchs that fly south in autumn?','They live much longer than summer monarchs.','They return north in the same year.','They travel only a few hundred kilometers.','They spend the winter in Canada.','2문단: special generation that can live for up to eight months.'],
+['How do monarchs most likely find their way?','by using the sun and possibly magnetic fields','by following older butterflies','by remembering past trips','by following rivers and roads','3문단: use the position of the sun … may also sense the Earth\'s magnetic field.'],
+['Why do birds usually avoid eating monarchs?','The butterflies contain poison from milkweed.','The butterflies are too large to catch.','The butterflies fly too high.','The butterflies hide in fir trees.','4문단: toxins … making it poisonous to many birds.'],
+['Which is NOT mentioned as a threat to monarchs?','being collected as pets','the loss of milkweed','the clearing of forests','extreme weather','5문단에 애완용 채집은 없음. NOT 문제는 보기를 지문과 하나씩 대조.'],
+['In the context of the passage, gather means ___.','assemble','harvest','understand','increase','millions of butterflies gather = 모이다(assemble).'],
+['In the context of the passage, pose means ___.','present','model','ask','place','pose threats = 위협이 되다(present). "포즈를 취하다(model)"는 함정.'],
+]},
+{ id:'r8', part:'Part 4 · 비즈니스 편지', title:'Letter to Mr. Patel', body:
+`Dear Mr. Patel,
+
+On behalf of Northfield Travel Group, I am delighted to offer you the position of Marketing Coordinator. The hiring committee was very impressed by your experience with social media campaigns and your creative ideas during the final interview.
+
+As we discussed, your starting date will be Monday, April 7. You will report to Ms. Grace Ahn, our Marketing Director, and work closely with our design team. During your first two weeks, you will attend a training program that introduces our booking systems and company policies.
+
+Your annual salary will be $48,000, and you will be eligible for a performance bonus after your first six months. In addition, all full-time employees receive health insurance and fifteen days of paid vacation per year. Because our team works with partners in different time zones, you may occasionally need to join video meetings early in the morning. In such cases, you may begin work later that day.
+
+To accept this offer, please sign the enclosed contract and return it to me by March 21. On your first day, kindly bring a copy of your university diploma and a valid photo ID so that we can complete your employment records.
+
+We are confident that you will make a valuable contribution to our team. Please do not hesitate to contact me if you have any questions.
+
+Sincerely,
+Olivia Brooks
+Human Resources Manager, Northfield Travel Group`,
+q:[
+['Why did Olivia Brooks write to Mr. Patel?','to offer him a job','to invite him to an interview','to ask him to plan a trip','to explain a change in salary','1문단: delighted to offer you the position.'],
+['Why was Mr. Patel chosen for the position?','His experience and ideas impressed the committee.','He had worked for the company before.','He was recommended by Ms. Ahn.','He agreed to the lowest salary.','1문단: impressed by your experience … and your creative ideas.'],
+['What will Mr. Patel do during his first two weeks?','learn about the company\'s systems and rules','travel to meet foreign partners','design a new advertising campaign','interview other candidates','2문단: training program that introduces our booking systems and company policies.'],
+['What will most likely happen if Mr. Patel has an early meeting?','He can start his workday later.','He will receive extra vacation days.','He will be paid a bonus.','He can skip the training program.','3문단: you may begin work later that day.'],
+['What must Mr. Patel bring on his first day?','his diploma and an ID card','the signed contract','his health insurance card','a list of marketing ideas','4문단: bring a copy of your university diploma and a valid photo ID. 계약서는 3/21까지 미리 보냄.'],
+['In the context of the passage, report to means ___.','work under','write about','complain to','announce to','report to Ms. Ahn = 그 사람 밑에서 일하다(work under).'],
+['In the context of the passage, valid means ___.','current','strong','reasonable','famous','valid photo ID = 유효한(current). "타당한(reasonable)"은 함정.'],
+]},
+);
+
+/* ── 2회분: 청취 4세트 (7·6·6·7 = 26문항) ── */
+LISTENING.push(
+{ id:'l5', part:'Part 1 · 개인 경험 대화', title:'Jason\'s Cooking Class', lines:[
+[0,'Hey Jason, I heard you started taking a cooking class. How is it going?'],
+[1,'Hi Amy! It\'s going great. I signed up last month because I was tired of eating instant noodles every night.'],
+[0,'Ha ha, I remember. So what kind of food are you learning to make?'],
+[1,'Mostly Italian dishes. Last week we made fresh pasta from scratch. It took two hours, but it tasted amazing.'],
+[0,'Wow. Where is the class?'],
+[1,'It\'s at the community center near my office, so I can go right after work on Thursdays.'],
+[0,'That\'s convenient. Is it expensive?'],
+[1,'Not really. It\'s eighty dollars for eight weeks, and all the ingredients are included.'],
+[0,'That\'s a good deal. What has been the hardest part?'],
+[1,'Using a knife properly. I cut my finger in the first class, so now I am very careful. The chef taught us to curl our fingers when we chop vegetables.'],
+[0,'Ouch. So, are you going to cook for me sometime?'],
+[1,'Actually, I am planning a small dinner party next Saturday to practice. Why don\'t you come? I will make lasagna.'],
+[0,'I would love to. I will bring dessert.'],
+], q:[
+['Why did Jason sign up for the cooking class?','He was tired of eating instant food.','His doctor told him to eat better.','He wanted to become a chef.','Amy asked him to join.'],
+['What kind of food is Jason mainly learning to cook?','Italian food','Korean food','desserts','vegetarian dishes'],
+['What is true about the pasta the class made?','It took a long time but was delicious.','It was bought at a store.','It was too salty to eat.','It was made in ten minutes.'],
+['Why is the location of the class convenient for Jason?','It is near his workplace.','It is next to his apartment.','It is held online.','It is on his way to the gym.'],
+['What is included in the class fee?','the ingredients','a set of knives','a recipe book','a dinner party'],
+['What has Jason found most difficult?','using a knife correctly','following recipes','cleaning the kitchen','cooking quickly'],
+['What will Amy probably do next Saturday?','go to Jason\'s dinner party','take a cooking class','cook lasagna for Jason','visit the community center'],
+]},
+{ id:'l6', part:'Part 2 · 발표 (상품·행사 소개)', title:'Harbor City Night Run', lines:[
+[0,'Good evening, everyone! I am Chris, the organizer of the first Harbor City Night Run, and I am excited to tell you about this event.'],
+[0,'The run will take place on Saturday, June 14, starting at 8 p.m. at Harbor Park. Runners can choose between a five-kilometer course and a ten-kilometer course along the waterfront.'],
+[0,'Unlike regular races, this is a night run, so the route will be lit with colorful lights, and live bands will play music at every kilometer.'],
+[0,'Each participant will receive a glow-in-the-dark T-shirt and a medal at the finish line. The fee is twenty-five dollars, and part of it will be donated to the city children\'s hospital.'],
+[0,'If you register before May 31, you will get a five-dollar discount. Registration is available on our website.'],
+[0,'Please note that runners under fourteen must be accompanied by an adult. We hope to see you at the starting line!'],
+], q:[
+['What is the speaker mainly talking about?','a running event held at night','a new park opening','a music festival at the harbor','a fundraiser for a school'],
+['What can runners choose?','the length of the course','the color of their T-shirt','the starting time','the band that plays'],
+['What makes this race different from regular races?','The route has lights and live music.','There is no finish line.','Runners must wear costumes.','It is held on a beach.'],
+['What will be done with part of the fee?','It will be given to a children\'s hospital.','It will pay the bands.','It will buy new park lights.','It will be returned to the winners.'],
+['How can participants get a discount?','by registering before the end of May','by bringing a friend','by running the longer course','by volunteering at the event'],
+['What is required of runners under fourteen?','They must run with an adult.','They must run the shorter course.','They must pay a higher fee.','They must start earlier.'],
+]},
+{ id:'l7', part:'Part 3 · 장단점 비교 대화', title:'Laptop or Tablet?', lines:[
+[0,'Hi Kevin. You\'re starting university next month, right? Have you bought a computer yet?'],
+[1,'Not yet, Mina. I am trying to decide between a laptop and a tablet.'],
+[0,'Let\'s think about it together. What is good about a laptop?'],
+[1,'A laptop has a real keyboard, so it is much easier to type long reports. It also runs all the programs I need for my engineering classes.'],
+[0,'Any downsides?'],
+[1,'It\'s heavy to carry around campus all day, and the battery doesn\'t last very long.'],
+[0,'And the tablet?'],
+[1,'A tablet is light, and the battery lasts almost a full day. I could also take handwritten notes with a pen, which helps me remember things.'],
+[0,'Sounds nice. What are the disadvantages?'],
+[1,'Some engineering software doesn\'t work on tablets. And typing on the screen is slow.'],
+[0,'Well, it seems like the programs are the most important thing for your major.'],
+[1,'You\'re right. I can\'t take the risk of not running the software for my classes. I will go with the laptop and buy a lighter bag.'],
+], q:[
+['What are Kevin and Mina mainly discussing?','which device Kevin should buy for school','which university Kevin should attend','how to write long reports','where to buy a new bag'],
+['According to Kevin, what is an advantage of a laptop?','It makes typing long reports easier.','It is light enough to carry all day.','It has a long-lasting battery.','It comes with a pen.'],
+['What is a disadvantage of a laptop?','It is heavy to carry.','It cannot run engineering programs.','It is more expensive than a tablet.','Its screen is too small.'],
+['Why does Kevin like the idea of a tablet\'s pen?','Writing by hand helps him remember.','He likes to draw pictures.','It makes typing faster.','His professors require it.'],
+['What is a disadvantage of a tablet?','Some programs for his major will not run on it.','Its battery dies quickly.','It is hard to carry.','It cannot connect to the internet.'],
+['What has Kevin most likely decided to do?','buy a laptop','buy a tablet','buy both devices','wait until next year'],
+]},
+{ id:'l8', part:'Part 4 · 방법·팁 설명', title:'How to Sleep Better', lines:[
+[0,'Hello and welcome to Healthy Habits. Many of our listeners say they have trouble sleeping, so today I will share six simple steps to improve your sleep.'],
+[0,'First, go to bed and wake up at the same time every day, even on weekends. A regular schedule helps your body clock stay on track.'],
+[0,'Second, avoid caffeine in the afternoon. Coffee, tea, and some soft drinks can keep you awake for up to eight hours.'],
+[0,'Third, put away your phone at least an hour before bed. The blue light from screens tells your brain that it is still daytime.'],
+[0,'Fourth, keep your bedroom cool, dark, and quiet. If street noise is a problem, try using earplugs or a fan.'],
+[0,'Fifth, exercise during the day, but not right before bedtime, because it can make you feel too energetic to fall asleep.'],
+[0,'Finally, if you cannot fall asleep after twenty minutes, get up and do something relaxing, like reading a paper book, until you feel sleepy.'],
+[0,'Try these steps for two weeks, and you will likely notice a difference. Sweet dreams!'],
+], q:[
+['What is the talk mainly about?','ways to sleep better','the dangers of caffeine','how to exercise safely','choosing a new bed'],
+['Why should listeners keep the same sleep schedule on weekends?','to keep their body clock regular','to have more free time','to avoid traffic','to wake up earlier on Monday'],
+['How long can caffeine keep a person awake?','up to eight hours','about one hour','about twenty minutes','up to two days'],
+['Why should people put their phones away before bed?','Screen light makes the brain think it is daytime.','Phones make too much noise.','Phone calls can be stressful.','Phones get too hot at night.'],
+['What does the speaker suggest for a noisy bedroom?','using earplugs or a fan','moving to another room','playing loud music','opening the windows'],
+['Why should people avoid exercising right before bed?','It can make them too energetic to sleep.','It can cause injuries at night.','It makes them hungry.','It uses too much energy for the next day.'],
+['What should listeners do if they cannot sleep after twenty minutes?','get up and do something relaxing','check their phone','drink a cup of tea','keep trying with their eyes closed'],
+]},
+);
+
+/* ── 7일 완성 플랜: 하루 5~6시간 기준. [시간, 할 일] ── */
+const PLAN = [
+ { day:1, area:'문법', title:'시제 + 가정법 (12문항 = 문법의 절반)', score:'문법 12개 확보', blocks:[
+   ['60분','요약노트 ① 시제 단서표 · ② 가정법 표 소리 내어 3번 읽기'],
+   ['90분','시제·가정법 유형별 전체 풀기 → 틀린 건 단서에 동그라미'],
+   ['60분','오답노트 다시 풀기 + 단서만 보고 형태 말하기'],
+   ['60분','단어 1~60 (뜻 가리고 체크)'] ] },
+ { day:2, area:'문법', title:'준동사 + 당위성 + 조동사', score:'문법 22개 확보', blocks:[
+   ['60분','요약노트 ③ -ing / to V 동사 목록 외우기 (목록 퀴즈 2번)'],
+   ['90분','준동사·당위성·조동사 유형별 전체 풀기'],
+   ['60분','관계사·연결어 표 읽고 유형별 풀기'],
+   ['60분','단어 61~120'] ] },
+ { day:3, area:'문법', title:'문법 실전 26문항 × 3회', score:'문법 24개 이상 (92점)', blocks:[
+   ['90분','실전 26문항 3회 (회당 20분 목표, 끝나면 바로 채점)'],
+   ['60분','오답노트 비우기 (두 번 맞혀야 빠짐)'],
+   ['60분','요약노트 전체 1회독'],
+   ['60분','단어 121~181 + 다의어 표'] ] },
+ { day:4, area:'독해', title:'독해 Part 1·2 + 어휘', score:'독해 파트당 4개', blocks:[
+   ['30분','요약노트 ⑥ 독해 전략 읽기'],
+   ['90분','인물(Part 1)·잡지(Part 2) 지문 4개: 질문 먼저 → 키워드 → 문단에서 근거 찾기'],
+   ['60분','틀린 문제 근거 문장과 정답 보기 비교 (말 바꾸기 확인)'],
+   ['60분','단어 전체 1회독 + 동의어 퀴즈'] ] },
+ { day:5, area:'독해', title:'독해 Part 3·4 + 어휘', score:'독해 17개 (61점)', blocks:[
+   ['90분','백과(Part 3)·편지(Part 4) 지문 4개'],
+   ['60분','어휘 문제만 모아 다시 (사전 뜻 말고 문맥 뜻)'],
+   ['60분','문법 실전 26문항 1회 (감 유지)'],
+   ['60분','틀린 단어만 다시'] ] },
+ { day:6, area:'청취', title:'청취 4파트 + 모의고사 1회', score:'청취 11개 (42점)', blocks:[
+   ['30분','요약노트 ⑦ 청취 전략 읽기'],
+   ['60분','청취 1회분 4세트: 질문 들을 때 의문사·키워드 메모'],
+   ['90분','모의고사 1회 (문법 26 · 청취 26 · 독해 28)'],
+   ['60분','모의고사 오답 정리'] ] },
+ { day:7, area:'실전', title:'모의고사 2회 + 약점 마무리', score:'평균 65 이상', blocks:[
+   ['90분','모의고사 2회'],
+   ['60분','가장 약한 문법 유형만 다시 (오늘 탭 하단에 표시)'],
+   ['30분','요약노트 ⑧ 시험 당일 체크 읽기'],
+   ['자기 전','시제 단서표·동사 목록·당위성 단어만 한 번 더'] ] },
 ];
