@@ -11,16 +11,17 @@
 <title>지텔프 65 작전</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500;700&family=Black+Han+Sans&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+KR:wght@400;500;700&family=Black+Han+Sans&display=swap">
 <style>
 /* Layout: OMR 답안지 — 빨간 인쇄선, 칠하는 동그라미 보기. 넓은 화면에선 여러 단으로 펼쳐 한눈에 */
 :root{
   --paper:#fbfaf7; --sheet:#ffffff; --ink:#1d1f24; --muted:#6b6862;
   --omr:#d2394a; --omr-soft:#fbe3e5; --line:#ecc9cd;
   --ok:#1f8a5b; --ok-soft:#dff3e9; --bad:#c2410c; --bad-soft:#fde8dc;
-  --display:'Black Han Sans','IBM Plex Sans KR',sans-serif;
-  --body:'IBM Plex Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
-  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  /* 영어·숫자는 시험지와 같은 Times New Roman 계열(Tinos), 한글은 고딕 */
+  --display:'Tinos','Times New Roman','Black Han Sans','IBM Plex Sans KR',serif;
+  --body:'Tinos','Times New Roman','IBM Plex Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --mono:'Tinos','Times New Roman',Times,'IBM Plex Sans KR',serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#16171b; --sheet:#1f2126; --ink:#ecebe8; --muted:#a19d96;
@@ -32,7 +33,7 @@
   --ok:#4fd39a; --ok-soft:#173327; --bad:#ff9a6b; --bad-soft:#3a2418; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{background:var(--paper);color:var(--ink)}
-body{font-family:var(--body);font-size:14.5px;line-height:1.55;
+body{font-family:var(--body);font-size:15.5px;line-height:1.55;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   padding-block:0 calc(76px + env(safe-area-inset-bottom,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
@@ -65,7 +66,7 @@ a.btn{color:var(--ink);text-decoration:none}
 
 /* 상단 D-day */
 .dday{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;align-items:center;border-bottom:2px solid var(--omr);padding-bottom:12px}
-.dday .big{font-family:var(--display);font-size:52px;line-height:1;color:var(--omr);grid-row:span 2}
+.dday .big{font-family:var(--display);font-weight:700;font-size:52px;line-height:1;color:var(--omr);grid-row:span 2}
 .dday .t{font-weight:700;font-size:16px}
 
 /* 7일 플랜 */
@@ -73,7 +74,7 @@ a.btn{color:var(--ink);text-decoration:none}
 .day{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--sheet);display:flex;flex-direction:column;gap:6px}
 .day.now{border:2px solid var(--omr)}
 .day.done{opacity:.6}
-.day .dn{font-family:var(--display);font-size:22px;color:var(--omr);line-height:1}
+.day .dn{font-family:var(--display);font-weight:700;font-size:22px;color:var(--omr);line-height:1}
 .day table td{font-size:13px;padding:3px 2px}
 .day table td:first-child{white-space:nowrap;color:var(--muted);font-family:var(--mono);font-size:12px;width:52px}
 
@@ -106,7 +107,8 @@ table{border-collapse:collapse;width:100%;font-size:13.5px}
 td,th{border-bottom:1px solid var(--line);padding:5px 4px;text-align:left;vertical-align:top}
 th{font-size:12px;color:var(--muted);font-weight:500}
 .scroll{overflow-x:auto}
-.vt td.m{cursor:pointer}
+.vt td.m{cursor:pointer;min-width:7.5em}
+.vt td:last-child{min-width:7em}
 .vt .hidden-m{color:transparent;background:var(--omr-soft);border-radius:4px;user-select:none}
 .vt tr.known td{color:var(--muted)}
 .check{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--omr);background:var(--sheet);padding:0}
@@ -115,7 +117,7 @@ th{font-size:12px;color:var(--muted);font-weight:500}
 input[type=range]{width:100%;accent-color:var(--omr)}
 input[type=date],input[type=number],select{font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:5px 8px;min-width:0}
 .field{display:flex;flex-direction:column;gap:3px;flex:1 1 90px;min-width:0}
-.score-big{font-family:var(--display);font-size:40px;line-height:1}
+.score-big{font-family:var(--display);font-weight:700;font-size:40px;line-height:1}
 .note h2{color:var(--omr);font-family:var(--display);font-weight:400;font-size:19px}
 .note b{font-weight:700}
 .kbd{font-family:var(--mono);font-size:13px;background:var(--omr-soft);border-radius:4px;padding:0 4px}
@@ -125,7 +127,7 @@ svg text{fill:var(--muted);font-family:var(--mono);font-size:11px}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--sheet);border-top:2px solid var(--omr);display:grid;grid-template-columns:repeat(7,1fr);
   padding:5px max(4px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(4px,env(safe-area-inset-left,0px))}
 nav.tabs a{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--muted);font-size:11.5px;padding:3px 0;gap:1px}
-nav.tabs a .ic{font-family:var(--display);font-size:17px;line-height:1.2}
+nav.tabs a .ic{font-family:var(--display);font-weight:700;font-size:17px;line-height:1.2}
 nav.tabs a[aria-current="page"]{color:var(--omr)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:7px 15px;border-radius:999px;font-size:14px;z-index:6}
 @media (prefers-reduced-motion:no-preference){.opt{transition:background .15s,border-color .15s}}
