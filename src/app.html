@@ -429,9 +429,9 @@ function viewVocab(){
   const r = vRange ? ranges[vRange - 1] : [0, VOCAB.length];
   const list = VOCAB.map((v, i) => Object.assign({ i }, v)).slice(r[0], r[1]).filter(v => vFilter === 'all' || !S.known[v.w]);
   const half = Math.ceil(list.length / 2);
-  const table = arr => `<div class="scroll"><table class="vt"><tr><th></th><th>#</th><th>단어</th><th>뜻</th><th>동의어</th></tr>
+  const table = arr => `<div class="scroll"><table class="vt"><tr><th></th><th>#</th><th>단어</th><th>품사</th><th>뜻</th><th>동의어</th></tr>
     ${arr.map(v => `<tr class="${S.known[v.w] ? 'known' : ''}"><td><button class="check" data-known="${esc(v.w)}" aria-pressed="${!!S.known[v.w]}" aria-label="${esc(v.w)} 외움"></button></td>
-      <td class="num muted">${v.i + 1}</td><td class="num"><b>${esc(v.w)}</b></td>
+      <td class="num muted">${v.i + 1}</td><td class="num"><b>${esc(v.w)}</b></td><td class="label">${[...new Set(v.p)].map(k => POS[k]).join('·')}</td>
       <td class="m" data-reveal><span class="${S.hideM ? 'hidden-m' : ''}">${esc(v.m)}</span></td><td class="muted"><span class="${S.hideM ? 'hidden-m' : ''}">${esc(v.s)}</span></td></tr>`).join('')}</table></div>`;
   h += `<div class="grid wide"><section class="sheet">${table(list.slice(0, half))}</section>${list.length > half ? `<section class="sheet">${table(list.slice(half))}</section>` : ''}</div>`;
   return h;

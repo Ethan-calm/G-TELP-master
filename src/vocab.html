@@ -8,6 +8,7 @@
   --paper:#f6f7fb; --sheet:#ffffff; --ink:#1b1e2b; --muted:#666a7a;
   --accent:#d2394a; --accent-soft:#fbe3e5; --line:#dfe2ec;
   --ok:#1f8a5b; --ok-soft:#dff3e9; --bad:#c2410c; --bad-soft:#fde8dc;
+  --pn:#2f6fd6; --pv:#c2410c; --pa:#1f8a5b; --pd:#7c3aed;
   --b0:#e7e9f1; --b1:#f6c1c7; --b2:#f09aa5; --b3:#e5707f; --b4:#d2394a; --b5:#1f8a5b;
   --display:'Black Han Sans','IBM Plex Sans KR',sans-serif;
   --body:'IBM Plex Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
@@ -16,11 +17,11 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#14151c; --sheet:#1e2029; --ink:#ecedf2; --muted:#a2a5b4; --accent:#ff6b78; --accent-soft:#3a2226; --line:#343746;
   --ok:#4fd39a; --ok-soft:#173327; --bad:#ff9a6b; --bad-soft:#3a2418;
-  --b0:#2c2f3c; --b1:#4d2a31; --b2:#743640; --b3:#a3434f; --b4:#ff6b78; --b5:#4fd39a; color-scheme:dark}}
+  --b0:#2c2f3c; --b1:#4d2a31; --b2:#743640; --b3:#a3434f; --b4:#ff6b78; --b5:#4fd39a; --pn:#7fb0ff; --pv:#ff9a6b; --pa:#4fd39a; --pd:#b99cff; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#14151c; --sheet:#1e2029; --ink:#ecedf2; --muted:#a2a5b4; --accent:#ff6b78; --accent-soft:#3a2226; --line:#343746;
   --ok:#4fd39a; --ok-soft:#173327; --bad:#ff9a6b; --bad-soft:#3a2418;
-  --b0:#2c2f3c; --b1:#4d2a31; --b2:#743640; --b3:#a3434f; --b4:#ff6b78; --b5:#4fd39a; color-scheme:dark}
+  --b0:#2c2f3c; --b1:#4d2a31; --b2:#743640; --b3:#a3434f; --b4:#ff6b78; --b5:#4fd39a; --pn:#7fb0ff; --pv:#ff9a6b; --pa:#4fd39a; --pd:#b99cff; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{background:var(--paper);color:var(--ink)}
 body{font-family:var(--body);font-size:15px;line-height:1.55;
@@ -82,6 +83,11 @@ button.card{cursor:pointer}
 .flash.ok{color:var(--ok)} .flash.no{color:var(--bad)}
 .star{border:0;background:none;font-size:20px;line-height:1;color:var(--muted);padding:2px 4px}
 .star[aria-pressed="true"]{color:var(--accent)}
+.pos{display:inline-block;font-size:12px;font-weight:700;border:1.5px solid var(--pc);color:var(--pc);border-radius:5px;padding:0 5px;line-height:1.5;vertical-align:middle;white-space:nowrap}
+.pos.명{--pc:var(--pn)} .pos.동{--pc:var(--pv)} .pos.형{--pc:var(--pa)} .pos.부{--pc:var(--pd)}
+.senses{display:flex;flex-direction:column;gap:4px;align-items:center}
+.sense{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+.card .tip{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px;max-width:420px}
 .kbd{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line);border-radius:4px;padding:0 4px}
 
 /* 목록 */
@@ -124,6 +130,7 @@ const CH = 80;
 function decks(){
   const d = [['all', '전체 ' + W.length]];
   for (let i = 0; i < W.length; i += CH) d.push(['r' + i, (i + 1) + '~' + Math.min(W.length, i + CH)]);
+  ['명','동','형','부'].forEach(k => d.push(['p' + k, POS[k] + ' ' + W.filter(v => v.p.includes(k)).length]));
   d.push(['weak', '아직 모름 ' + W.filter(v => box(v.w) < 3).length]);
   d.push(['miss', '자주 틀림 ' + W.filter(v => (S.miss[v.w] || 0) >= 2).length]);
   d.push(['star', '★ ' + Object.keys(S.star).length]);
@@ -133,6 +140,7 @@ function pool(){
   const k = S.deck;
   let p = W;
   if (k[0] === 'r') { const s = +k.slice(1); p = W.slice(s, s + CH); }
+  else if (k[0] === 'p' && POS[k.slice(1)]) p = W.filter(v => v.p.includes(k.slice(1)));
   else if (k === 'weak') p = W.filter(v => box(v.w) < 3);
   else if (k === 'miss') p = W.filter(v => (S.miss[v.w] || 0) >= 2);
   else if (k === 'star') p = W.filter(v => S.star[v.w]);
@@ -191,6 +199,22 @@ function header(){
       <div class="legend">${['새·모름', '1', '2', '3', '4', '완전히 앎'].map((t, b) => `<span style="--c:var(--b${b})">${t} <b class="num">${counts[b]}</b></span>`).join('')}</div>
     </section>`;
 }
+const posBadges = v => [...new Set(v.p)].map(k => `<span class="pos ${k}">${POS[k]}</span>`).join(' ');
+function senseHTML(v){
+  const parts = v.m.split(';').map(x => x.trim());
+  return `<span class="senses">${parts.map((t, i) => `<span class="sense"><span class="pos ${v.p[i] || v.p[0]}">${POS[v.p[i] || v.p[0]]}</span><span class="ko">${esc(t)}</span></span>`).join('')}</span>`;
+}
+const SUFFIX = [[/(tion|sion)$/, '-tion/-sion', '명'], [/ment$/, '-ment', '명'], [/ness$/, '-ness', '명'], [/ity$/, '-ity', '명'], [/(ance|ence)$/, '-ance/-ence', '명'],
+  [/ism$/, '-ism', '명'], [/ly$/, '-ly', '부'], [/(ize|ise)$/, '-ize', '동'], [/ify$/, '-ify', '동'], [/ate$/, '-ate', '동'], [/ous$/, '-ous', '형'], [/ful$/, '-ful', '형'],
+  [/ive$/, '-ive', '형'], [/(able|ible)$/, '-able/-ible', '형'], [/(al|ic)$/, '-al/-ic', '형'], [/(ant|ent)$/, '-ant/-ent', '형'], [/ary$/, '-ary', '형']];
+function suffixTip(v){
+  for (const [re, end, k] of SUFFIX) if (re.test(v.w)) {
+    if (v.p.includes(k)) return `끝 모양 ${end} → 보통 ${POS[k]}. 이 단어도 ${POS[k]}.`;
+    return `끝 모양 ${end}은 보통 ${POS[k]}인데, 이 단어는 ${[...new Set(v.p)].map(x => POS[x]).join('·')}예요. 예외로 기억하세요.`;
+  }
+  return '';
+}
+function tipHTML(v){ const t = suffixTip(v); return t ? `<span class="tip">${esc(t)}</span>` : ''; }
 const dots = w => `<span class="dots" aria-label="숙련도 ${box(w)}/5">${[1, 2, 3, 4, 5].map(i => `<i class="${box(w) >= i ? 'on' : ''}"></i>`).join('')}</span>`;
 
 function viewStudy(){
@@ -198,7 +222,7 @@ function viewStudy(){
     <div class="row between"><div class="seg" role="group" aria-label="모드">
       <button data-mode="card" aria-pressed="${S.mode === 'card'}">카드</button><button data-mode="quiz" aria-pressed="${S.mode === 'quiz'}">4지선다</button><button data-mode="auto" aria-pressed="${S.mode === 'auto'}">자동 재생</button></div>`;
   if (S.mode === 'card') h += `<div class="seg" role="group" aria-label="앞면"><button data-dir="en" aria-pressed="${S.dir === 'en'}">영→한</button><button data-dir="ko" aria-pressed="${S.dir === 'ko'}">한→영</button></div>`;
-  if (S.mode === 'quiz') h += `<select id="qtype" aria-label="문제 종류">${[['mix', '섞어서'], ['meaning', '뜻 고르기'], ['word', '단어 고르기'], ['syn', '동의어 고르기']].map(([k, t]) => `<option value="${k}" ${S.qtype === k ? 'selected' : ''}>${t}</option>`).join('')}</select>`;
+  if (S.mode === 'quiz') h += `<select id="qtype" aria-label="문제 종류">${[['mix', '섞어서'], ['meaning', '뜻 고르기'], ['word', '단어 고르기'], ['syn', '동의어 고르기'], ['pos', '품사 고르기']].map(([k, t]) => `<option value="${k}" ${S.qtype === k ? 'selected' : ''}>${t}</option>`).join('')}</select>`;
   if (S.mode === 'auto') h += `<span class="row"><select id="gap" aria-label="간격">${[2, 3, 5].map(g => `<option value="${g}" ${S.gap === g ? 'selected' : ''}>${g}초 간격</option>`).join('')}</select>
       <label class="toggle"><input type="checkbox" id="ko" ${S.ko ? 'checked' : ''}> 뜻도 읽기</label></span>`;
   h += `</div>`;
@@ -206,10 +230,10 @@ function viewStudy(){
   if (!cur) cur = nextWord();
   const v = cur;
   if (S.mode === 'card') {
-    const front = S.dir === 'en' ? `<span class="w">${esc(v.w)}</span>` : `<span class="ko">${esc(v.m)}</span>`;
-    const back = S.dir === 'en' ? `<span class="w">${esc(v.w)}</span><span class="ko">${esc(v.m)}</span>` : `<span class="ko">${esc(v.m)}</span><span class="w">${esc(v.w)}</span>`;
+    const front = S.dir === 'en' ? `<span class="w">${esc(v.w)}</span>` : senseHTML(v);
+    const back = (S.dir === 'en' ? `<span class="w">${esc(v.w)}</span>` + senseHTML(v) : senseHTML(v) + `<span class="w">${esc(v.w)}</span>`);
     h += `<button class="card" data-flip aria-label="카드 뒤집기"><span class="corner l num">#${v.i + 1} ${dots(v.w)}</span>
-      ${flipped ? back + `<span class="syn">≈ ${esc(v.s)}</span>` : front + `<span class="hint">눌러서 ${S.dir === 'en' ? '뜻' : '단어'} 보기</span>`}</button>
+      ${flipped ? back + `<span class="syn">≈ ${esc(v.s)}</span>` + tipHTML(v) : front + `<span class="hint">눌러서 ${S.dir === 'en' ? '뜻' : '단어'} 보기</span>`}</button>
       <div class="row between"><button class="star" data-star="${esc(v.w)}" aria-pressed="${!!S.star[v.w]}" aria-label="별표">${S.star[v.w] ? '★' : '☆'}</button>
         <button class="btn small" data-say="${esc(v.w)}">발음 듣기</button></div>
       <div class="answer"><button class="btn" data-know="0" ${flipped ? '' : 'disabled'}>몰라요 <span class="kbd">←</span></button><button class="btn primary" data-know="1" ${flipped ? '' : 'disabled'}>알아요 <span class="kbd">→</span></button></div>
@@ -218,19 +242,20 @@ function viewStudy(){
     if (!quiz || quiz.v !== v) quiz = makeQuiz(v);
     const done = quiz.pick !== null;
     h += `<div class="card" style="min-height:170px"><span class="corner l num">#${v.i + 1} ${dots(v.w)}</span><span class="corner r label">${quiz.label}</span>
-      ${quiz.type === 'word' ? `<span class="ko">${esc(v.m)}</span>` : `<span class="w">${esc(v.w)}</span>`}
+      ${quiz.type === 'word' ? senseHTML(v) : `<span class="w">${esc(v.w)}</span>`}
+      ${quiz.type === 'pos' ? '<span class="hint">이 단어의 품사는?</span>' : ''}
       ${quiz.type === 'syn' ? '<span class="hint">문맥상 같은 뜻은?</span>' : ''}</div>
       <div class="opts">${quiz.opts.map((o, k) => {
         let c = 'opt'; if (done) { if (o === quiz.ans) c += ' right'; else if (k === quiz.pick) c += ' wrong'; }
         return `<button class="${c}" data-opt="${k}" ${done ? 'disabled' : ''}><span class="k">${k + 1}</span><span>${esc(o)}</span></button>`; }).join('')}</div>`;
     if (done) {
       const ok = quiz.opts[quiz.pick] === quiz.ans;
-      h += `<p class="flash ${ok ? 'ok' : 'no'}">${ok ? '정답' : '오답'} · ${esc(v.w)} = ${esc(v.m)} ≈ ${esc(v.s)}</p>
+      h += `<p class="flash ${ok ? 'ok' : 'no'}">${ok ? '정답' : '오답'} · ${esc(v.w)} ${posBadges(v)} ${esc(v.m)} ≈ ${esc(v.s)}</p>${quiz.type === 'pos' ? `<p class="muted" style="text-align:center;font-size:13px">${esc(suffixTip(v) || '')}</p>` : ''}
         ${ok ? '' : `<button class="btn primary" data-next style="align-self:center">다음 <span class="kbd">Enter</span></button>`}`;
     } else h += `<p class="muted" style="text-align:center;font-size:13px">숫자키 <span class="kbd">1</span>~<span class="kbd">4</span>로도 골라요. 맞히면 바로 다음 단어.</p>`;
   } else {
     h += `<div class="card"><span class="corner l num">#${v.i + 1} ${dots(v.w)}</span>
-      <span class="w">${esc(v.w)}</span>${autoStep >= 1 ? `<span class="ko">${esc(v.m)}</span><span class="syn">≈ ${esc(v.s)}</span>` : '<span class="hint">뜻을 떠올려 보세요</span>'}</div>
+      <span class="w">${esc(v.w)}</span>${autoStep >= 1 ? senseHTML(v) + `<span class="syn">≈ ${esc(v.s)}</span>` : '<span class="hint">뜻을 떠올려 보세요</span>'}</div>
       <div class="row" style="justify-content:center"><button class="btn ${autoOn ? '' : 'primary'}" data-auto>${autoOn ? '■ 멈추기' : '▶ 시작'}</button>
         <button class="btn" data-skip>다음 단어</button><button class="star" data-star="${esc(v.w)}" aria-pressed="${!!S.star[v.w]}" aria-label="별표">${S.star[v.w] ? '★' : '☆'}</button></div>
       <p class="muted" style="text-align:center;font-size:13px">화면을 안 봐도 돼요. 단어를 영어로 읽고, 잠시 뒤 뜻을 보여 주고 읽어 준 다음, 멈출 때까지 계속 넘어가요. 소리가 안 나면 기기 설정에서 영어·한국어 음성을 받아 두세요.</p>`;
@@ -238,16 +263,19 @@ function viewStudy(){
   return h;
 }
 function makeQuiz(v){
-  let type = S.qtype === 'mix' ? ['meaning', 'word', 'syn'][Math.floor(Math.random() * 3)] : S.qtype;
+  const single = new Set(v.p).size === 1;
+  let type = S.qtype === 'mix' ? ['meaning', 'word', 'syn', 'pos'][Math.floor(Math.random() * (single ? 4 : 3))] : S.qtype;
+  if (type === 'pos' && !single) type = 'meaning';
   const others = shuffle(W.filter(x => x !== v));
   let ans, opts;
   if (type === 'meaning') { ans = v.m; opts = others.filter(x => x.m !== v.m).slice(0, 3).map(x => x.m); }
+  else if (type === 'pos') { ans = POS[v.p[0]]; opts = Object.values(POS).filter(x => x !== ans); }
   else if (type === 'word') { ans = v.w; opts = others.slice(0, 3).map(x => x.w); }
   else {
     ans = v.s.split(', ')[0];
     opts = others.filter(x => !x.s.includes(ans) && !v.s.includes(x.s.split(', ')[0]) && x.w !== ans).slice(0, 3).map(x => x.s.split(', ')[0]);
   }
-  return { v, type, ans, opts: shuffle([ans].concat(opts)), pick:null, label: { meaning:'뜻 고르기', word:'단어 고르기', syn:'동의어 고르기' }[type] };
+  return { v, type, ans, opts: shuffle([ans].concat(opts)), pick:null, label: { meaning:'뜻 고르기', word:'단어 고르기', syn:'동의어 고르기', pos:'품사 고르기' }[type] };
 }
 
 function viewList(){
@@ -257,12 +285,21 @@ function viewList(){
       <label class="toggle"><input type="checkbox" id="hide" ${S.hideList ? 'checked' : ''}> 뜻 가리기</label>
       <span class="label num">${list.length}개</span></div>
     <section class="panel"><div class="scroll"><table>
-      <tr><th></th><th>#</th><th>단어</th><th>뜻</th><th>동의어</th><th>숙련도</th><th>틀림</th></tr>
+      <tr><th></th><th>#</th><th>단어</th><th>품사</th><th>뜻</th><th>동의어</th><th>숙련도</th><th>틀림</th></tr>
       ${list.map(v => `<tr><td><button class="star" data-star="${esc(v.w)}" aria-pressed="${!!S.star[v.w]}" aria-label="${esc(v.w)} 별표">${S.star[v.w] ? '★' : '☆'}</button></td>
-        <td class="num muted">${v.i + 1}</td><td class="num"><b>${esc(v.w)}</b></td>
+        <td class="num muted">${v.i + 1}</td><td class="num"><b>${esc(v.w)}</b></td><td>${posBadges(v)}</td>
         <td style="${S.hideList ? 'color:transparent;background:var(--accent-soft);border-radius:4px' : ''}">${esc(v.m)}</td>
         <td class="muted" style="${S.hideList ? 'color:transparent' : ''}">${esc(v.s)}</td><td>${dots(v.w)}</td><td class="num muted">${S.miss[v.w] || ''}</td></tr>`).join('')}
     </table></div></section>
+    <section class="panel"><h2>품사 알아보는 법 (끝 모양)</h2>
+      <div class="scroll"><table><tr><th>품사</th><th>자주 보이는 끝</th><th>예</th><th>문장 속 자리</th></tr>
+        <tr><td><span class="pos 명">명사</span></td><td class="num">-tion -sion -ment -ness -ity -ance -ence -ure -ism</td><td class="num">obligation, procedure, priority</td><td>주어·목적어, a/the 뒤</td></tr>
+        <tr><td><span class="pos 동">동사</span></td><td class="num">-ize -ify -ate -en</td><td class="num">utilize, modify, allocate</td><td>주어 뒤, to 뒤, 조동사 뒤</td></tr>
+        <tr><td><span class="pos 형">형용사</span></td><td class="num">-ous -ful -ive -able -ible -al -ic -ant -ent -ary</td><td class="num">numerous, extensive, feasible</td><td>명사 앞, be동사 뒤</td></tr>
+        <tr><td><span class="pos 부">부사</span></td><td class="num">-ly</td><td class="num">gradually, merely, virtually</td><td>동사·형용사·문장 꾸밈</td></tr>
+      </table></div>
+      <p class="muted">끝 모양은 힌트일 뿐이에요. -ate는 동사가 많지만 adequate·legitimate·deliberate는 형용사, -ly여도 friendly는 형용사예요. 한 단어가 여러 품사로 쓰이면(issue, secure, prompt) 뜻마다 품사를 따로 달아 두었어요.</p>
+      <p class="muted">지텔프 어휘 문제는 보기도 <b>빈칸 단어와 같은 품사</b>로 나와요. 지문 속 단어가 동사로 쓰였는지 형용사로 쓰였는지 먼저 보면 뜻을 고르기 쉬워요.</p></section>
     <section class="panel"><h2>기록</h2><p class="muted">기록은 이 기기의 브라우저에만 저장돼요.</p>
       <button class="btn small" data-reset style="align-self:flex-start">${resetArm ? '한 번 더 누르면 모두 삭제' : '기록 모두 지우기'}</button></section>`;
 }
@@ -328,6 +365,7 @@ app.addEventListener('input', e => {
 });
 document.addEventListener('keydown', e => {
   if (view !== 'study' || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); e.target.blur(); }   // 단축키가 버튼을 한 번 더 누르지 않게
   if (S.mode === 'card') {
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipped = !flipped; render(); }
     else if (flipped && e.key === 'ArrowRight') { mark(cur, true); advance(); }

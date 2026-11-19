@@ -18,6 +18,7 @@
   --paper:#f6f7fb; --sheet:#ffffff; --ink:#1b1e2b; --muted:#666a7a;
   --accent:#d2394a; --accent-soft:#fbe3e5; --line:#dfe2ec;
   --ok:#1f8a5b; --ok-soft:#dff3e9; --bad:#c2410c; --bad-soft:#fde8dc;
+  --pn:#2f6fd6; --pv:#c2410c; --pa:#1f8a5b; --pd:#7c3aed;
   --b0:#e7e9f1; --b1:#f6c1c7; --b2:#f09aa5; --b3:#e5707f; --b4:#d2394a; --b5:#1f8a5b;
   --display:'Black Han Sans','IBM Plex Sans KR',sans-serif;
   --body:'IBM Plex Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
@@ -26,11 +27,11 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#14151c; --sheet:#1e2029; --ink:#ecedf2; --muted:#a2a5b4; --accent:#ff6b78; --accent-soft:#3a2226; --line:#343746;
   --ok:#4fd39a; --ok-soft:#173327; --bad:#ff9a6b; --bad-soft:#3a2418;
-  --b0:#2c2f3c; --b1:#4d2a31; --b2:#743640; --b3:#a3434f; --b4:#ff6b78; --b5:#4fd39a; color-scheme:dark}}
+  --b0:#2c2f3c; --b1:#4d2a31; --b2:#743640; --b3:#a3434f; --b4:#ff6b78; --b5:#4fd39a; --pn:#7fb0ff; --pv:#ff9a6b; --pa:#4fd39a; --pd:#b99cff; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#14151c; --sheet:#1e2029; --ink:#ecedf2; --muted:#a2a5b4; --accent:#ff6b78; --accent-soft:#3a2226; --line:#343746;
   --ok:#4fd39a; --ok-soft:#173327; --bad:#ff9a6b; --bad-soft:#3a2418;
-  --b0:#2c2f3c; --b1:#4d2a31; --b2:#743640; --b3:#a3434f; --b4:#ff6b78; --b5:#4fd39a; color-scheme:dark}
+  --b0:#2c2f3c; --b1:#4d2a31; --b2:#743640; --b3:#a3434f; --b4:#ff6b78; --b5:#4fd39a; --pn:#7fb0ff; --pv:#ff9a6b; --pa:#4fd39a; --pd:#b99cff; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{background:var(--paper);color:var(--ink)}
 body{font-family:var(--body);font-size:15px;line-height:1.55;
@@ -92,6 +93,11 @@ button.card{cursor:pointer}
 .flash.ok{color:var(--ok)} .flash.no{color:var(--bad)}
 .star{border:0;background:none;font-size:20px;line-height:1;color:var(--muted);padding:2px 4px}
 .star[aria-pressed="true"]{color:var(--accent)}
+.pos{display:inline-block;font-size:12px;font-weight:700;border:1.5px solid var(--pc);color:var(--pc);border-radius:5px;padding:0 5px;line-height:1.5;vertical-align:middle;white-space:nowrap}
+.pos.명{--pc:var(--pn)} .pos.동{--pc:var(--pv)} .pos.형{--pc:var(--pa)} .pos.부{--pc:var(--pd)}
+.senses{display:flex;flex-direction:column;gap:4px;align-items:center}
+.sense{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+.card .tip{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px;max-width:420px}
 .kbd{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line);border-radius:4px;padding:0 4px}
 
 /* 목록 */
@@ -111,328 +117,358 @@ th{font-size:12px;color:var(--muted);font-weight:500}
 
 <script>
 const VOCAB_RAW = `
-abandon|버리다, 포기하다|give up, desert
-abundant|풍부한|plentiful, ample
-acclaim|찬사; 칭찬하다|praise, applause
-accommodate|수용하다, 맞춰 주다|serve, house
-accomplish|성취하다|achieve, complete
-accurate|정확한|precise, exact
-acquire|얻다, 습득하다|obtain, gain
-adapt|적응하다|adjust
-address|(문제를) 다루다|deal with, handle
-adequate|충분한|sufficient, enough
-adopt|채택하다, (습관을) 들이다|take up, embrace
-adverse|불리한, 해로운|harmful, negative
-advocate|옹호하다|support, champion
-allocate|할당하다|assign, distribute
-alter|바꾸다|change, modify
-ambitious|야심 찬|aspiring, determined
-ample|충분한|plenty, abundant
-anonymous|익명의|unnamed, unknown
-anticipate|예상하다|expect, foresee
-apparent|명백한|obvious, clear
-appealing|매력적인|attractive, inviting
-appreciate|진가를 알다, 감사하다|value, recognize
-apprehensive|불안한|anxious, uneasy
-approach|접근법|method, way
-arbitrary|임의의|random, unreasonable
-aspire|열망하다|aim, hope
-assert|주장하다|declare, claim
-assess|평가하다|evaluate, judge
-assist|돕다|help, aid
-assume|가정하다; (책임을) 맡다|suppose, take on
-attain|달성하다|reach, achieve
-attribute|~의 탓으로 돌리다|credit, ascribe
-authentic|진짜의|genuine, real
-available|이용 가능한|accessible, obtainable
-bear|견디다; 지니다|endure, carry
-bold|대담한|daring, brave
-boost|높이다|increase, raise
-breakthrough|획기적 발견|advance, discovery
-brief|짧은|short, quick
-bright|영리한|intelligent, clever
-capable|~할 수 있는|able, competent
-cherish|소중히 여기다|treasure, value
-claim|주장하다|assert, state
-coincide|동시에 일어나다|occur together, match
-collaborate|협력하다|cooperate, work together
-command|명령하다; (존경을) 받다|order, earn
-commemorate|기념하다|honor, celebrate
-commence|시작하다|begin, start
-compatible|호환되는, 잘 맞는|suitable, consistent
-compel|강요하다|force, oblige
-compensate|보상하다|make up for, repay
-compile|모으다, 편집하다|collect, gather
-comply|따르다|obey, follow
-comprehensive|포괄적인|thorough, complete
-comprise|구성하다|consist of, include
-conceal|숨기다|hide
-concise|간결한|brief, short
-conduct|수행하다|carry out, perform
-confine|제한하다, 가두다|limit, restrict
-consent|동의|permission, approval
-conserve|아끼다, 보존하다|save, preserve
-considerable|상당한|significant, substantial
-consistent|일관된|steady, constant
-constitute|구성하다|make up, form
-contemporary|현대의; 동시대의|modern, current
-contend|주장하다; 경쟁하다|argue, compete
-controversial|논란이 많은|debatable, disputed
-conventional|관습적인|traditional, ordinary
-convey|전달하다|communicate, express
-cover|다루다; 취재하다|deal with, report
-credible|믿을 만한|believable, reliable
-credit|공로로 인정하다|attribute, recognize
-criticize|비판하다|blame, condemn
-crucial|결정적인|vital, essential
-curious|호기심 많은|inquisitive, interested
-decline|감소하다; 거절하다|decrease, refuse
-dedicate|바치다, 헌신하다|devote, commit
-deliberate|고의의, 신중한|intentional, careful
-demonstrate|보여 주다|show, display
-depict|묘사하다|portray, represent
-designate|지정하다|appoint, assign
-desire|욕구|wish, longing
-detect|발견하다|discover, notice
-deteriorate|악화되다|worsen, decline
-devise|고안하다|invent, create
-diligent|성실한|hardworking, industrious
-diminish|줄어들다|lessen, reduce
-discard|버리다|throw away, dispose of
-disclose|밝히다|reveal, expose
-dispute|분쟁, 논쟁|argument, conflict
-disrupt|방해하다|disturb, interrupt
-distinct|뚜렷한, 별개의|clear, separate
-distinctive|독특한|unique, characteristic
-distribute|나누어 주다|hand out, deliver
-diverse|다양한|varied, various
-dominant|지배적인|leading, main
-drastic|급격한|extreme, severe
-draw|끌다|attract, pull
-dull|지루한|boring, tedious
-durable|내구성 있는|sturdy, lasting
-eager|열망하는|keen, enthusiastic
-elaborate|정교한, 상세한|detailed, intricate
-eligible|자격이 있는|qualified, entitled
-eliminate|제거하다|remove, get rid of
-emerge|나타나다|appear, arise
-eminent|저명한|famous, distinguished
-emphasize|강조하다|stress, highlight
-encounter|마주치다|meet, come across
-endorse|지지하다|support, approve
-endure|견디다|bear, tolerate
-enhance|향상시키다|improve, boost
-enormous|거대한|huge, vast
-enroll|등록하다|register, sign up
-ensure|보장하다|guarantee, make sure
-entitle|자격을 주다|allow, qualify
-establish|설립하다|found, set up
-evaluate|평가하다|assess, judge
-eventually|결국|finally, ultimately
-evident|분명한|clear, obvious
-evolve|발전하다|develop, grow
-exaggerate|과장하다|overstate, inflate
-exceed|초과하다|surpass, go beyond
-exclusive|독점적인|sole, restricted
-exhibit|전시하다; 보이다|display, show
-expand|확장하다|enlarge, extend
-expertise|전문 지식|skill, know-how
-explicit|명백한|clear, direct
-exploit|이용하다|use, take advantage of
-extensive|광범위한|wide, broad
-facilitate|용이하게 하다|ease, help
-fair|공정한; 상당한|just, reasonable
-feasible|실현 가능한|possible, workable
-figure|인물; 수치|person, number
-flourish|번성하다|thrive, prosper
-fluctuate|변동하다|vary, change
-formidable|만만찮은|powerful, tough
-foster|육성하다|encourage, promote
-fragile|깨지기 쉬운|delicate, breakable
-frequent|잦은|common, regular
-fundamental|근본적인|basic, essential
-gather|모으다, 모이다|collect, assemble
-generate|만들어 내다|produce, create
-genuine|진짜의, 진심의|real, sincere
-gradual|점진적인|slow, steady
-grant|주다, 승인하다|give, allow
-gratitude|감사|thanks, appreciation
-hazardous|위험한|dangerous, risky
-hinder|방해하다|obstruct, hamper
-hostile|적대적인|unfriendly, aggressive
-humble|겸손한, 소박한|modest, simple
-identical|동일한|same, alike
-illustrate|보여 주다, 설명하다|show, demonstrate
-imitate|모방하다|copy, mimic
-immense|막대한|huge, vast
-impair|손상시키다|damage, weaken
-implement|실행하다|carry out, execute
-imply|암시하다|suggest, hint
-impose|부과하다|place, enforce
-impressive|인상적인|remarkable, striking
-incentive|장려책|motivation, encouragement
-incorporate|포함하다|include, integrate
-indicate|나타내다|show, signal
-induce|유도하다|cause, persuade
-inevitable|피할 수 없는|unavoidable, certain
-inherent|고유의, 타고난|built-in, natural
-inhibit|억제하다|restrain, prevent
-initial|처음의|first, early
-initiate|시작하다|start, launch
-innovative|혁신적인|new, inventive
-insight|통찰력|understanding, perception
-inspire|영감을 주다|motivate, stimulate
-integral|필수적인|essential, basic
-intense|강렬한|strong, extreme
-interpret|해석하다|explain, understand
-intervene|개입하다|step in, interfere
-intriguing|흥미로운|fascinating, interesting
-issue|문제; 발행하다|problem, release
-launch|출시하다, 시작하다|introduce, start
-legitimate|합법적인, 정당한|lawful, valid
-lucrative|수익성 있는|profitable, rewarding
-maintain|유지하다; 주장하다|keep, claim
-mandatory|의무적인|required, compulsory
-massive|거대한|huge, enormous
-measure|조치|step, action
-merely|단지|only, just
-meticulous|꼼꼼한|careful, thorough
-minor|사소한|small, slight
-modest|겸손한; 적당한|humble, moderate
-modify|수정하다|change, alter
-monitor|감시하다|watch, check
-mutual|상호의|shared, common
-negligible|무시해도 될 만한|tiny, insignificant
-notable|주목할 만한|remarkable, noteworthy
-note|주목하다|notice, observe
-notion|개념|idea, concept
-nourish|영양분을 주다|feed, nurture
-novel|새로운; 소설|new, original
-numerous|수많은|many, countless
-objective|목표; 객관적인|goal, aim
-obligation|의무|duty, responsibility
-obscure|모호한; 잘 알려지지 않은|unclear, unknown
-observe|관찰하다; (규칙을) 지키다|watch, follow
-obsolete|구식의|outdated, old-fashioned
-obtain|얻다|get, acquire
-occupy|차지하다|take up, fill
-offset|상쇄하다|balance, cancel out
-ongoing|진행 중인|continuing, current
-optimal|최적의|best, ideal
-originate|비롯되다|begin, arise
-outstanding|뛰어난; 미지불의|excellent, unpaid
-overcome|극복하다|beat, conquer
-overwhelming|압도적인|enormous, crushing
-paramount|가장 중요한|supreme, foremost
-participate|참여하다|take part, join
-peculiar|특이한|strange, unusual
-perceive|인식하다|notice, recognize
-persist|지속되다|continue, last
-pioneer|개척자; 개척하다|founder, introduce
-plausible|그럴듯한|believable, reasonable
-plight|곤경|difficult situation, trouble
-portray|묘사하다|depict, show
-potential|잠재적인|possible, likely
-practical|실용적인|useful, realistic
-precede|앞서다|come before, lead
-precise|정확한|exact, accurate
-predict|예측하다|forecast, foresee
-predominant|우세한|main, chief
-preserve|보존하다|protect, conserve
-prestigious|명망 있는|respected, renowned
-prevail|우세하다, 이기다|win, dominate
-prevalent|널리 퍼진|common, widespread
-primary|주요한|main, chief
-proceed|진행하다|continue, go on
-proficient|능숙한|skilled, expert
-profound|깊은, 심오한|deep, intense
-prohibit|금지하다|ban, forbid
-prolong|연장하다|extend, lengthen
-prominent|저명한, 눈에 띄는|famous, noticeable
-prompt|촉발하다; 즉각적인|cause, quick
-prospect|전망, 가능성|outlook, chance
-provoke|유발하다|cause, trigger
-pursue|추구하다|follow, seek
-radical|급진적인, 근본적인|extreme, drastic
-rapid|빠른|quick, fast
-recall|기억해 내다; 회수하다|remember, take back
-refine|개선하다, 다듬다|improve, polish
-reflect|반영하다|show, mirror
-reinforce|강화하다|strengthen, support
-reject|거절하다|refuse, turn down
-reluctant|꺼리는|unwilling, hesitant
-remarkable|놀라운|extraordinary, notable
-remedy|치료법, 해결책|cure, solution
-renowned|유명한|famous, celebrated
-replicate|복제하다|copy, reproduce
-reside|거주하다|live, dwell
-resolve|해결하다; 결심하다|solve, settle
-restore|복원하다|repair, bring back
-restrict|제한하다|limit, confine
-resume|재개하다|restart, continue
-retain|유지하다|keep, hold
-retrieve|되찾다|recover, get back
-reveal|드러내다|disclose, show
-revise|수정하다|change, edit
-rigorous|엄격한|strict, thorough
-run|운영하다|manage, operate
-scarce|부족한, 드문|rare, limited
-scrutinize|면밀히 조사하다|examine, inspect
-secure|확보하다; 안전한|obtain, safe
-settle|해결하다; 정착하다|resolve, establish
-shrink|줄어들다|reduce, contract
-significant|중요한, 상당한|important, considerable
-simultaneous|동시의|concurrent, at the same time
-sole|유일한|only, single
-sophisticated|정교한|advanced, complex
-sound|건전한, 타당한|solid, valid
-specify|명시하다|state, define
-spontaneous|자발적인|unplanned, natural
-stable|안정된|steady, secure
-stand|견디다|tolerate, endure
-steady|꾸준한|constant, regular
-steep|가파른, 급격한|sharp, sudden
-stimulate|자극하다|encourage, spark
-strive|노력하다|try, struggle
-submit|제출하다|hand in, turn in
-subsequent|그 후의|following, later
-substantial|상당한|considerable, large
-subtle|미묘한|slight, delicate
-sufficient|충분한|enough, adequate
-superior|우수한|better, higher
-supplement|보충하다|add to, complement
-suppress|억누르다|hold back, restrain
-surpass|능가하다|exceed, outdo
-susceptible|영향받기 쉬운|vulnerable, sensitive
-suspend|중단하다|stop, pause
-sustain|지속시키다|maintain, support
-tangible|실체적인|concrete, real
-tentative|잠정적인|provisional, temporary
-term|기간; 용어|period, word
-terminate|끝내다|end, stop
-thrive|번창하다|flourish, prosper
-transform|변형시키다|change, convert
-treat|다루다; 치료하다|handle, cure
-tremendous|엄청난|huge, enormous
-trivial|사소한|minor, unimportant
-ultimately|궁극적으로|finally, eventually
-undergo|겪다|go through, experience
-unique|독특한|distinctive, one of a kind
-uphold|지지하다, 유지하다|support, maintain
-utilize|이용하다|use, employ
-vast|광대한|huge, immense
-versatile|다재다능한|adaptable, flexible
-viable|실행 가능한|workable, feasible
-virtually|사실상|almost, nearly
-vital|필수적인|essential, crucial
-vivid|생생한|clear, lively
-widespread|널리 퍼진|common, extensive
-withstand|견디다|resist, endure
-witness|목격하다|see, observe
-yield|산출하다; 양보하다|produce, give way
-zealous|열성적인|eager, passionate
+abandon|버리다, 포기하다|give up, desert|동
+abundant|풍부한|plentiful, ample|형
+acclaim|찬사; 칭찬하다|praise, applause|명,동
+accommodate|수용하다, 맞춰 주다|serve, house|동
+accomplish|성취하다|achieve, complete|동
+accurate|정확한|precise, exact|형
+acquire|얻다, 습득하다|obtain, gain|동
+adapt|적응하다|adjust|동
+address|(문제를) 다루다|deal with, handle|동
+adequate|충분한|sufficient, enough|형
+adopt|채택하다, (습관을) 들이다|take up, embrace|동
+adverse|불리한, 해로운|harmful, negative|형
+advocate|옹호하다|support, champion|동
+allocate|할당하다|assign, distribute|동
+alter|바꾸다|change, modify|동
+alternative|대안|option, choice|명
+ambitious|야심 찬|aspiring, determined|형
+ample|충분한|plenty, abundant|형
+anonymous|익명의|unnamed, unknown|형
+anticipate|예상하다|expect, foresee|동
+apparent|명백한|obvious, clear|형
+appealing|매력적인|attractive, inviting|형
+appreciate|진가를 알다, 감사하다|value, recognize|동
+apprehensive|불안한|anxious, uneasy|형
+approach|접근법|method, way|명
+approximately|대략|roughly, about|부
+arbitrary|임의의|random, unreasonable|형
+aspect|측면|feature, side|명
+aspire|열망하다|aim, hope|동
+assert|주장하다|declare, claim|동
+assess|평가하다|evaluate, judge|동
+asset|자산|resource, advantage|명
+assist|돕다|help, aid|동
+assume|가정하다; (책임을) 맡다|suppose, take on|동,동
+assumption|가정|belief, supposition|명
+attain|달성하다|reach, achieve|동
+attribute|~의 탓으로 돌리다|credit, ascribe|동
+authentic|진짜의|genuine, real|형
+available|이용 가능한|accessible, obtainable|형
+bear|견디다; 지니다|endure, carry|동,동
+bold|대담한|daring, brave|형
+boost|높이다|increase, raise|동
+breakthrough|획기적 발견|advance, discovery|명
+brief|짧은|short, quick|형
+bright|영리한|intelligent, clever|형
+capable|~할 수 있는|able, competent|형
+cherish|소중히 여기다|treasure, value|동
+circumstance|상황|situation, condition|명
+claim|주장하다|assert, state|동
+coincide|동시에 일어나다|occur together, match|동
+collaborate|협력하다|cooperate, work together|동
+command|명령하다; (존경을) 받다|order, earn|동,동
+commemorate|기념하다|honor, celebrate|동
+commence|시작하다|begin, start|동
+compatible|호환되는, 잘 맞는|suitable, consistent|형
+compel|강요하다|force, oblige|동
+compensate|보상하다|make up for, repay|동
+compile|모으다, 편집하다|collect, gather|동
+comply|따르다|obey, follow|동
+comprehensive|포괄적인|thorough, complete|형
+comprise|구성하다|consist of, include|동
+conceal|숨기다|hide|동
+concise|간결한|brief, short|형
+conduct|수행하다|carry out, perform|동
+confine|제한하다, 가두다|limit, restrict|동
+conflict|갈등|clash, dispute|명
+consent|동의|permission, approval|명
+consequence|결과|result, outcome|명
+conserve|아끼다, 보존하다|save, preserve|동
+considerable|상당한|significant, substantial|형
+considerably|상당히|significantly, greatly|부
+consistent|일관된|steady, constant|형
+constitute|구성하다|make up, form|동
+contemporary|현대의; 동시대의|modern, current|형,형
+contend|주장하다; 경쟁하다|argue, compete|동,동
+controversial|논란이 많은|debatable, disputed|형
+conventional|관습적인|traditional, ordinary|형
+convey|전달하다|communicate, express|동
+cover|다루다; 취재하다|deal with, report|동,동
+credible|믿을 만한|believable, reliable|형
+credit|공로로 인정하다|attribute, recognize|동
+criterion|기준|standard, measure|명
+criticize|비판하다|blame, condemn|동
+crucial|결정적인|vital, essential|형
+curious|호기심 많은|inquisitive, interested|형
+decline|감소하다; 거절하다|decrease, refuse|동,동
+dedicate|바치다, 헌신하다|devote, commit|동
+deliberate|고의의, 신중한|intentional, careful|형
+deliberately|일부러|intentionally, on purpose|부
+demonstrate|보여 주다|show, display|동
+depict|묘사하다|portray, represent|동
+designate|지정하다|appoint, assign|동
+desire|욕구|wish, longing|명
+detect|발견하다|discover, notice|동
+deteriorate|악화되다|worsen, decline|동
+devise|고안하다|invent, create|동
+diligent|성실한|hardworking, industrious|형
+diminish|줄어들다|lessen, reduce|동
+discard|버리다|throw away, dispose of|동
+disclose|밝히다|reveal, expose|동
+dispute|분쟁, 논쟁|argument, conflict|명
+disrupt|방해하다|disturb, interrupt|동
+distinct|뚜렷한, 별개의|clear, separate|형
+distinctive|독특한|unique, characteristic|형
+distribute|나누어 주다|hand out, deliver|동
+diverse|다양한|varied, various|형
+dominant|지배적인|leading, main|형
+drastic|급격한|extreme, severe|형
+draw|끌다|attract, pull|동
+dull|지루한|boring, tedious|형
+durable|내구성 있는|sturdy, lasting|형
+eager|열망하는|keen, enthusiastic|형
+elaborate|정교한, 상세한|detailed, intricate|형
+eligible|자격이 있는|qualified, entitled|형
+eliminate|제거하다|remove, get rid of|동
+emerge|나타나다|appear, arise|동
+eminent|저명한|famous, distinguished|형
+emphasize|강조하다|stress, highlight|동
+encounter|마주치다|meet, come across|동
+endorse|지지하다|support, approve|동
+endure|견디다|bear, tolerate|동
+enhance|향상시키다|improve, boost|동
+enormous|거대한|huge, vast|형
+enroll|등록하다|register, sign up|동
+ensure|보장하다|guarantee, make sure|동
+entitle|자격을 주다|allow, qualify|동
+establish|설립하다|found, set up|동
+evaluate|평가하다|assess, judge|동
+eventually|결국|finally, ultimately|부
+evident|분명한|clear, obvious|형
+evolve|발전하다|develop, grow|동
+exaggerate|과장하다|overstate, inflate|동
+exceed|초과하다|surpass, go beyond|동
+exclusive|독점적인|sole, restricted|형
+exhibit|전시하다; 보이다|display, show|동,동
+expand|확장하다|enlarge, extend|동
+expertise|전문 지식|skill, know-how|명
+explicit|명백한|clear, direct|형
+exploit|이용하다|use, take advantage of|동
+extensive|광범위한|wide, broad|형
+facilitate|용이하게 하다|ease, help|동
+fair|공정한; 상당한|just, reasonable|형,형
+feasible|실현 가능한|possible, workable|형
+figure|인물; 수치|person, number|명,명
+flourish|번성하다|thrive, prosper|동
+fluctuate|변동하다|vary, change|동
+formidable|만만찮은|powerful, tough|형
+foster|육성하다|encourage, promote|동
+fragile|깨지기 쉬운|delicate, breakable|형
+frequent|잦은|common, regular|형
+frequently|자주|often, regularly|부
+fundamental|근본적인|basic, essential|형
+gather|모으다, 모이다|collect, assemble|동
+generate|만들어 내다|produce, create|동
+genuine|진짜의, 진심의|real, sincere|형
+gradual|점진적인|slow, steady|형
+gradually|점차|slowly, steadily|부
+grant|주다, 승인하다|give, allow|동
+gratitude|감사|thanks, appreciation|명
+hazardous|위험한|dangerous, risky|형
+hinder|방해하다|obstruct, hamper|동
+hostile|적대적인|unfriendly, aggressive|형
+humble|겸손한, 소박한|modest, simple|형
+identical|동일한|same, alike|형
+illustrate|보여 주다, 설명하다|show, demonstrate|동
+imitate|모방하다|copy, mimic|동
+immense|막대한|huge, vast|형
+impair|손상시키다|damage, weaken|동
+implement|실행하다|carry out, execute|동
+imply|암시하다|suggest, hint|동
+impose|부과하다|place, enforce|동
+impressive|인상적인|remarkable, striking|형
+incentive|장려책|motivation, encouragement|명
+incorporate|포함하다|include, integrate|동
+increasingly|점점 더|more and more, progressively|부
+indicate|나타내다|show, signal|동
+induce|유도하다|cause, persuade|동
+inevitable|피할 수 없는|unavoidable, certain|형
+inherent|고유의, 타고난|built-in, natural|형
+inhibit|억제하다|restrain, prevent|동
+initial|처음의|first, early|형
+initially|처음에|at first, originally|부
+initiate|시작하다|start, launch|동
+innovative|혁신적인|new, inventive|형
+insight|통찰력|understanding, perception|명
+inspire|영감을 주다|motivate, stimulate|동
+integral|필수적인|essential, basic|형
+intense|강렬한|strong, extreme|형
+interpret|해석하다|explain, understand|동
+intervene|개입하다|step in, interfere|동
+intriguing|흥미로운|fascinating, interesting|형
+issue|문제; 발행하다|problem, release|명,동
+launch|출시하다, 시작하다|introduce, start|동
+legitimate|합법적인, 정당한|lawful, valid|형
+lucrative|수익성 있는|profitable, rewarding|형
+maintain|유지하다; 주장하다|keep, claim|동,동
+mandatory|의무적인|required, compulsory|형
+massive|거대한|huge, enormous|형
+measure|조치|step, action|명
+merely|단지|only, just|부
+meticulous|꼼꼼한|careful, thorough|형
+minor|사소한|small, slight|형
+modest|겸손한; 적당한|humble, moderate|형,형
+modify|수정하다|change, alter|동
+monitor|감시하다|watch, check|동
+mutual|상호의|shared, common|형
+negligible|무시해도 될 만한|tiny, insignificant|형
+notable|주목할 만한|remarkable, noteworthy|형
+notably|특히; 눈에 띄게|especially, remarkably|부,부
+note|주목하다|notice, observe|동
+notion|개념|idea, concept|명
+nourish|영양분을 주다|feed, nurture|동
+novel|새로운; 소설|new, original|형,명
+numerous|수많은|many, countless|형
+objective|목표; 객관적인|goal, aim|명,형
+obligation|의무|duty, responsibility|명
+obscure|모호한; 잘 알려지지 않은|unclear, unknown|형,형
+observe|관찰하다; (규칙을) 지키다|watch, follow|동,동
+obsolete|구식의|outdated, old-fashioned|형
+obtain|얻다|get, acquire|동
+occupy|차지하다|take up, fill|동
+offset|상쇄하다|balance, cancel out|동
+ongoing|진행 중인|continuing, current|형
+optimal|최적의|best, ideal|형
+originate|비롯되다|begin, arise|동
+outstanding|뛰어난; 미지불의|excellent, unpaid|형,형
+overcome|극복하다|beat, conquer|동
+overwhelming|압도적인|enormous, crushing|형
+paramount|가장 중요한|supreme, foremost|형
+participate|참여하다|take part, join|동
+peculiar|특이한|strange, unusual|형
+perceive|인식하다|notice, recognize|동
+persist|지속되다|continue, last|동
+phenomenon|현상|event, occurrence|명
+pioneer|개척자; 개척하다|founder, introduce|명,동
+plausible|그럴듯한|believable, reasonable|형
+plight|곤경|difficult situation, trouble|명
+portray|묘사하다|depict, show|동
+potential|잠재적인|possible, likely|형
+practical|실용적인|useful, realistic|형
+precede|앞서다|come before, lead|동
+precise|정확한|exact, accurate|형
+predict|예측하다|forecast, foresee|동
+predominant|우세한|main, chief|형
+preserve|보존하다|protect, conserve|동
+prestigious|명망 있는|respected, renowned|형
+prevail|우세하다, 이기다|win, dominate|동
+prevalent|널리 퍼진|common, widespread|형
+primarily|주로|mainly, chiefly|부
+primary|주요한|main, chief|형
+priority|우선순위|precedence, first concern|명
+procedure|절차|process, method|명
+proceed|진행하다|continue, go on|동
+proficient|능숙한|skilled, expert|형
+profound|깊은, 심오한|deep, intense|형
+prohibit|금지하다|ban, forbid|동
+prolong|연장하다|extend, lengthen|동
+prominent|저명한, 눈에 띄는|famous, noticeable|형
+prompt|촉발하다; 즉각적인|cause, quick|동,형
+prospect|전망, 가능성|outlook, chance|명
+provoke|유발하다|cause, trigger|동
+pursue|추구하다|follow, seek|동
+radical|급진적인, 근본적인|extreme, drastic|형
+rapid|빠른|quick, fast|형
+readily|쉽게; 기꺼이|easily, willingly|부,부
+recall|기억해 내다; 회수하다|remember, take back|동,동
+refine|개선하다, 다듬다|improve, polish|동
+reflect|반영하다|show, mirror|동
+reinforce|강화하다|strengthen, support|동
+reject|거절하다|refuse, turn down|동
+relatively|비교적|comparatively, fairly|부
+reluctant|꺼리는|unwilling, hesitant|형
+remarkable|놀라운|extraordinary, notable|형
+remedy|치료법, 해결책|cure, solution|명
+renowned|유명한|famous, celebrated|형
+replicate|복제하다|copy, reproduce|동
+reside|거주하다|live, dwell|동
+resolve|해결하다; 결심하다|solve, settle|동,동
+restore|복원하다|repair, bring back|동
+restrict|제한하다|limit, confine|동
+resume|재개하다|restart, continue|동
+retain|유지하다|keep, hold|동
+retrieve|되찾다|recover, get back|동
+reveal|드러내다|disclose, show|동
+revise|수정하다|change, edit|동
+rigorous|엄격한|strict, thorough|형
+run|운영하다|manage, operate|동
+scarce|부족한, 드문|rare, limited|형
+scrutinize|면밀히 조사하다|examine, inspect|동
+secure|확보하다; 안전한|obtain, safe|동,형
+setback|차질|obstacle, delay|명
+settle|해결하다; 정착하다|resolve, establish|동,동
+shrink|줄어들다|reduce, contract|동
+significant|중요한, 상당한|important, considerable|형
+simultaneous|동시의|concurrent, at the same time|형
+sole|유일한|only, single|형
+solely|오로지|only, exclusively|부
+sophisticated|정교한|advanced, complex|형
+sound|건전한, 타당한|solid, valid|형
+specify|명시하다|state, define|동
+spontaneous|자발적인|unplanned, natural|형
+stable|안정된|steady, secure|형
+stand|견디다|tolerate, endure|동
+steady|꾸준한|constant, regular|형
+steep|가파른, 급격한|sharp, sudden|형
+stimulate|자극하다|encourage, spark|동
+strive|노력하다|try, struggle|동
+submit|제출하다|hand in, turn in|동
+subsequent|그 후의|following, later|형
+subsequently|그 후에|later, afterward|부
+substantial|상당한|considerable, large|형
+subtle|미묘한|slight, delicate|형
+sufficient|충분한|enough, adequate|형
+superior|우수한|better, higher|형
+supplement|보충하다|add to, complement|동
+suppress|억누르다|hold back, restrain|동
+surpass|능가하다|exceed, outdo|동
+susceptible|영향받기 쉬운|vulnerable, sensitive|형
+suspend|중단하다|stop, pause|동
+sustain|지속시키다|maintain, support|동
+tangible|실체적인|concrete, real|형
+tendency|경향|trend, inclination|명
+tentative|잠정적인|provisional, temporary|형
+term|기간; 용어|period, word|명,명
+terminate|끝내다|end, stop|동
+thrive|번창하다|flourish, prosper|동
+transform|변형시키다|change, convert|동
+treat|다루다; 치료하다|handle, cure|동,동
+tremendous|엄청난|huge, enormous|형
+trivial|사소한|minor, unimportant|형
+typically|보통|usually, normally|부
+ultimately|궁극적으로|finally, eventually|부
+undergo|겪다|go through, experience|동
+unique|독특한|distinctive, one of a kind|형
+uphold|지지하다, 유지하다|support, maintain|동
+utilize|이용하다|use, employ|동
+vast|광대한|huge, immense|형
+venture|모험적 사업|enterprise, undertaking|명
+versatile|다재다능한|adaptable, flexible|형
+viable|실행 가능한|workable, feasible|형
+virtually|사실상|almost, nearly|부
+vital|필수적인|essential, crucial|형
+vivid|생생한|clear, lively|형
+widespread|널리 퍼진|common, extensive|형
+withstand|견디다|resist, endure|동
+witness|목격하다|see, observe|동
+yield|산출하다; 양보하다|produce, give way|동,동
+zealous|열성적인|eager, passionate|형
 `;
-const VOCAB = VOCAB_RAW.trim().split('\n').map(l => { const [w, m, s] = l.split('|'); return { w, m, s }; });
+/* 품사: 뜻을 ;로 나눈 순서대로 (명=명사, 동=동사, 형=형용사, 부=부사) */
+const POS = { 명:'명사', 동:'동사', 형:'형용사', 부:'부사' };
+const VOCAB = VOCAB_RAW.trim().split('\n').map(l => { const [w, m, s, p] = l.split('|'); return { w, m, s, p: p.split(',') }; });
 </script>
 <script>
 (function(){
@@ -458,6 +494,7 @@ const CH = 80;
 function decks(){
   const d = [['all', '전체 ' + W.length]];
   for (let i = 0; i < W.length; i += CH) d.push(['r' + i, (i + 1) + '~' + Math.min(W.length, i + CH)]);
+  ['명','동','형','부'].forEach(k => d.push(['p' + k, POS[k] + ' ' + W.filter(v => v.p.includes(k)).length]));
   d.push(['weak', '아직 모름 ' + W.filter(v => box(v.w) < 3).length]);
   d.push(['miss', '자주 틀림 ' + W.filter(v => (S.miss[v.w] || 0) >= 2).length]);
   d.push(['star', '★ ' + Object.keys(S.star).length]);
@@ -467,6 +504,7 @@ function pool(){
   const k = S.deck;
   let p = W;
   if (k[0] === 'r') { const s = +k.slice(1); p = W.slice(s, s + CH); }
+  else if (k[0] === 'p' && POS[k.slice(1)]) p = W.filter(v => v.p.includes(k.slice(1)));
   else if (k === 'weak') p = W.filter(v => box(v.w) < 3);
   else if (k === 'miss') p = W.filter(v => (S.miss[v.w] || 0) >= 2);
   else if (k === 'star') p = W.filter(v => S.star[v.w]);
@@ -525,6 +563,22 @@ function header(){
       <div class="legend">${['새·모름', '1', '2', '3', '4', '완전히 앎'].map((t, b) => `<span style="--c:var(--b${b})">${t} <b class="num">${counts[b]}</b></span>`).join('')}</div>
     </section>`;
 }
+const posBadges = v => [...new Set(v.p)].map(k => `<span class="pos ${k}">${POS[k]}</span>`).join(' ');
+function senseHTML(v){
+  const parts = v.m.split(';').map(x => x.trim());
+  return `<span class="senses">${parts.map((t, i) => `<span class="sense"><span class="pos ${v.p[i] || v.p[0]}">${POS[v.p[i] || v.p[0]]}</span><span class="ko">${esc(t)}</span></span>`).join('')}</span>`;
+}
+const SUFFIX = [[/(tion|sion)$/, '-tion/-sion', '명'], [/ment$/, '-ment', '명'], [/ness$/, '-ness', '명'], [/ity$/, '-ity', '명'], [/(ance|ence)$/, '-ance/-ence', '명'],
+  [/ism$/, '-ism', '명'], [/ly$/, '-ly', '부'], [/(ize|ise)$/, '-ize', '동'], [/ify$/, '-ify', '동'], [/ate$/, '-ate', '동'], [/ous$/, '-ous', '형'], [/ful$/, '-ful', '형'],
+  [/ive$/, '-ive', '형'], [/(able|ible)$/, '-able/-ible', '형'], [/(al|ic)$/, '-al/-ic', '형'], [/(ant|ent)$/, '-ant/-ent', '형'], [/ary$/, '-ary', '형']];
+function suffixTip(v){
+  for (const [re, end, k] of SUFFIX) if (re.test(v.w)) {
+    if (v.p.includes(k)) return `끝 모양 ${end} → 보통 ${POS[k]}. 이 단어도 ${POS[k]}.`;
+    return `끝 모양 ${end}은 보통 ${POS[k]}인데, 이 단어는 ${[...new Set(v.p)].map(x => POS[x]).join('·')}예요. 예외로 기억하세요.`;
+  }
+  return '';
+}
+function tipHTML(v){ const t = suffixTip(v); return t ? `<span class="tip">${esc(t)}</span>` : ''; }
 const dots = w => `<span class="dots" aria-label="숙련도 ${box(w)}/5">${[1, 2, 3, 4, 5].map(i => `<i class="${box(w) >= i ? 'on' : ''}"></i>`).join('')}</span>`;
 
 function viewStudy(){
@@ -532,7 +586,7 @@ function viewStudy(){
     <div class="row between"><div class="seg" role="group" aria-label="모드">
       <button data-mode="card" aria-pressed="${S.mode === 'card'}">카드</button><button data-mode="quiz" aria-pressed="${S.mode === 'quiz'}">4지선다</button><button data-mode="auto" aria-pressed="${S.mode === 'auto'}">자동 재생</button></div>`;
   if (S.mode === 'card') h += `<div class="seg" role="group" aria-label="앞면"><button data-dir="en" aria-pressed="${S.dir === 'en'}">영→한</button><button data-dir="ko" aria-pressed="${S.dir === 'ko'}">한→영</button></div>`;
-  if (S.mode === 'quiz') h += `<select id="qtype" aria-label="문제 종류">${[['mix', '섞어서'], ['meaning', '뜻 고르기'], ['word', '단어 고르기'], ['syn', '동의어 고르기']].map(([k, t]) => `<option value="${k}" ${S.qtype === k ? 'selected' : ''}>${t}</option>`).join('')}</select>`;
+  if (S.mode === 'quiz') h += `<select id="qtype" aria-label="문제 종류">${[['mix', '섞어서'], ['meaning', '뜻 고르기'], ['word', '단어 고르기'], ['syn', '동의어 고르기'], ['pos', '품사 고르기']].map(([k, t]) => `<option value="${k}" ${S.qtype === k ? 'selected' : ''}>${t}</option>`).join('')}</select>`;
   if (S.mode === 'auto') h += `<span class="row"><select id="gap" aria-label="간격">${[2, 3, 5].map(g => `<option value="${g}" ${S.gap === g ? 'selected' : ''}>${g}초 간격</option>`).join('')}</select>
       <label class="toggle"><input type="checkbox" id="ko" ${S.ko ? 'checked' : ''}> 뜻도 읽기</label></span>`;
   h += `</div>`;
@@ -540,10 +594,10 @@ function viewStudy(){
   if (!cur) cur = nextWord();
   const v = cur;
   if (S.mode === 'card') {
-    const front = S.dir === 'en' ? `<span class="w">${esc(v.w)}</span>` : `<span class="ko">${esc(v.m)}</span>`;
-    const back = S.dir === 'en' ? `<span class="w">${esc(v.w)}</span><span class="ko">${esc(v.m)}</span>` : `<span class="ko">${esc(v.m)}</span><span class="w">${esc(v.w)}</span>`;
+    const front = S.dir === 'en' ? `<span class="w">${esc(v.w)}</span>` : senseHTML(v);
+    const back = (S.dir === 'en' ? `<span class="w">${esc(v.w)}</span>` + senseHTML(v) : senseHTML(v) + `<span class="w">${esc(v.w)}</span>`);
     h += `<button class="card" data-flip aria-label="카드 뒤집기"><span class="corner l num">#${v.i + 1} ${dots(v.w)}</span>
-      ${flipped ? back + `<span class="syn">≈ ${esc(v.s)}</span>` : front + `<span class="hint">눌러서 ${S.dir === 'en' ? '뜻' : '단어'} 보기</span>`}</button>
+      ${flipped ? back + `<span class="syn">≈ ${esc(v.s)}</span>` + tipHTML(v) : front + `<span class="hint">눌러서 ${S.dir === 'en' ? '뜻' : '단어'} 보기</span>`}</button>
       <div class="row between"><button class="star" data-star="${esc(v.w)}" aria-pressed="${!!S.star[v.w]}" aria-label="별표">${S.star[v.w] ? '★' : '☆'}</button>
         <button class="btn small" data-say="${esc(v.w)}">발음 듣기</button></div>
       <div class="answer"><button class="btn" data-know="0" ${flipped ? '' : 'disabled'}>몰라요 <span class="kbd">←</span></button><button class="btn primary" data-know="1" ${flipped ? '' : 'disabled'}>알아요 <span class="kbd">→</span></button></div>
@@ -552,19 +606,20 @@ function viewStudy(){
     if (!quiz || quiz.v !== v) quiz = makeQuiz(v);
     const done = quiz.pick !== null;
     h += `<div class="card" style="min-height:170px"><span class="corner l num">#${v.i + 1} ${dots(v.w)}</span><span class="corner r label">${quiz.label}</span>
-      ${quiz.type === 'word' ? `<span class="ko">${esc(v.m)}</span>` : `<span class="w">${esc(v.w)}</span>`}
+      ${quiz.type === 'word' ? senseHTML(v) : `<span class="w">${esc(v.w)}</span>`}
+      ${quiz.type === 'pos' ? '<span class="hint">이 단어의 품사는?</span>' : ''}
       ${quiz.type === 'syn' ? '<span class="hint">문맥상 같은 뜻은?</span>' : ''}</div>
       <div class="opts">${quiz.opts.map((o, k) => {
         let c = 'opt'; if (done) { if (o === quiz.ans) c += ' right'; else if (k === quiz.pick) c += ' wrong'; }
         return `<button class="${c}" data-opt="${k}" ${done ? 'disabled' : ''}><span class="k">${k + 1}</span><span>${esc(o)}</span></button>`; }).join('')}</div>`;
     if (done) {
       const ok = quiz.opts[quiz.pick] === quiz.ans;
-      h += `<p class="flash ${ok ? 'ok' : 'no'}">${ok ? '정답' : '오답'} · ${esc(v.w)} = ${esc(v.m)} ≈ ${esc(v.s)}</p>
+      h += `<p class="flash ${ok ? 'ok' : 'no'}">${ok ? '정답' : '오답'} · ${esc(v.w)} ${posBadges(v)} ${esc(v.m)} ≈ ${esc(v.s)}</p>${quiz.type === 'pos' ? `<p class="muted" style="text-align:center;font-size:13px">${esc(suffixTip(v) || '')}</p>` : ''}
         ${ok ? '' : `<button class="btn primary" data-next style="align-self:center">다음 <span class="kbd">Enter</span></button>`}`;
     } else h += `<p class="muted" style="text-align:center;font-size:13px">숫자키 <span class="kbd">1</span>~<span class="kbd">4</span>로도 골라요. 맞히면 바로 다음 단어.</p>`;
   } else {
     h += `<div class="card"><span class="corner l num">#${v.i + 1} ${dots(v.w)}</span>
-      <span class="w">${esc(v.w)}</span>${autoStep >= 1 ? `<span class="ko">${esc(v.m)}</span><span class="syn">≈ ${esc(v.s)}</span>` : '<span class="hint">뜻을 떠올려 보세요</span>'}</div>
+      <span class="w">${esc(v.w)}</span>${autoStep >= 1 ? senseHTML(v) + `<span class="syn">≈ ${esc(v.s)}</span>` : '<span class="hint">뜻을 떠올려 보세요</span>'}</div>
       <div class="row" style="justify-content:center"><button class="btn ${autoOn ? '' : 'primary'}" data-auto>${autoOn ? '■ 멈추기' : '▶ 시작'}</button>
         <button class="btn" data-skip>다음 단어</button><button class="star" data-star="${esc(v.w)}" aria-pressed="${!!S.star[v.w]}" aria-label="별표">${S.star[v.w] ? '★' : '☆'}</button></div>
       <p class="muted" style="text-align:center;font-size:13px">화면을 안 봐도 돼요. 단어를 영어로 읽고, 잠시 뒤 뜻을 보여 주고 읽어 준 다음, 멈출 때까지 계속 넘어가요. 소리가 안 나면 기기 설정에서 영어·한국어 음성을 받아 두세요.</p>`;
@@ -572,16 +627,19 @@ function viewStudy(){
   return h;
 }
 function makeQuiz(v){
-  let type = S.qtype === 'mix' ? ['meaning', 'word', 'syn'][Math.floor(Math.random() * 3)] : S.qtype;
+  const single = new Set(v.p).size === 1;
+  let type = S.qtype === 'mix' ? ['meaning', 'word', 'syn', 'pos'][Math.floor(Math.random() * (single ? 4 : 3))] : S.qtype;
+  if (type === 'pos' && !single) type = 'meaning';
   const others = shuffle(W.filter(x => x !== v));
   let ans, opts;
   if (type === 'meaning') { ans = v.m; opts = others.filter(x => x.m !== v.m).slice(0, 3).map(x => x.m); }
+  else if (type === 'pos') { ans = POS[v.p[0]]; opts = Object.values(POS).filter(x => x !== ans); }
   else if (type === 'word') { ans = v.w; opts = others.slice(0, 3).map(x => x.w); }
   else {
     ans = v.s.split(', ')[0];
     opts = others.filter(x => !x.s.includes(ans) && !v.s.includes(x.s.split(', ')[0]) && x.w !== ans).slice(0, 3).map(x => x.s.split(', ')[0]);
   }
-  return { v, type, ans, opts: shuffle([ans].concat(opts)), pick:null, label: { meaning:'뜻 고르기', word:'단어 고르기', syn:'동의어 고르기' }[type] };
+  return { v, type, ans, opts: shuffle([ans].concat(opts)), pick:null, label: { meaning:'뜻 고르기', word:'단어 고르기', syn:'동의어 고르기', pos:'품사 고르기' }[type] };
 }
 
 function viewList(){
@@ -591,12 +649,21 @@ function viewList(){
       <label class="toggle"><input type="checkbox" id="hide" ${S.hideList ? 'checked' : ''}> 뜻 가리기</label>
       <span class="label num">${list.length}개</span></div>
     <section class="panel"><div class="scroll"><table>
-      <tr><th></th><th>#</th><th>단어</th><th>뜻</th><th>동의어</th><th>숙련도</th><th>틀림</th></tr>
+      <tr><th></th><th>#</th><th>단어</th><th>품사</th><th>뜻</th><th>동의어</th><th>숙련도</th><th>틀림</th></tr>
       ${list.map(v => `<tr><td><button class="star" data-star="${esc(v.w)}" aria-pressed="${!!S.star[v.w]}" aria-label="${esc(v.w)} 별표">${S.star[v.w] ? '★' : '☆'}</button></td>
-        <td class="num muted">${v.i + 1}</td><td class="num"><b>${esc(v.w)}</b></td>
+        <td class="num muted">${v.i + 1}</td><td class="num"><b>${esc(v.w)}</b></td><td>${posBadges(v)}</td>
         <td style="${S.hideList ? 'color:transparent;background:var(--accent-soft);border-radius:4px' : ''}">${esc(v.m)}</td>
         <td class="muted" style="${S.hideList ? 'color:transparent' : ''}">${esc(v.s)}</td><td>${dots(v.w)}</td><td class="num muted">${S.miss[v.w] || ''}</td></tr>`).join('')}
     </table></div></section>
+    <section class="panel"><h2>품사 알아보는 법 (끝 모양)</h2>
+      <div class="scroll"><table><tr><th>품사</th><th>자주 보이는 끝</th><th>예</th><th>문장 속 자리</th></tr>
+        <tr><td><span class="pos 명">명사</span></td><td class="num">-tion -sion -ment -ness -ity -ance -ence -ure -ism</td><td class="num">obligation, procedure, priority</td><td>주어·목적어, a/the 뒤</td></tr>
+        <tr><td><span class="pos 동">동사</span></td><td class="num">-ize -ify -ate -en</td><td class="num">utilize, modify, allocate</td><td>주어 뒤, to 뒤, 조동사 뒤</td></tr>
+        <tr><td><span class="pos 형">형용사</span></td><td class="num">-ous -ful -ive -able -ible -al -ic -ant -ent -ary</td><td class="num">numerous, extensive, feasible</td><td>명사 앞, be동사 뒤</td></tr>
+        <tr><td><span class="pos 부">부사</span></td><td class="num">-ly</td><td class="num">gradually, merely, virtually</td><td>동사·형용사·문장 꾸밈</td></tr>
+      </table></div>
+      <p class="muted">끝 모양은 힌트일 뿐이에요. -ate는 동사가 많지만 adequate·legitimate·deliberate는 형용사, -ly여도 friendly는 형용사예요. 한 단어가 여러 품사로 쓰이면(issue, secure, prompt) 뜻마다 품사를 따로 달아 두었어요.</p>
+      <p class="muted">지텔프 어휘 문제는 보기도 <b>빈칸 단어와 같은 품사</b>로 나와요. 지문 속 단어가 동사로 쓰였는지 형용사로 쓰였는지 먼저 보면 뜻을 고르기 쉬워요.</p></section>
     <section class="panel"><h2>기록</h2><p class="muted">기록은 이 기기의 브라우저에만 저장돼요.</p>
       <button class="btn small" data-reset style="align-self:flex-start">${resetArm ? '한 번 더 누르면 모두 삭제' : '기록 모두 지우기'}</button></section>`;
 }
@@ -662,6 +729,7 @@ app.addEventListener('input', e => {
 });
 document.addEventListener('keydown', e => {
   if (view !== 'study' || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) return;
+  if (e.target.tagName === 'BUTTON' && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); e.target.blur(); }   // 단축키가 버튼을 한 번 더 누르지 않게
   if (S.mode === 'card') {
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flipped = !flipped; render(); }
     else if (flipped && e.key === 'ArrowRight') { mark(cur, true); advance(); }
