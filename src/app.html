@@ -1,0 +1,634 @@
+<title>지텔프 65 작전</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500;700&family=Black+Han+Sans&display=swap">
+<style>
+/* Layout: 시험지 OMR 답안지 — 빨간 인쇄선, 컴퓨터용 사인펜으로 칠하는 동그라미 보기, 아래 고정 탭 */
+:root{
+  --paper:#fbfaf7; --sheet:#ffffff; --ink:#1d1f24; --muted:#6b6862;
+  --omr:#d2394a; --omr-soft:#fbe3e5; --line:#ecc9cd;
+  --ok:#1f8a5b; --ok-soft:#dff3e9; --bad:#c2410c; --bad-soft:#fde8dc;
+  --display:'Black Han Sans','IBM Plex Sans KR',sans-serif;
+  --body:'IBM Plex Sans KR',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#16171b; --sheet:#1f2126; --ink:#ecebe8; --muted:#a19d96;
+  --omr:#ff6b78; --omr-soft:#3a2226; --line:#4a3236;
+  --ok:#4fd39a; --ok-soft:#173327; --bad:#ff9a6b; --bad-soft:#3a2418; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#16171b; --sheet:#1f2126; --ink:#ecebe8; --muted:#a19d96;
+  --omr:#ff6b78; --omr-soft:#3a2226; --line:#4a3236;
+  --ok:#4fd39a; --ok-soft:#173327; --bad:#ff9a6b; --bad-soft:#3a2418; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--paper);color:var(--ink)}
+body{font-family:var(--body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 calc(84px + env(safe-area-inset-bottom,0px))}
+main{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px;padding-top:16px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.3}
+h2{font-size:19px} h3{font-size:16px}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--omr);outline-offset:2px}
+.label{font-size:12px;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.muted{color:var(--muted)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.between{justify-content:space-between}
+a.btn{color:var(--ink);text-decoration:none}
+.btn{border:1.5px solid var(--ink);background:var(--sheet);border-radius:999px;padding:9px 16px;font-weight:500}
+.btn.primary{background:var(--omr);border-color:var(--omr);color:#fff}
+.btn.small{padding:5px 12px;font-size:13px}
+.btn:disabled{opacity:.4;cursor:default}
+.chip{border:1px solid var(--line);background:var(--sheet);border-radius:999px;padding:6px 12px;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--omr);color:#fff;border-color:var(--omr)}
+
+/* 상단 D-day 띠 */
+.dday{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:end;
+  border-bottom:2px solid var(--omr);padding-bottom:12px}
+.dday .big{font-family:var(--display);font-size:56px;line-height:1;color:var(--omr);grid-row:span 2}
+.dday .t{font-weight:700;font-size:17px}
+.bar{height:8px;background:var(--omr-soft);border-radius:4px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--omr)}
+
+/* 미션 */
+.mission{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px dashed var(--line)}
+.mission:first-of-type{border-top:0}
+.dot{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--omr)}
+.dot.on{background:var(--ink);border-color:var(--ink)}
+.mission .go{font-size:13px}
+
+/* OMR 보기 */
+.q{font-size:17px;line-height:1.65}
+.q .blank{display:inline-block;min-width:64px;border-bottom:2px solid var(--ink);margin:0 2px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:center;text-align:left;
+  background:var(--sheet);border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-height:48px}
+.bub{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--omr);color:var(--omr);
+  display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:700}
+.opt.picked .bub{background:var(--ink);border-color:var(--ink);color:var(--sheet)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .bub{background:var(--ok);border-color:var(--ok);color:var(--sheet)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default;color:inherit}
+.explain{border-left:3px solid var(--omr);padding:6px 12px;background:var(--omr-soft);border-radius:0 6px 6px 0}
+.verdict{font-weight:700}
+.verdict.ok{color:var(--ok)} .verdict.no{color:var(--bad)}
+
+/* 공식 카드 */
+.formula{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.ftile{text-align:left;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--sheet);display:flex;flex-direction:column;gap:4px}
+.ftile b{font-size:15px}
+.ftile small{color:var(--muted);font-size:12.5px;line-height:1.5}
+table{border-collapse:collapse;width:100%;font-size:14px}
+td,th{border-bottom:1px solid var(--line);padding:6px 4px;text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:500}
+.scroll{overflow-x:auto}
+
+.passage{white-space:pre-wrap;font-size:15.5px;line-height:1.75;max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--paper)}
+.card{min-height:180px;display:grid;place-items:center;text-align:center;border:1.5px dashed var(--omr);border-radius:12px;padding:20px;background:var(--sheet);width:100%}
+.card .w{font-family:var(--mono);font-size:30px;font-weight:700}
+.stat{display:grid;grid-template-columns:72px 1fr 52px;gap:8px;align-items:center;font-size:14px}
+input[type=range]{width:100%;accent-color:var(--omr)}
+input[type=date],input[type=number]{font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:6px 8px;width:100%;min-width:0}
+.field{display:flex;flex-direction:column;gap:4px;flex:1 1 90px;min-width:0}
+.score-big{font-family:var(--display);font-size:44px;line-height:1}
+.pass{color:var(--ok)} .fail{color:var(--bad)}
+svg text{fill:var(--muted);font-family:var(--mono);font-size:11px}
+
+/* 하단 탭 */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--sheet);border-top:2px solid var(--omr);
+  display:grid;grid-template-columns:repeat(5,1fr);
+  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;color:var(--muted);font-size:12px;padding:4px 0}
+nav.tabs a .ic{font-family:var(--display);font-size:18px;line-height:1.2}
+nav.tabs a[aria-current="page"]{color:var(--omr)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:999px;font-size:14px;z-index:6}
+@media (prefers-reduced-motion:no-preference){.opt{transition:background .15s,border-color .15s}}
+</style>
+
+<main id="app" aria-live="polite"></main>
+<nav class="tabs" aria-label="메뉴">
+  <a href="#home"><span class="ic">홈</span>오늘</a>
+  <a href="#grammar"><span class="ic">G</span>문법</a>
+  <a href="#reading"><span class="ic">R</span>독해·어휘</a>
+  <a href="#listening"><span class="ic">L</span>청취</a>
+  <a href="#record"><span class="ic">%</span>점수</a>
+</nav>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/*DATA*/
+</script>
+<script>
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const LET = ['a','b','c','d'];
+
+/* ── 저장 ── */
+const KEY = 'gtelp65-v1';
+const blank = () => ({ target:'2027-02-28', days:{}, streak:{last:'',n:0}, wrong:{}, stats:{}, vocab:{}, best:{}, mocks:[] });
+let S;
+try { S = Object.assign(blank(), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) { S = blank(); }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+
+const pad = n => String(n).padStart(2, '0');
+const dkey = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const today = () => dkey(new Date());
+const dayNum = k => { const [y, m, d] = k.split('-').map(Number); return Math.round(Date.UTC(y, m - 1, d) / 864e5); };
+const T = () => (S.days[today()] = S.days[today()] || { g:0, v:0, r:0, l:0, w:0 });
+function bump(field, n){
+  T()[field] += (n || 1);
+  const t = today();
+  if (S.streak.last !== t) {
+    S.streak.n = (S.streak.last && dayNum(t) - dayNum(S.streak.last) === 1) ? S.streak.n + 1 : 1;
+    S.streak.last = t;
+  }
+  save();
+}
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 1800); }
+
+/* 점수: 영역 점수 = 맞힌 수 / 문항 수 × 100, 총점 = 세 영역 평균 */
+const sec = (c, n) => Math.round(c / n * 100);
+const total = (g, l, r) => Math.round((g / 26 + l / 26 + r / 28) * 100 / 3);
+
+/* ── 문법 문제 ── */
+const GQ = GRAMMAR.map((g, i) => ({ id:'g' + i, t:g[0], q:g[1], a:g[2], w:[g[3], g[4], g[5]], e:g[6] }));
+function grammarSet(mode){
+  if (mode === 'real') { // 실전 26문항: 시험 유형 비율대로
+    let set = [];
+    for (const t in TYPES) set = set.concat(shuffle(GQ.filter(q => q.t === t)).slice(0, TYPES[t].n));
+    while (set.length < 26) set.push(shuffle(GQ.filter(q => !set.includes(q)))[0]);
+    return shuffle(set);
+  }
+  if (mode === 'wrong') return shuffle(GQ.filter(q => S.wrong[q.id]));
+  if (mode === 'mix') return shuffle(GQ).slice(0, 20);
+  return shuffle(GQ.filter(q => q.t === mode));
+}
+function verbSet(){
+  const g = GERUND_VERBS.map(v => ({ id:'vg-' + v, verb:v, a:'-ing (동명사)', w:['to V (to부정사)'] }));
+  const f = INF_VERBS.map(v => ({ id:'vi-' + v, verb:v, a:'to V (to부정사)', w:['-ing (동명사)'] }));
+  return shuffle(g.concat(f)).slice(0, 20).map(x => ({ id:x.id, t:'verbal', q:'<b>' + x.verb + '</b> ___ (뒤에 오는 형태는?)', raw:true, a:x.a, w:x.w,
+    e: x.a[0] === '-' ? x.verb + ' + -ing. 동명사만 오는 동사.' : x.verb + ' + to V. to부정사만 오는 동사.' }));
+}
+
+/* ── 공통 퀴즈 러너 ── */
+let quiz = null;
+function startQuiz(opts){
+  quiz = Object.assign({ i:0, right:0, picked:null, results:[] }, opts);
+  quiz.items = quiz.items.map(it => Object.assign({}, it, { order: shuffle([it.a].concat(it.w)) }));
+  if (quiz.timer) quiz.t0 = Date.now();
+  if (location.hash !== '#quiz') location.hash = 'quiz'; else render();
+}
+function qText(it){
+  if (it.raw) return it.q;
+  return esc(it.q).replace('___', '<span class="blank">&nbsp;</span>');
+}
+function viewQuiz(){
+  if (!quiz) { location.hash = 'grammar'; return ''; }
+  const it = quiz.items[quiz.i];
+  if (!it) return viewQuizDone();
+  const done = quiz.picked !== null;
+  const el = quiz.timer ? Math.floor((Date.now() - quiz.t0) / 1000) : 0;
+  let h = `<div class="row between"><span class="label">${esc(quiz.title)}</span>
+    <span class="num muted">${quiz.i + 1} / ${quiz.items.length}${quiz.timer ? ' · <span id="clock">' + Math.floor(el/60) + ':' + pad(el%60) + '</span>' : ''}</span></div>
+    <div class="bar"><i style="width:${quiz.i / quiz.items.length * 100}%"></i></div>
+    <section class="sheet">`;
+  if (TYPES[it.t] && !quiz.hideType) h += `<span class="label">${TYPES[it.t].name}</span>`;
+  h += `<p class="q">${qText(it)}</p><div class="opts">`;
+  it.order.forEach((o, k) => {
+    let cls = 'opt';
+    if (done) { if (o === it.a) cls += ' right'; else if (k === quiz.picked) cls += ' wrong'; }
+    h += `<button class="${cls}" data-pick="${k}" ${done ? 'disabled' : ''}><span class="bub">${LET[k]}</span><span>${esc(o)}</span></button>`;
+  });
+  h += `</div>`;
+  if (done) {
+    const ok = it.order[quiz.picked] === it.a;
+    h += `<p class="verdict ${ok ? 'ok' : 'no'}">${ok ? '정답' : '오답 · 정답은 (' + LET[it.order.indexOf(it.a)] + ')'}</p>
+      ${it.e ? `<p class="explain">${esc(it.e)}</p>` : ''}
+      <button class="btn primary" data-act="next">${quiz.i + 1 < quiz.items.length ? '다음 문제' : '결과 보기'}</button>`;
+  }
+  return h + `</section><button class="btn small" data-act="quit" style="align-self:flex-start">그만하기</button>`;
+}
+function pick(k){
+  const it = quiz.items[quiz.i];
+  if (quiz.picked !== null) return;
+  quiz.picked = k;
+  const ok = it.order[k] === it.a;
+  if (ok) quiz.right++;
+  quiz.results.push({ it, ok });
+  if (quiz.kind === 'grammar') {
+    const st = S.stats[it.t] = S.stats[it.t] || { c:0, n:0 };
+    st.n++; if (ok) st.c++;
+    if (!it.id.startsWith('v')) {
+      if (!ok) S.wrong[it.id] = 2;               // 두 번 맞혀야 오답노트에서 빠짐
+      else if (S.wrong[it.id]) { S.wrong[it.id]--; if (!S.wrong[it.id]) delete S.wrong[it.id]; bump('w'); }
+    }
+    bump('g');
+  } else if (quiz.kind === 'syn') bump('v');
+  else save();
+  render();
+}
+function viewQuizDone(){
+  const n = quiz.items.length, c = quiz.right;
+  let h = `<section class="sheet"><span class="label">${esc(quiz.title)} 결과</span>
+    <div class="row" style="align-items:baseline;gap:12px"><span class="score-big num">${c}/${n}</span><span class="muted">정답률 ${sec(c, n)}%</span></div>`;
+  if (quiz.kind === 'grammar' && quiz.mode === 'real') {
+    const m = Math.floor((Date.now() - quiz.t0) / 60000);
+    h += `<p>문법 영역 예상 점수 <b class="num">${sec(c, 26)}점</b> · 걸린 시간 <b class="num">${m}분</b>. 목표는 24개 이상(92점), 20분 안.</p>`;
+  }
+  const miss = quiz.results.filter(r => !r.ok);
+  if (miss.length) {
+    h += `<h3>틀린 문제</h3><div class="scroll"><table><tr><th>문제</th><th>정답</th></tr>`;
+    miss.forEach(r => h += `<tr><td>${r.it.raw ? r.it.q : esc(r.it.q)}</td><td><b>${esc(r.it.a)}</b></td></tr>`);
+    h += `</table></div>`;
+  }
+  return h + `<div class="row"><button class="btn primary" data-act="again">다시 풀기</button><button class="btn" data-act="quit">끝내기</button></div></section>`;
+}
+
+/* ── 홈 ── */
+function curPhase(){ const t = today(); return PHASES.find(p => t >= p.from && t <= p.to) || (t < PHASES[0].from ? PHASES[0] : PHASES[PHASES.length - 1]); }
+function viewHome(){
+  const t = today(), left = dayNum(S.target) - dayNum(t);
+  const span = dayNum(S.target) - dayNum('2026-11-19');
+  const prog = Math.min(100, Math.max(0, (1 - left / span) * 100));
+  const d = T(), ph = curPhase();
+  const wrongN = Object.keys(S.wrong).length;
+  const ms = [
+    ['문법 20문제', d.g, 20, '#grammar'],
+    ['단어 30개', d.v, 30, '#vocab'],
+    ['독해 또는 청취 1세트', d.r + d.l, 1, '#reading'],
+    ['오답 다시 풀기', wrongN ? d.w : 1, wrongN ? Math.min(5, wrongN) : 1, '#grammar'],
+  ];
+  const doneN = ms.filter(m => m[1] >= m[2]).length;
+  let weak = null;
+  for (const k in S.stats) { const s = S.stats[k]; if (s.n >= 5) { const r = s.c / s.n; if (!weak || r < weak.r) weak = { k, r }; } }
+  let h = `<header class="dday">
+      <span class="big num">D-${Math.max(0, left)}</span>
+      <span class="t">지텔프 Level 2 · 65점 마감 ${S.target.replace(/-/g, '.')}</span>
+      <div><div class="bar"><i style="width:${prog}%"></i></div><span class="label">기간 ${Math.round(prog)}% 지남 · 연속 ${S.streak.n}일째 공부</span></div>
+    </header>
+    <section class="sheet">
+      <div class="row between"><h2>오늘의 미션</h2><span class="num muted">${doneN}/4</span></div>
+      ${ms.map(m => `<div class="mission"><span class="dot ${m[1] >= m[2] ? 'on' : ''}" aria-label="${m[1] >= m[2] ? '완료' : '미완료'}"></span>
+        <span>${m[0]} <span class="num muted">${Math.min(m[1], m[2])}/${m[2]}</span></span><a class="btn small go" href="${m[3]}">하기</a></div>`).join('')}
+    </section>
+    <section class="sheet">
+      <span class="label">지금 단계 · ${ph.from.slice(5).replace('-', '/')} ~ ${ph.to.slice(5).replace('-', '/')}</span>
+      <h2>${ph.name}</h2>
+      <p>목표: <b>${ph.goal}</b></p>
+      <ul style="margin:0;padding-left:20px">${ph.todo.map(x => `<li>${x}</li>`).join('')}</ul>
+      ${weak ? `<p class="explain">가장 약한 유형: <b>${TYPES[weak.k].name}</b> (정답률 ${Math.round(weak.r * 100)}%) · <a href="#grammar" data-type="${weak.k}">집중 연습</a></p>` : ''}
+    </section>
+    <section class="sheet">
+      <h2>65점 작전</h2>
+      <p>총점은 세 영역 점수의 <b>평균</b>이에요. 문법은 공식대로 나와서 90점대가 가능하니 문법으로 점수를 벌고, 청취는 40점대여도 됩니다.</p>
+      <div class="scroll"><table>
+        <tr><th>영역</th><th>문항</th><th>목표 정답</th><th>점수</th></tr>
+        <tr><td>문법</td><td class="num">26</td><td class="num">24</td><td class="num">92</td></tr>
+        <tr><td>독해·어휘</td><td class="num">28</td><td class="num">17</td><td class="num">61</td></tr>
+        <tr><td>청취</td><td class="num">26</td><td class="num">11</td><td class="num">42</td></tr>
+        <tr><th>평균</th><th></th><th></th><th class="num pass">${total(24, 11, 17)}</th></tr>
+      </table></div>
+      <p class="muted">2월 마지막 시험 한 번에 걸지 말고, 1월부터 매 회차 응시하세요. 성적 발표까지 시간이 걸리니 2월 초까지 65점을 받아 두는 게 안전합니다.</p>
+    </section>`;
+  return h;
+}
+
+/* ── 문법 ── */
+function viewGrammar(){
+  const wrongN = Object.keys(S.wrong).length;
+  let h = `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">문법 <span class="muted" style="font-size:16px;font-family:var(--body)">26문항 · 점수 버는 영역</span></h1>
+    <section class="sheet"><h2>실전·복습</h2>
+      <div class="row">
+        <button class="btn primary" data-g="real">실전 26문항 (시간 재기)</button>
+        <button class="btn" data-g="mix">랜덤 20문제</button>
+        <button class="btn" data-g="wrong" ${wrongN ? '' : 'disabled'}>오답노트 ${wrongN}개</button>
+        <button class="btn" data-g="verbs">-ing / to V 동사 퀴즈</button>
+      </div>
+      <p class="muted">오답노트 문제는 두 번 맞혀야 빠집니다.</p>
+    </section>
+    <section class="sheet"><h2>유형별 공식</h2><p class="muted">유형을 누르면 그 유형만 풀어요. 시험에 나오는 대략의 문항 수도 적어 두었어요.</p>
+      <div class="formula">`;
+  for (const k in TYPES) {
+    const st = S.stats[k], cnt = GQ.filter(q => q.t === k).length;
+    h += `<button class="ftile" data-g="${k}"><span class="row between"><b>${TYPES[k].name}</b><span class="num muted" style="font-size:12px">시험 약 ${TYPES[k].n}개</span></span>
+      <small>${esc(TYPES[k].tip)}</small>
+      <span class="num muted" style="font-size:12px">${cnt}문제${st ? ' · 정답률 ' + Math.round(st.c / st.n * 100) + '%' : ''}</span></button>`;
+  }
+  h += `</div></section>
+    <section class="sheet"><h2>시제 단서 표</h2><div class="scroll"><table>
+      <tr><th>단서</th><th>정답 형태</th></tr>
+      <tr><td>now, right now, at the moment, currently, these days</td><td>is/are -ing</td></tr>
+      <tr><td>when/while + 과거동사, last ~, at that time</td><td>was/were -ing</td></tr>
+      <tr><td>tomorrow, next ~, when/if + 현재동사</td><td>will be -ing</td></tr>
+      <tr><td>since + 과거, for + 기간 (지금까지)</td><td>have been -ing</td></tr>
+      <tr><td>before/when + 과거동사 + for 기간</td><td>had been -ing</td></tr>
+      <tr><td>by the time + 현재동사 / by next ~ + for 기간</td><td>will have been -ing</td></tr>
+    </table></div></section>
+    <section class="sheet"><h2>동사 목록</h2>
+      <p><b>-ing만:</b> ${GERUND_VERBS.join(', ')}</p>
+      <p><b>to V만:</b> ${INF_VERBS.join(', ')}</p>
+      <p><b>당위성 → 동사원형:</b> ${SUBJ_WORDS.replace('|', '<br><b>It is ___ that:</b> ')}</p>
+    </section>`;
+  return h;
+}
+function startGrammar(mode){
+  if (mode === 'verbs') return startQuiz({ kind:'grammar', mode, title:'-ing / to V 동사 퀴즈', items: verbSet(), hideType:true });
+  const items = grammarSet(mode);
+  if (!items.length) return toast('풀 문제가 없어요');
+  const title = mode === 'real' ? '실전 26문항' : mode === 'mix' ? '랜덤 20문제' : mode === 'wrong' ? '오답노트' : TYPES[mode].name + ' 연습';
+  startQuiz({ kind:'grammar', mode, title, items, timer: mode === 'real', hideType: mode === 'real' });
+}
+
+/* ── 어휘 (간격 반복) ── */
+const GAP = [0, 1, 3, 7, 14, 30];
+let vs = null;
+function vocabQueue(){
+  const t = dayNum(today());
+  const due = VOCAB.filter(v => S.vocab[v.w] && S.vocab[v.w].d <= t && S.vocab[v.w].b < 5);
+  const fresh = VOCAB.filter(v => !S.vocab[v.w]);
+  return shuffle(due).concat(fresh.slice(0, Math.max(0, 30 - due.length))).slice(0, 40);
+}
+function viewVocab(){
+  const t = dayNum(today());
+  const known = VOCAB.filter(v => S.vocab[v.w] && S.vocab[v.w].b >= 3).length;
+  const due = VOCAB.filter(v => S.vocab[v.w] && S.vocab[v.w].d <= t && S.vocab[v.w].b < 5).length;
+  if (vs && vs.q[vs.i]) {
+    const v = vs.q[vs.i];
+    return `<div class="row between"><span class="label">단어 카드</span><span class="num muted">${vs.i + 1} / ${vs.q.length}</span></div>
+      <div class="bar"><i style="width:${vs.i / vs.q.length * 100}%"></i></div>
+      <button class="card" data-act="flip">${vs.flip
+        ? `<span><span class="w">${esc(v.w)}</span><br><b style="font-size:18px">${esc(v.m)}</b><br><span class="muted">≈ ${esc(v.s)}</span></span>`
+        : `<span><span class="w">${esc(v.w)}</span><br><span class="muted">눌러서 뜻 보기</span></span>`}</button>
+      <div class="row" style="justify-content:center"><button class="btn" data-know="0" ${vs.flip ? '' : 'disabled'}>몰랐어요</button><button class="btn primary" data-know="1" ${vs.flip ? '' : 'disabled'}>알았어요</button></div>
+      <button class="btn small" data-act="vquit" style="align-self:flex-start">그만하기</button>`;
+  }
+  if (vs) { vs = null; toast('오늘 단어 끝!'); }
+  return `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">어휘</h1>
+    <section class="sheet"><h2>단어 카드</h2>
+      <p>지텔프 독해 파트마다 어휘 2문제(총 8문제)가 나와요. 사전 뜻이 아니라 <b>지문 속 뜻</b>과 같은 동의어를 고르는 문제라 동의어까지 같이 외웁니다.</p>
+      <p class="num">전체 ${VOCAB.length}개 · 외운 단어 ${known}개 · 오늘 복습 ${due}개</p>
+      <div class="bar"><i style="width:${known / VOCAB.length * 100}%"></i></div>
+      <div class="row"><button class="btn primary" data-act="vstart">오늘 카드 시작</button><button class="btn" data-act="syn">동의어 퀴즈 20문제</button></div>
+      <p class="muted">"알았어요"를 누르면 1·3·7·14·30일 뒤에 다시 나와요.</p>
+    </section>
+    <section class="sheet"><h2>다의어 주의</h2><p>지문 속 뜻으로 골라야 하는 단어예요.</p>
+      <div class="scroll"><table><tr><th>단어</th><th>시험에 자주 나오는 뜻</th></tr>
+      ${['address','accommodate','adopt','maintain','observe','settle','issue','figure','outstanding','secure','assume','yield'].map(w => { const v = VOCAB.find(x => x.w === w); return `<tr><td class="num">${w}</td><td>${esc(v.m)} ≈ ${esc(v.s)}</td></tr>`; }).join('')}
+      </table></div></section>`;
+}
+function synSet(){
+  return shuffle(VOCAB).slice(0, 20).map(v => {
+    const ans = v.s.split(', ')[0];
+    const others = shuffle(VOCAB.filter(x => x !== v && !x.s.includes(ans) && !v.s.includes(x.s.split(', ')[0]))).slice(0, 3).map(x => x.s.split(', ')[0]);
+    return { id:'s-' + v.w, q:'<b>' + esc(v.w) + '</b> 와 같은 뜻은?', raw:true, a:ans, w:others, e:v.w + ' = ' + v.m + ' ≈ ' + v.s };
+  });
+}
+
+/* ── 독해 ── */
+let rd = null;
+function viewReading(){
+  if (rd) return viewPassage();
+  let h = `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">독해·어휘 <span class="muted" style="font-size:16px;font-family:var(--body)">28문항</span></h1>
+    <section class="sheet"><h2>푸는 순서</h2>
+      <ol style="margin:0;padding-left:20px"><li>질문을 먼저 읽고 키워드에 표시</li><li>문제 순서 = 문단 순서. 1번은 1문단, 마지막은 마지막 문단</li><li>정답은 지문 표현을 <b>다른 말로 바꾼</b> 보기 (그대로 베낀 보기는 함정일 때가 많음)</li><li>어휘 2문제는 사전 뜻 말고 문장 속 뜻</li></ol>
+    </section>`;
+  READING.forEach(p => {
+    const b = S.best[p.id];
+    h += `<button class="sheet" data-read="${p.id}" style="text-align:left"><span class="label">${p.part}</span><h3>${esc(p.title)}</h3>
+      <span class="muted num">7문항${b !== undefined ? ' · 최고 ' + b + '/7' : ''}</span></button>`;
+  });
+  h += `<a class="btn" href="#vocab" style="align-self:flex-start">어휘 카드로 가기</a>`;
+  return h;
+}
+function viewPassage(){
+  const p = READING.find(x => x.id === rd.id);
+  let h = `<div class="row between"><span class="label">${p.part}</span><button class="btn small" data-act="rback">목록</button></div>
+    <h2>${esc(p.title)}</h2><div class="passage">${esc(p.body)}</div>`;
+  p.q.forEach((q, i) => {
+    const pk = rd.ans[i];
+    h += `<section class="sheet"><p class="q"><b class="num">${i + 1}.</b> ${esc(q[0])}</p><div class="opts">`;
+    rd.order[i].forEach((o, k) => {
+      let cls = 'opt';
+      if (pk !== undefined) { if (o === q[1]) cls += ' right'; else if (k === pk) cls += ' wrong'; }
+      h += `<button class="${cls}" data-rq="${i}" data-k="${k}" ${pk !== undefined ? 'disabled' : ''}><span class="bub">${LET[k]}</span><span>${esc(o)}</span></button>`;
+    });
+    h += `</div>${pk !== undefined ? `<p class="explain">${esc(q[5])}</p>` : ''}</section>`;
+  });
+  const n = Object.keys(rd.ans).length;
+  if (n === p.q.length) h += `<section class="sheet"><p><b class="num">${rd.right}/7</b> 맞혔어요.</p><button class="btn primary" data-read="${p.id}">다시 풀기</button></section>`;
+  return h;
+}
+
+/* ── 청취 (영어 TTS) ── */
+let ls = null;
+const synth = window.speechSynthesis;
+function voices(){
+  const all = synth ? synth.getVoices().filter(v => /^en[-_]/i.test(v.lang)) : [];
+  const us = all.filter(v => /US/i.test(v.lang));
+  const pool = us.length ? us : all;
+  const f = pool.find(v => /female|samantha|zira|aria|jenny|google us english/i.test(v.name)) || pool[0];
+  const m = pool.find(v => v !== f && /male|alex|david|guy|daniel|fred/i.test(v.name)) || pool.find(v => v !== f) || f;
+  return [f, m];
+}
+function speakAll(parts){
+  if (!synth) return toast('이 브라우저는 음성 읽기를 지원하지 않아요');
+  synth.cancel();
+  const [f, m] = voices();
+  parts.forEach(([who, text]) => {
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = ls.rate;
+    const v = who === 1 ? m : f; if (v) u.voice = v;
+    if (who === 1 && v === f) u.pitch = 0.75;
+    if (who === 2) u.rate = ls.rate * 0.95;
+    synth.speak(u);
+  });
+}
+function playSet(){
+  const s = LISTENING.find(x => x.id === ls.id);
+  const qs = s.q.map((q, i) => [2, 'Number ' + (i + 1) + '. ' + q[0]]);
+  // 실제 시험처럼: 질문 → 지문 → 질문 한 번 더
+  speakAll([[2, 'Listen to the questions first.']].concat(qs, [[2, 'Now listen.']], s.lines, [[2, 'Now listen to the questions again.']], qs));
+}
+function viewListening(){
+  if (ls) return viewListenSet();
+  let h = `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">청취 <span class="muted" style="font-size:16px;font-family:var(--body)">26문항</span></h1>
+    <section class="sheet"><h2>청취는 40점대면 충분</h2>
+      <ol style="margin:0;padding-left:20px"><li>시험지에는 <b>보기만</b> 있고 질문은 소리로만 나와요. 질문이 나올 때 의문사(who·why·what)와 키워드를 보기 옆에 적으세요.</li>
+      <li>질문 → 본문 → 질문 다시 순서로 나와요. 1번 답은 앞부분, 마지막 답은 끝부분에.</li>
+      <li>Part 3 마지막 문제는 거의 "결정한 것" (I will ~, I think I'll ~).</li>
+      <li>못 들은 문제는 미련 없이 찍고 다음 질문 준비.</li></ol>
+      <p class="muted">기기의 영어 음성으로 읽어 줘요. 소리가 안 나면 기기 설정에서 영어 음성을 받아 두세요.</p>
+    </section>`;
+  LISTENING.forEach(s => {
+    const b = S.best[s.id];
+    h += `<button class="sheet" data-listen="${s.id}" style="text-align:left"><span class="label">${s.part}</span><h3>${esc(s.title)}</h3>
+      <span class="muted num">5문항${b !== undefined ? ' · 최고 ' + b + '/5' : ''}</span></button>`;
+  });
+  return h;
+}
+function viewListenSet(){
+  const s = LISTENING.find(x => x.id === ls.id);
+  const n = Object.keys(ls.ans).length, fin = n === s.q.length;
+  let h = `<div class="row between"><span class="label">${s.part}</span><button class="btn small" data-act="lback">목록</button></div>
+    <h2>${esc(s.title)}</h2>
+    <section class="sheet"><div class="row">
+      <button class="btn primary" data-act="play">▶ 듣기</button><button class="btn" data-act="stop">■ 멈추기</button>
+      <label class="row" style="gap:6px"><span class="label">속도</span>
+        <select id="rate" style="font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:4px">
+          ${[0.8, 0.9, 1].map(r => `<option value="${r}" ${r === ls.rate ? 'selected' : ''}>${r}x</option>`).join('')}</select></label>
+      <button class="chip" data-act="qtoggle" aria-pressed="${ls.showQ}">질문 글로 보기</button>
+    </div><p class="muted">실전처럼 질문을 귀로만 듣고 풀어 보세요. 어려우면 "질문 글로 보기"를 켜세요.</p></section>`;
+  s.q.forEach((q, i) => {
+    const pk = ls.ans[i];
+    h += `<section class="sheet"><p class="q"><b class="num">${i + 1}.</b> ${ls.showQ || fin ? esc(q[0]) : '<span class="muted">(질문은 소리로)</span>'}</p><div class="opts">`;
+    ls.order[i].forEach((o, k) => {
+      let cls = 'opt';
+      if (pk !== undefined) { if (o === q[1]) cls += ' right'; else if (k === pk) cls += ' wrong'; }
+      h += `<button class="${cls}" data-lq="${i}" data-k="${k}" ${pk !== undefined ? 'disabled' : ''}><span class="bub">${LET[k]}</span><span>${esc(o)}</span></button>`;
+    });
+    h += `</div></section>`;
+  });
+  if (fin) {
+    h += `<section class="sheet"><p><b class="num">${ls.right}/5</b> 맞혔어요. 대본을 보며 한 번 더 들어 보세요.</p>
+      <div style="display:flex;flex-direction:column;gap:6px">${s.lines.map(l => `<p>${s.lines.some(x => x[0] === 1) ? `<b class="label">${l[0] ? 'B' : 'A'}</b> ` : ''}${esc(l[1])}</p>`).join('')}</div>
+      <button class="btn primary" data-listen="${s.id}">다시 풀기</button></section>`;
+  }
+  return h;
+}
+
+/* ── 점수·기록 ── */
+let sim = { g:24, l:11, r:17 };
+function viewRecord(){
+  const tt = total(sim.g, sim.l, sim.r);
+  let h = `<h1 style="font-family:var(--display);font-weight:400;font-size:28px">점수</h1>
+    <section class="sheet"><h2>점수 계산기</h2><p class="muted">영역별로 맞힐 개수를 움직여 보세요.</p>
+      ${[['g','문법',26],['r','독해·어휘',28],['l','청취',26]].map(([k, n, max]) => `
+        <label class="stat" for="sim-${k}"><span>${n}</span><input type="range" id="sim-${k}" data-sim="${k}" min="0" max="${max}" value="${sim[k]}"><span class="num">${sim[k]}/${max}</span></label>
+        <span class="num muted" style="margin:-8px 0 0 80px;font-size:12px">${sec(sim[k], max)}점</span>`).join('')}
+      <div class="row" style="align-items:baseline;gap:12px"><span class="score-big num ${tt >= 65 ? 'pass' : 'fail'}">${tt}</span><span>${tt >= 65 ? '65점 통과' : '65점까지 ' + (65 - tt) + '점 부족'}</span></div>
+    </section>
+    <section class="sheet"><h2>모의고사·실제 시험 기록</h2>
+      <form id="mockform" class="row" style="align-items:flex-end">
+        <div class="field"><label class="label" for="m-d">날짜</label><input type="date" id="m-d" value="${today()}" required></div>
+        <div class="field"><label class="label" for="m-g">문법 점수</label><input type="number" id="m-g" min="0" max="100" required></div>
+        <div class="field"><label class="label" for="m-r">독해 점수</label><input type="number" id="m-r" min="0" max="100" required></div>
+        <div class="field"><label class="label" for="m-l">청취 점수</label><input type="number" id="m-l" min="0" max="100" required></div>
+        <button class="btn primary">기록</button>
+      </form>
+      ${chart()}
+    </section>
+    <section class="sheet"><h2>문법 유형별 정답률</h2>`;
+  let any = false;
+  for (const k in TYPES) {
+    const s = S.stats[k]; if (!s) continue; any = true;
+    const r = Math.round(s.c / s.n * 100);
+    h += `<div class="stat"><span>${TYPES[k].name}</span><div class="bar"><i style="width:${r}%;background:${r >= 85 ? 'var(--ok)' : 'var(--omr)'}"></i></div><span class="num">${r}%</span></div>`;
+  }
+  if (!any) h += `<p class="muted">문법 문제를 풀면 유형별 정답률이 여기에 쌓여요.</p>`;
+  h += `</section>
+    <section class="sheet"><h2>설정</h2>
+      <div class="field"><label class="label" for="target">65점 마감일</label><input type="date" id="target" value="${S.target}"></div>
+      <p class="muted">기록은 이 기기의 브라우저에만 저장돼요.</p>
+      <div class="row"><button class="btn small" data-act="reset">${resetArm ? '정말 지울까요? 한 번 더 누르면 삭제' : '기록 모두 지우기'}</button></div>
+    </section>`;
+  return h;
+}
+let resetArm = false;
+function chart(){
+  const ms = S.mocks.slice().sort((a, b) => a.d < b.d ? -1 : 1);
+  if (!ms.length) return `<p class="muted">시험을 보면 점수를 적어 두세요. 평균 점수 그래프가 그려지고 65점 선과 비교해 줘요.</p>`;
+  const W = 320, H = 150, L = 30, R = 10, Tp = 10, B = 24;
+  const x = i => ms.length === 1 ? (L + W - R) / 2 : L + i * (W - L - R) / (ms.length - 1);
+  const y = v => Tp + (100 - v) * (H - Tp - B) / 100;
+  const pts = ms.map((m, i) => [x(i), y(m.t)]);
+  let s = `<div class="scroll"><svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:520px" role="img" aria-label="시험 평균 점수 추이">`;
+  [0, 50, 65, 100].forEach(v => s += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 65 ? 'var(--ok)' : 'var(--line)'}" stroke-dasharray="${v === 65 ? '4 3' : ''}" fill="none"/><text x="${L - 4}" y="${y(v) + 4}" text-anchor="end">${v}</text>`);
+  s += `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="var(--omr)" stroke-width="2"/>`;
+  ms.forEach((m, i) => s += `<circle cx="${pts[i][0]}" cy="${pts[i][1]}" r="${i === ms.length - 1 ? 5 : 3.5}" fill="${m.t >= 65 ? 'var(--ok)' : 'var(--omr)'}"/><text x="${pts[i][0]}" y="${H - 6}" text-anchor="middle">${m.d.slice(5).replace('-', '/')}</text>`);
+  s += `</svg></div><div class="scroll"><table><tr><th>날짜</th><th>문법</th><th>독해</th><th>청취</th><th>평균</th><th></th></tr>`;
+  ms.slice().reverse().forEach(m => s += `<tr><td class="num">${m.d}</td><td class="num">${m.g}</td><td class="num">${m.r}</td><td class="num">${m.l}</td><td class="num ${m.t >= 65 ? 'pass' : 'fail'}"><b>${m.t}</b></td><td><button class="btn small" data-del="${m.d}|${m.t}">삭제</button></td></tr>`);
+  return s + `</table></div>`;
+}
+
+/* ── 라우팅·렌더 ── */
+const VIEWS = { home:viewHome, grammar:viewGrammar, quiz:viewQuiz, vocab:viewVocab, reading:viewReading, listening:viewListening, record:viewRecord };
+function route(){ const r = (location.hash || '#home').slice(1); return VIEWS[r] ? r : 'home'; }
+function render(){
+  const r = route();
+  app.innerHTML = VIEWS[r]();
+  const tab = r === 'quiz' ? (quiz && quiz.kind === 'syn' ? 'reading' : 'grammar') : r === 'vocab' ? 'reading' : r;
+  document.querySelectorAll('nav.tabs a').forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + tab ? 'page' : 'false'));
+}
+window.addEventListener('hashchange', () => { if (synth) synth.cancel(); render(); window.scrollTo(0, 0); });
+setInterval(() => { const c = document.getElementById('clock'); if (c && quiz && quiz.timer) { const e = Math.floor((Date.now() - quiz.t0) / 1000); c.textContent = Math.floor(e / 60) + ':' + pad(e % 60); } }, 1000);
+
+app.addEventListener('click', e => {
+  const b = e.target.closest('button, a[data-type]'); if (!b) return;
+  const d = b.dataset;
+  if (d.type) { e.preventDefault(); return startGrammar(d.type); }
+  if (d.pick !== undefined) return pick(+d.pick);
+  if (d.g) return startGrammar(d.g);
+  if (d.act === 'next') { quiz.i++; quiz.picked = null; render(); window.scrollTo(0, 0); return; }
+  if (d.act === 'again') { const k = quiz.kind, m = quiz.mode; if (k === 'syn') return startQuiz({ kind:'syn', title:'동의어 퀴즈', items:synSet(), hideType:true }); return startGrammar(m); }
+  if (d.act === 'quit') { const back = quiz && quiz.kind === 'syn' ? 'vocab' : 'grammar'; quiz = null; location.hash = back; return; }
+  if (d.act === 'vstart') { const q = vocabQueue(); if (!q.length) return toast('오늘 볼 카드가 없어요. 내일 다시!'); vs = { q, i:0, flip:false }; return render(); }
+  if (d.act === 'flip') { vs.flip = !vs.flip; return render(); }
+  if (d.know !== undefined) {
+    const v = vs.q[vs.i], cur = S.vocab[v.w] || { b:0, d:0 };
+    cur.b = d.know === '1' ? Math.min(5, cur.b + 1) : 0;
+    cur.d = dayNum(today()) + (d.know === '1' ? GAP[cur.b] : 0);
+    if (d.know === '0') vs.q.push(v);           // 모르면 오늘 한 번 더
+    S.vocab[v.w] = cur; bump('v'); vs.i++; vs.flip = false; return render();
+  }
+  if (d.act === 'vquit') { vs = null; return render(); }
+  if (d.act === 'syn') return startQuiz({ kind:'syn', title:'동의어 퀴즈', items:synSet(), hideType:true });
+  if (d.read) { const p = READING.find(x => x.id === d.read); rd = { id:p.id, ans:{}, right:0, order:p.q.map(q => shuffle(q.slice(1, 5))) }; render(); window.scrollTo(0, 0); return; }
+  if (d.rq !== undefined) {
+    const p = READING.find(x => x.id === rd.id), i = +d.rq, k = +d.k;
+    rd.ans[i] = k; if (rd.order[i][k] === p.q[i][1]) rd.right++;
+    if (Object.keys(rd.ans).length === p.q.length) { S.best[p.id] = Math.max(S.best[p.id] || 0, rd.right); bump('r'); }
+    const y = window.scrollY; render(); window.scrollTo(0, y); return;
+  }
+  if (d.act === 'rback') { rd = null; return render(); }
+  if (d.listen) { const s = LISTENING.find(x => x.id === d.listen); ls = { id:s.id, ans:{}, right:0, rate: ls ? ls.rate : 0.9, showQ:false, order:s.q.map(q => shuffle(q.slice(1, 5))) }; if (synth) synth.cancel(); render(); window.scrollTo(0, 0); return; }
+  if (d.act === 'play') return playSet();
+  if (d.act === 'stop') { if (synth) synth.cancel(); return; }
+  if (d.act === 'qtoggle') { ls.showQ = !ls.showQ; return render(); }
+  if (d.lq !== undefined) {
+    const s = LISTENING.find(x => x.id === ls.id), i = +d.lq, k = +d.k;
+    ls.ans[i] = k; if (ls.order[i][k] === s.q[i][1]) ls.right++;
+    if (Object.keys(ls.ans).length === s.q.length) { S.best[s.id] = Math.max(S.best[s.id] || 0, ls.right); bump('l'); if (synth) synth.cancel(); }
+    const y = window.scrollY; render(); window.scrollTo(0, y); return;
+  }
+  if (d.act === 'lback') { if (synth) synth.cancel(); ls = null; return render(); }
+  if (d.del) { const [dd, tt] = d.del.split('|'); const i = S.mocks.findIndex(m => m.d === dd && String(m.t) === tt); if (i > -1) S.mocks.splice(i, 1); save(); return render(); }
+  if (d.act === 'reset') { if (!resetArm) { resetArm = true; return render(); } resetArm = false; S = blank(); save(); toast('기록을 지웠어요'); return render(); }
+});
+app.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.sim) { sim[t.dataset.sim] = +t.value; const y = window.scrollY; render(); window.scrollTo(0, y); const n = document.getElementById(t.id); if (n) n.focus(); }
+});
+app.addEventListener('change', e => {
+  const t = e.target;
+  if (t.id === 'target' && t.value) { S.target = t.value; save(); toast('마감일을 바꿨어요'); }
+  if (t.id === 'rate') ls.rate = +t.value;
+});
+app.addEventListener('submit', e => {
+  e.preventDefault();
+  const v = id => Math.max(0, Math.min(100, +document.getElementById(id).value));
+  const m = { d: document.getElementById('m-d').value, g: v('m-g'), r: v('m-r'), l: v('m-l') };
+  m.t = Math.round((m.g + m.r + m.l) / 3);
+  S.mocks.push(m); save(); toast(m.t >= 65 ? m.t + '점! 목표 달성' : '평균 ' + m.t + '점 기록'); render();
+});
+if (synth && synth.onvoiceschanged !== undefined) synth.onvoiceschanged = () => {};
+render();
+})();
+</script>
