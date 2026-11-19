@@ -410,7 +410,7 @@ function viewReading(){
 let vFilter = 'all', vRange = 0;
 function viewVocab(){
   const knownN = VOCAB.filter(v => S.known[v.w]).length;
-  const ranges = [[0, 60], [60, 120], [120, VOCAB.length]];
+  const ranges = [[0, 100], [100, 200], [200, VOCAB.length]];
   const syn = sheets.syn;
   let h = `<div class="row between"><h1>어휘 <span class="label" style="font-family:var(--body)">독해 속 어휘 8문항 · ${VOCAB.length}개</span></h1><span class="num">외움 ${knownN}/${VOCAB.length}</span></div>
     <div class="bar"><i style="width:${knownN / VOCAB.length * 100}%"></i></div>

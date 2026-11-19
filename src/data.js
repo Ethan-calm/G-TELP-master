@@ -178,6 +178,7 @@ const SUBJ_WORDS = 'suggest recommend insist demand require ask advise propose u
 const VOCAB_RAW = `
 abandon|버리다, 포기하다|give up, desert
 abundant|풍부한|plentiful, ample
+acclaim|찬사; 칭찬하다|praise, applause
 accommodate|수용하다, 맞춰 주다|serve, house
 accomplish|성취하다|achieve, complete
 accurate|정확한|precise, exact
@@ -186,177 +187,315 @@ adapt|적응하다|adjust
 address|(문제를) 다루다|deal with, handle
 adequate|충분한|sufficient, enough
 adopt|채택하다, (습관을) 들이다|take up, embrace
+adverse|불리한, 해로운|harmful, negative
+advocate|옹호하다|support, champion
+allocate|할당하다|assign, distribute
 alter|바꾸다|change, modify
 ambitious|야심 찬|aspiring, determined
+ample|충분한|plenty, abundant
+anonymous|익명의|unnamed, unknown
 anticipate|예상하다|expect, foresee
 apparent|명백한|obvious, clear
 appealing|매력적인|attractive, inviting
 appreciate|진가를 알다, 감사하다|value, recognize
+apprehensive|불안한|anxious, uneasy
 approach|접근법|method, way
+arbitrary|임의의|random, unreasonable
+aspire|열망하다|aim, hope
+assert|주장하다|declare, claim
+assess|평가하다|evaluate, judge
+assist|돕다|help, aid
 assume|가정하다; (책임을) 맡다|suppose, take on
 attain|달성하다|reach, achieve
 attribute|~의 탓으로 돌리다|credit, ascribe
 authentic|진짜의|genuine, real
 available|이용 가능한|accessible, obtainable
+bear|견디다; 지니다|endure, carry
+bold|대담한|daring, brave
 boost|높이다|increase, raise
+breakthrough|획기적 발견|advance, discovery
 brief|짧은|short, quick
+bright|영리한|intelligent, clever
 capable|~할 수 있는|able, competent
+cherish|소중히 여기다|treasure, value
 claim|주장하다|assert, state
+coincide|동시에 일어나다|occur together, match
+collaborate|협력하다|cooperate, work together
+command|명령하다; (존경을) 받다|order, earn
+commemorate|기념하다|honor, celebrate
 commence|시작하다|begin, start
+compatible|호환되는, 잘 맞는|suitable, consistent
+compel|강요하다|force, oblige
 compensate|보상하다|make up for, repay
 compile|모으다, 편집하다|collect, gather
+comply|따르다|obey, follow
 comprehensive|포괄적인|thorough, complete
+comprise|구성하다|consist of, include
 conceal|숨기다|hide
+concise|간결한|brief, short
 conduct|수행하다|carry out, perform
+confine|제한하다, 가두다|limit, restrict
+consent|동의|permission, approval
+conserve|아끼다, 보존하다|save, preserve
+considerable|상당한|significant, substantial
 consistent|일관된|steady, constant
+constitute|구성하다|make up, form
 contemporary|현대의; 동시대의|modern, current
+contend|주장하다; 경쟁하다|argue, compete
+controversial|논란이 많은|debatable, disputed
+conventional|관습적인|traditional, ordinary
 convey|전달하다|communicate, express
+cover|다루다; 취재하다|deal with, report
+credible|믿을 만한|believable, reliable
+credit|공로로 인정하다|attribute, recognize
+criticize|비판하다|blame, condemn
 crucial|결정적인|vital, essential
 curious|호기심 많은|inquisitive, interested
 decline|감소하다; 거절하다|decrease, refuse
 dedicate|바치다, 헌신하다|devote, commit
+deliberate|고의의, 신중한|intentional, careful
 demonstrate|보여 주다|show, display
 depict|묘사하다|portray, represent
+designate|지정하다|appoint, assign
 desire|욕구|wish, longing
+detect|발견하다|discover, notice
 deteriorate|악화되다|worsen, decline
 devise|고안하다|invent, create
+diligent|성실한|hardworking, industrious
 diminish|줄어들다|lessen, reduce
+discard|버리다|throw away, dispose of
+disclose|밝히다|reveal, expose
+dispute|분쟁, 논쟁|argument, conflict
+disrupt|방해하다|disturb, interrupt
 distinct|뚜렷한, 별개의|clear, separate
 distinctive|독특한|unique, characteristic
+distribute|나누어 주다|hand out, deliver
 diverse|다양한|varied, various
 dominant|지배적인|leading, main
+drastic|급격한|extreme, severe
+draw|끌다|attract, pull
+dull|지루한|boring, tedious
 durable|내구성 있는|sturdy, lasting
 eager|열망하는|keen, enthusiastic
+elaborate|정교한, 상세한|detailed, intricate
 eligible|자격이 있는|qualified, entitled
 eliminate|제거하다|remove, get rid of
 emerge|나타나다|appear, arise
+eminent|저명한|famous, distinguished
 emphasize|강조하다|stress, highlight
 encounter|마주치다|meet, come across
+endorse|지지하다|support, approve
 endure|견디다|bear, tolerate
 enhance|향상시키다|improve, boost
 enormous|거대한|huge, vast
+enroll|등록하다|register, sign up
 ensure|보장하다|guarantee, make sure
+entitle|자격을 주다|allow, qualify
 establish|설립하다|found, set up
 evaluate|평가하다|assess, judge
 eventually|결국|finally, ultimately
 evident|분명한|clear, obvious
+evolve|발전하다|develop, grow
+exaggerate|과장하다|overstate, inflate
 exceed|초과하다|surpass, go beyond
+exclusive|독점적인|sole, restricted
 exhibit|전시하다; 보이다|display, show
 expand|확장하다|enlarge, extend
 expertise|전문 지식|skill, know-how
+explicit|명백한|clear, direct
 exploit|이용하다|use, take advantage of
 extensive|광범위한|wide, broad
 facilitate|용이하게 하다|ease, help
+fair|공정한; 상당한|just, reasonable
 feasible|실현 가능한|possible, workable
 figure|인물; 수치|person, number
 flourish|번성하다|thrive, prosper
+fluctuate|변동하다|vary, change
+formidable|만만찮은|powerful, tough
 foster|육성하다|encourage, promote
 fragile|깨지기 쉬운|delicate, breakable
+frequent|잦은|common, regular
 fundamental|근본적인|basic, essential
+gather|모으다, 모이다|collect, assemble
 generate|만들어 내다|produce, create
 genuine|진짜의, 진심의|real, sincere
+gradual|점진적인|slow, steady
 grant|주다, 승인하다|give, allow
 gratitude|감사|thanks, appreciation
+hazardous|위험한|dangerous, risky
 hinder|방해하다|obstruct, hamper
+hostile|적대적인|unfriendly, aggressive
+humble|겸손한, 소박한|modest, simple
 identical|동일한|same, alike
 illustrate|보여 주다, 설명하다|show, demonstrate
+imitate|모방하다|copy, mimic
 immense|막대한|huge, vast
+impair|손상시키다|damage, weaken
 implement|실행하다|carry out, execute
 imply|암시하다|suggest, hint
 impose|부과하다|place, enforce
 impressive|인상적인|remarkable, striking
 incentive|장려책|motivation, encouragement
+incorporate|포함하다|include, integrate
 indicate|나타내다|show, signal
+induce|유도하다|cause, persuade
 inevitable|피할 수 없는|unavoidable, certain
+inherent|고유의, 타고난|built-in, natural
+inhibit|억제하다|restrain, prevent
 initial|처음의|first, early
 initiate|시작하다|start, launch
 innovative|혁신적인|new, inventive
+insight|통찰력|understanding, perception
 inspire|영감을 주다|motivate, stimulate
+integral|필수적인|essential, basic
 intense|강렬한|strong, extreme
+interpret|해석하다|explain, understand
+intervene|개입하다|step in, interfere
 intriguing|흥미로운|fascinating, interesting
 issue|문제; 발행하다|problem, release
 launch|출시하다, 시작하다|introduce, start
 legitimate|합법적인, 정당한|lawful, valid
+lucrative|수익성 있는|profitable, rewarding
 maintain|유지하다; 주장하다|keep, claim
+mandatory|의무적인|required, compulsory
 massive|거대한|huge, enormous
+measure|조치|step, action
 merely|단지|only, just
+meticulous|꼼꼼한|careful, thorough
 minor|사소한|small, slight
 modest|겸손한; 적당한|humble, moderate
 modify|수정하다|change, alter
 monitor|감시하다|watch, check
+mutual|상호의|shared, common
+negligible|무시해도 될 만한|tiny, insignificant
 notable|주목할 만한|remarkable, noteworthy
+note|주목하다|notice, observe
 notion|개념|idea, concept
+nourish|영양분을 주다|feed, nurture
+novel|새로운; 소설|new, original
 numerous|수많은|many, countless
 objective|목표; 객관적인|goal, aim
 obligation|의무|duty, responsibility
+obscure|모호한; 잘 알려지지 않은|unclear, unknown
 observe|관찰하다; (규칙을) 지키다|watch, follow
+obsolete|구식의|outdated, old-fashioned
 obtain|얻다|get, acquire
 occupy|차지하다|take up, fill
+offset|상쇄하다|balance, cancel out
 ongoing|진행 중인|continuing, current
+optimal|최적의|best, ideal
+originate|비롯되다|begin, arise
 outstanding|뛰어난; 미지불의|excellent, unpaid
 overcome|극복하다|beat, conquer
 overwhelming|압도적인|enormous, crushing
+paramount|가장 중요한|supreme, foremost
 participate|참여하다|take part, join
+peculiar|특이한|strange, unusual
 perceive|인식하다|notice, recognize
 persist|지속되다|continue, last
+pioneer|개척자; 개척하다|founder, introduce
+plausible|그럴듯한|believable, reasonable
 plight|곤경|difficult situation, trouble
 portray|묘사하다|depict, show
 potential|잠재적인|possible, likely
 practical|실용적인|useful, realistic
+precede|앞서다|come before, lead
 precise|정확한|exact, accurate
+predict|예측하다|forecast, foresee
 predominant|우세한|main, chief
 preserve|보존하다|protect, conserve
 prestigious|명망 있는|respected, renowned
+prevail|우세하다, 이기다|win, dominate
 prevalent|널리 퍼진|common, widespread
 primary|주요한|main, chief
+proceed|진행하다|continue, go on
 proficient|능숙한|skilled, expert
 profound|깊은, 심오한|deep, intense
 prohibit|금지하다|ban, forbid
+prolong|연장하다|extend, lengthen
 prominent|저명한, 눈에 띄는|famous, noticeable
 prompt|촉발하다; 즉각적인|cause, quick
+prospect|전망, 가능성|outlook, chance
+provoke|유발하다|cause, trigger
 pursue|추구하다|follow, seek
 radical|급진적인, 근본적인|extreme, drastic
+rapid|빠른|quick, fast
 recall|기억해 내다; 회수하다|remember, take back
+refine|개선하다, 다듬다|improve, polish
 reflect|반영하다|show, mirror
 reinforce|강화하다|strengthen, support
 reject|거절하다|refuse, turn down
 reluctant|꺼리는|unwilling, hesitant
 remarkable|놀라운|extraordinary, notable
+remedy|치료법, 해결책|cure, solution
 renowned|유명한|famous, celebrated
+replicate|복제하다|copy, reproduce
 reside|거주하다|live, dwell
 resolve|해결하다; 결심하다|solve, settle
+restore|복원하다|repair, bring back
+restrict|제한하다|limit, confine
 resume|재개하다|restart, continue
 retain|유지하다|keep, hold
+retrieve|되찾다|recover, get back
 reveal|드러내다|disclose, show
+revise|수정하다|change, edit
 rigorous|엄격한|strict, thorough
+run|운영하다|manage, operate
+scarce|부족한, 드문|rare, limited
+scrutinize|면밀히 조사하다|examine, inspect
 secure|확보하다; 안전한|obtain, safe
 settle|해결하다; 정착하다|resolve, establish
+shrink|줄어들다|reduce, contract
 significant|중요한, 상당한|important, considerable
+simultaneous|동시의|concurrent, at the same time
 sole|유일한|only, single
 sophisticated|정교한|advanced, complex
+sound|건전한, 타당한|solid, valid
+specify|명시하다|state, define
 spontaneous|자발적인|unplanned, natural
 stable|안정된|steady, secure
+stand|견디다|tolerate, endure
 steady|꾸준한|constant, regular
+steep|가파른, 급격한|sharp, sudden
 stimulate|자극하다|encourage, spark
 strive|노력하다|try, struggle
 submit|제출하다|hand in, turn in
 subsequent|그 후의|following, later
 substantial|상당한|considerable, large
+subtle|미묘한|slight, delicate
 sufficient|충분한|enough, adequate
 superior|우수한|better, higher
+supplement|보충하다|add to, complement
+suppress|억누르다|hold back, restrain
+surpass|능가하다|exceed, outdo
+susceptible|영향받기 쉬운|vulnerable, sensitive
 suspend|중단하다|stop, pause
 sustain|지속시키다|maintain, support
+tangible|실체적인|concrete, real
+tentative|잠정적인|provisional, temporary
+term|기간; 용어|period, word
+terminate|끝내다|end, stop
 thrive|번창하다|flourish, prosper
+transform|변형시키다|change, convert
+treat|다루다; 치료하다|handle, cure
 tremendous|엄청난|huge, enormous
+trivial|사소한|minor, unimportant
 ultimately|궁극적으로|finally, eventually
 undergo|겪다|go through, experience
 unique|독특한|distinctive, one of a kind
+uphold|지지하다, 유지하다|support, maintain
+utilize|이용하다|use, employ
 vast|광대한|huge, immense
+versatile|다재다능한|adaptable, flexible
+viable|실행 가능한|workable, feasible
+virtually|사실상|almost, nearly
 vital|필수적인|essential, crucial
 vivid|생생한|clear, lively
 widespread|널리 퍼진|common, extensive
+withstand|견디다|resist, endure
 witness|목격하다|see, observe
 yield|산출하다; 양보하다|produce, give way
+zealous|열성적인|eager, passionate
 `;
 const VOCAB = VOCAB_RAW.trim().split('\n').map(l => { const [w, m, s] = l.split('|'); return { w, m, s }; });
 
@@ -699,17 +838,17 @@ const PLAN = [
    ['60분','요약노트 ① 시제 단서표 · ② 가정법 표 소리 내어 3번 읽기'],
    ['90분','시제·가정법 유형별 전체 풀기 → 틀린 건 단서에 동그라미'],
    ['60분','오답노트 다시 풀기 + 단서만 보고 형태 말하기'],
-   ['60분','단어 1~60 (뜻 가리고 체크)'] ] },
+   ['60분','단어 1~100 (뜻 가리고 체크)'] ] },
  { day:2, area:'문법', title:'준동사 + 당위성 + 조동사', score:'문법 22개 확보', blocks:[
    ['60분','요약노트 ③ -ing / to V 동사 목록 외우기 (목록 퀴즈 2번)'],
    ['90분','준동사·당위성·조동사 유형별 전체 풀기'],
    ['60분','관계사·연결어 표 읽고 유형별 풀기'],
-   ['60분','단어 61~120'] ] },
+   ['60분','단어 101~200'] ] },
  { day:3, area:'문법', title:'문법 실전 26문항 × 3회', score:'문법 24개 이상 (92점)', blocks:[
    ['90분','실전 26문항 3회 (회당 20분 목표, 끝나면 바로 채점)'],
    ['60분','오답노트 비우기 (두 번 맞혀야 빠짐)'],
    ['60분','요약노트 전체 1회독'],
-   ['60분','단어 121~181 + 다의어 표'] ] },
+   ['60분','단어 201~320 + 다의어 표'] ] },
  { day:4, area:'독해', title:'독해 Part 1·2 + 어휘', score:'독해 파트당 4개', blocks:[
    ['30분','요약노트 ⑥ 독해 전략 읽기'],
    ['90분','인물(Part 1)·잡지(Part 2) 지문 4개: 질문 먼저 → 키워드 → 문단에서 근거 찾기'],
